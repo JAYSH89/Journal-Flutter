@@ -3,6 +3,7 @@
 
 ### Dart ###
 *.mapper.dart
+*.mocks.dart
 
 # See https://www.dartlang.org/guides/libraries/private-files
 
