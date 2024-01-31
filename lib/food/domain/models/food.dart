@@ -1,6 +1,8 @@
-import 'package:journal/food/domain/food_unit.dart';
+import 'package:journal/food/domain/models/food_unit.dart';
+import 'package:equatable/equatable.dart';
 
-class Food {
+class Food extends Equatable {
+  final String? id;
   final String name;
   final double carbs;
   final double proteins;
@@ -8,7 +10,8 @@ class Food {
   final double amount;
   final FoodUnit unit;
 
-  Food({
+  const Food({
+    this.id,
     required this.name,
     required this.carbs,
     required this.proteins,
@@ -16,6 +19,17 @@ class Food {
     required this.amount,
     required this.unit,
   });
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        carbs,
+        proteins,
+        fats,
+        amount,
+        unit,
+      ];
 }
 
 extension FoodExtension on Food {

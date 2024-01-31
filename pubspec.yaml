@@ -1,5 +1,5 @@
 name: journal
-description: "A new Flutter project."
+description: "journal flutter"
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -23,6 +23,7 @@ dependencies:
   path_provider: ^2.1.2
   path: ^1.8.3
   fpdart: ^1.1.0
+  uuid: ^4.3.3
 
 dev_dependencies:
   flutter_test:
