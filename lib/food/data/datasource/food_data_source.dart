@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:journal/food/domain/models/food.dart';
 
 abstract class FoodDataSource {
