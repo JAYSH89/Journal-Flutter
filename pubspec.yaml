@@ -1,6 +1,6 @@
 name: journal
-description: "A new Flutter project."
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+description: "journal flutter"
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
@@ -23,6 +23,7 @@ dependencies:
   path_provider: ^2.1.2
   path: ^1.8.3
   fpdart: ^1.1.0
+  uuid: ^4.3.3
 
 dev_dependencies:
   flutter_test:
@@ -38,3 +39,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: Satoshi
+      fonts:
+        - asset: assets/fonts/Satoshi-Regular.otf
+        - asset: assets/fonts/Satoshi-Bold.otf
+          weight: 700
+        - asset: assets/fonts/Satoshi-Black.otf
+          weight: 900

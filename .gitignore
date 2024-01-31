@@ -2,6 +2,9 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=flutter,dart,macos,androidstudio
 
 ### Dart ###
+*.mapper.dart
+*.mocks.dart
+
 # See https://www.dartlang.org/guides/libraries/private-files
 
 # Files and directories created by pub
