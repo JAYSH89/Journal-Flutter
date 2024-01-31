@@ -3,12 +3,15 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:journal/food/data/datasource/food_data_source.dart' as _i4;
+import 'package:journal/food/data/datasource/food_data_source.dart' as _i5;
 import 'package:journal/food/domain/models/food.dart' as _i2;
-import 'package:journal/food/domain/repository/food_repository.dart' as _i6;
+import 'package:journal/food/domain/repository/food_repository.dart' as _i8;
+import 'package:journal/journal/data/datasource/journal_data_source.dart'
+    as _i6;
+import 'package:journal/journal/domain/models/journal_entry.dart' as _i3;
 import 'package:journal/profile/data/datasource/weight_measurement_data_source.dart'
-    as _i5;
-import 'package:journal/profile/domain/models/weight_measurement.dart' as _i3;
+    as _i7;
+import 'package:journal/profile/domain/models/weight_measurement.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -34,9 +37,19 @@ class _FakeFood_0 extends _i1.SmartFake implements _i2.Food {
         );
 }
 
-class _FakeWeightMeasurement_1 extends _i1.SmartFake
-    implements _i3.WeightMeasurement {
-  _FakeWeightMeasurement_1(
+class _FakeJournalEntry_1 extends _i1.SmartFake implements _i3.JournalEntry {
+  _FakeJournalEntry_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeWeightMeasurement_2 extends _i1.SmartFake
+    implements _i4.WeightMeasurement {
+  _FakeWeightMeasurement_2(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -48,7 +61,7 @@ class _FakeWeightMeasurement_1 extends _i1.SmartFake
 /// A class which mocks [FoodDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFoodDataSource extends _i1.Mock implements _i4.FoodDataSource {
+class MockFoodDataSource extends _i1.Mock implements _i5.FoodDataSource {
   MockFoodDataSource() {
     _i1.throwOnMissingStub(this);
   }
@@ -118,48 +131,125 @@ class MockFoodDataSource extends _i1.Mock implements _i4.FoodDataSource {
       ) as _i2.Food);
 
   @override
-  void deleteFood(String? id) => super.noSuchMethod(
+  dynamic deleteFood(String? id) => super.noSuchMethod(Invocation.method(
+        #deleteFood,
+        [id],
+      ));
+}
+
+/// A class which mocks [JournalDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockJournalDataSource extends _i1.Mock implements _i6.JournalDataSource {
+  MockJournalDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  List<_i3.JournalEntry> getAll() => (super.noSuchMethod(
         Invocation.method(
-          #deleteFood,
-          [id],
+          #getAll,
+          [],
         ),
-        returnValueForMissingStub: null,
-      );
+        returnValue: <_i3.JournalEntry>[],
+      ) as List<_i3.JournalEntry>);
+
+  @override
+  List<_i3.JournalEntry> getBetween(
+    DateTime? start,
+    DateTime? end,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getBetween,
+          [
+            start,
+            end,
+          ],
+        ),
+        returnValue: <_i3.JournalEntry>[],
+      ) as List<_i3.JournalEntry>);
+
+  @override
+  _i3.JournalEntry update(
+    String? id,
+    _i3.JournalEntry? entry,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #update,
+          [
+            id,
+            entry,
+          ],
+        ),
+        returnValue: _FakeJournalEntry_1(
+          this,
+          Invocation.method(
+            #update,
+            [
+              id,
+              entry,
+            ],
+          ),
+        ),
+      ) as _i3.JournalEntry);
+
+  @override
+  _i3.JournalEntry save(_i3.JournalEntry? entry) => (super.noSuchMethod(
+        Invocation.method(
+          #save,
+          [entry],
+        ),
+        returnValue: _FakeJournalEntry_1(
+          this,
+          Invocation.method(
+            #save,
+            [entry],
+          ),
+        ),
+      ) as _i3.JournalEntry);
+
+  @override
+  dynamic delete(String? id) => super.noSuchMethod(Invocation.method(
+        #delete,
+        [id],
+      ));
 }
 
 /// A class which mocks [WeightMeasurementDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockWeightMeasurementDataSource extends _i1.Mock
-    implements _i5.WeightMeasurementDataSource {
+    implements _i7.WeightMeasurementDataSource {
   MockWeightMeasurementDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  List<_i3.WeightMeasurement> getAll() => (super.noSuchMethod(
+  List<_i4.WeightMeasurement> getAll() => (super.noSuchMethod(
         Invocation.method(
           #getAll,
           [],
         ),
-        returnValue: <_i3.WeightMeasurement>[],
-      ) as List<_i3.WeightMeasurement>);
+        returnValue: <_i4.WeightMeasurement>[],
+      ) as List<_i4.WeightMeasurement>);
 
   @override
-  _i3.WeightMeasurement save(_i3.WeightMeasurement? measurement) =>
+  _i4.WeightMeasurement save(_i4.WeightMeasurement? measurement) =>
       (super.noSuchMethod(
         Invocation.method(
           #save,
           [measurement],
         ),
-        returnValue: _FakeWeightMeasurement_1(
+        returnValue: _FakeWeightMeasurement_2(
           this,
           Invocation.method(
             #save,
             [measurement],
           ),
         ),
-      ) as _i3.WeightMeasurement);
+      ) as _i4.WeightMeasurement);
 
   @override
   dynamic delete(String? id) => super.noSuchMethod(Invocation.method(
@@ -171,7 +261,7 @@ class MockWeightMeasurementDataSource extends _i1.Mock
 /// A class which mocks [FoodRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFoodRepository extends _i1.Mock implements _i6.FoodRepository {
+class MockFoodRepository extends _i1.Mock implements _i8.FoodRepository {
   MockFoodRepository() {
     _i1.throwOnMissingStub(this);
   }

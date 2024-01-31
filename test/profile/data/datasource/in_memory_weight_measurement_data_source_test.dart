@@ -42,7 +42,7 @@ void main() {
   group('save()', () {
     test('should save successful', () {
       // act
-      final result = datasource.save(testWeightMeasurement);
+      datasource.save(testWeightMeasurement);
       final savedMeasurement = datasource.getAll().first;
 
       // assert

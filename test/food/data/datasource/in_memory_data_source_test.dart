@@ -86,7 +86,7 @@ void main() {
 
     test('should return empty list if list does not contain query', () {
       // arrange
-      final savedFood = datasource.saveFood(testFood);
+      datasource.saveFood(testFood);
 
       // act
       final result = datasource.searchFoodByName('non existent name');
@@ -97,7 +97,7 @@ void main() {
 
     test('should return empty list if query is empty string', () {
       // arrange
-      final savedFood = datasource.saveFood(testFood);
+      datasource.saveFood(testFood);
 
       // act
       final result = datasource.searchFoodByName('');
