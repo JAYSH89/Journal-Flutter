@@ -77,6 +77,7 @@ void main() {
   });
 
   test('delete food', () {
+    when(datasource.deleteFood(any)).thenAnswer((_) {});
     repository.deleteFood(potato.id!);
 
     verify(datasource.deleteFood(potato.id!));
