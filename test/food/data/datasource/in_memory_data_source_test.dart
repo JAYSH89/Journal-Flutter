@@ -1,4 +1,4 @@
-import 'package:journal/core/errors/in_memory_exception.dart';
+import 'package:journal/core/errors/exceptions.dart';
 import 'package:journal/food/data/datasource/in_memory_food_data_source.dart';
 import 'package:journal/food/domain/models/food.dart';
 import 'package:journal/food/domain/models/food_unit.dart';

@@ -1,4 +1,4 @@
-import 'package:journal/core/errors/in_memory_exception.dart';
+import 'package:journal/core/errors/exceptions.dart';
 import 'package:journal/food/data/datasource/food_data_source.dart';
 import 'package:journal/food/domain/models/food.dart';
 import 'package:uuid/uuid.dart';
@@ -54,7 +54,7 @@ class InMemoryFoodDataSource implements FoodDataSource {
 
   @override
   Food saveFood(Food food) {
-    final String id = const Uuid().v4();
+    final String id = const Uuid().v8();
     final newFood = Food(
       id: id,
       name: food.name,

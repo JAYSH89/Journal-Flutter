@@ -17,7 +17,7 @@ void main() {
   });
 
   final potato = Food(
-    id: const Uuid().v4(),
+    id: const Uuid().v8(),
     name: 'Potato',
     carbs: 23.2,
     proteins: 3.1,
