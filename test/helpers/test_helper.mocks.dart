@@ -3,9 +3,9 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:journal/food/data/datasource/food_data_source.dart' as _i4;
+import 'package:journal/food/data/datasource/food_data_source.dart' as _i3;
 import 'package:journal/food/domain/models/food.dart' as _i2;
-import 'package:journal/food/domain/repository/food_repository.dart' as _i3;
+import 'package:journal/food/domain/repository/food_repository.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -31,89 +31,10 @@ class _FakeFood_0 extends _i1.SmartFake implements _i2.Food {
         );
 }
 
-/// A class which mocks [FoodRepository].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockFoodRepository extends _i1.Mock implements _i3.FoodRepository {
-  MockFoodRepository() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  List<_i2.Food> getAll() => (super.noSuchMethod(
-        Invocation.method(
-          #getAll,
-          [],
-        ),
-        returnValue: <_i2.Food>[],
-      ) as List<_i2.Food>);
-
-  @override
-  _i2.Food? getFoodById(String? id) => (super.noSuchMethod(Invocation.method(
-        #getFoodById,
-        [id],
-      )) as _i2.Food?);
-
-  @override
-  List<_i2.Food> searchFoodByName(String? name) => (super.noSuchMethod(
-        Invocation.method(
-          #searchFoodByName,
-          [name],
-        ),
-        returnValue: <_i2.Food>[],
-      ) as List<_i2.Food>);
-
-  @override
-  _i2.Food updateFood(
-    String? id,
-    _i2.Food? food,
-  ) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #updateFood,
-          [
-            id,
-            food,
-          ],
-        ),
-        returnValue: _FakeFood_0(
-          this,
-          Invocation.method(
-            #updateFood,
-            [
-              id,
-              food,
-            ],
-          ),
-        ),
-      ) as _i2.Food);
-
-  @override
-  _i2.Food saveFood(_i2.Food? food) => (super.noSuchMethod(
-        Invocation.method(
-          #saveFood,
-          [food],
-        ),
-        returnValue: _FakeFood_0(
-          this,
-          Invocation.method(
-            #saveFood,
-            [food],
-          ),
-        ),
-      ) as _i2.Food);
-
-  @override
-  dynamic deleteFood(String? id) => super.noSuchMethod(Invocation.method(
-        #deleteFood,
-        [id],
-      ));
-}
-
 /// A class which mocks [FoodDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFoodDataSource extends _i1.Mock implements _i4.FoodDataSource {
+class MockFoodDataSource extends _i1.Mock implements _i3.FoodDataSource {
   MockFoodDataSource() {
     _i1.throwOnMissingStub(this);
   }
@@ -190,4 +111,83 @@ class MockFoodDataSource extends _i1.Mock implements _i4.FoodDataSource {
         ),
         returnValueForMissingStub: null,
       );
+}
+
+/// A class which mocks [FoodRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockFoodRepository extends _i1.Mock implements _i4.FoodRepository {
+  MockFoodRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  List<_i2.Food> getAll() => (super.noSuchMethod(
+        Invocation.method(
+          #getAll,
+          [],
+        ),
+        returnValue: <_i2.Food>[],
+      ) as List<_i2.Food>);
+
+  @override
+  _i2.Food? getFoodById(String? id) => (super.noSuchMethod(Invocation.method(
+        #getFoodById,
+        [id],
+      )) as _i2.Food?);
+
+  @override
+  List<_i2.Food> searchFoodByName(String? name) => (super.noSuchMethod(
+        Invocation.method(
+          #searchFoodByName,
+          [name],
+        ),
+        returnValue: <_i2.Food>[],
+      ) as List<_i2.Food>);
+
+  @override
+  _i2.Food updateFood(
+    String? id,
+    _i2.Food? food,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateFood,
+          [
+            id,
+            food,
+          ],
+        ),
+        returnValue: _FakeFood_0(
+          this,
+          Invocation.method(
+            #updateFood,
+            [
+              id,
+              food,
+            ],
+          ),
+        ),
+      ) as _i2.Food);
+
+  @override
+  _i2.Food saveFood(_i2.Food? food) => (super.noSuchMethod(
+        Invocation.method(
+          #saveFood,
+          [food],
+        ),
+        returnValue: _FakeFood_0(
+          this,
+          Invocation.method(
+            #saveFood,
+            [food],
+          ),
+        ),
+      ) as _i2.Food);
+
+  @override
+  dynamic deleteFood(String? id) => super.noSuchMethod(Invocation.method(
+        #deleteFood,
+        [id],
+      ));
 }
