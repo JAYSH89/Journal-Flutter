@@ -14,36 +14,55 @@ class UserDetailDataSourceImpl extends UserDetailsDataSource {
 
   @override
   UserDetail getUserDetail() {
-    final first = sharedPreferences.getString(firstNameKey);
-    final last = sharedPreferences.getString(lastNameKey);
+    final firstName = sharedPreferences.getString(firstNameKey);
+    final lastName = sharedPreferences.getString(lastNameKey);
     final email = sharedPreferences.getString(emailKey);
-    final birthday = sharedPreferences.getString(dateOfBirthKey);
+    final dateOfBirth = sharedPreferences.getString(dateOfBirthKey);
 
     return UserDetail(
-      firstName: first,
-      lastName: last,
+      firstName: firstName,
+      lastName: lastName,
       email: email,
-      dateOfBirth: birthday == null ? null : DateTime.parse(birthday),
+      dateOfBirth: dateOfBirth == null ? null : DateTime.parse(dateOfBirth),
     );
   }
 
   @override
-  UserDetail saveUserDetail(UserDetail userDetail) {
-    final first = userDetail.firstName;
-    final last = userDetail.lastName;
+  Future<UserDetail> saveUserDetail(UserDetail userDetail) async {
+    final firstName = userDetail.firstName;
+    final lastName = userDetail.lastName;
     final email = userDetail.email;
-    final birthday = userDetail.dateOfBirth?.toIso8601String();
+    final dateOfBirth = userDetail.dateOfBirth?.toIso8601String();
 
-    if (first != null) sharedPreferences.setString(firstNameKey, first);
-    if (last != null) sharedPreferences.setString(lastNameKey, last);
-    if (email != null) sharedPreferences.setString(emailKey, email);
-    if (birthday != null) sharedPreferences.setString(dateOfBirthKey, birthday);
+    if (firstName != null) {
+      await sharedPreferences.setString(firstNameKey, firstName);
+    }
+
+    if (lastName != null) {
+      await sharedPreferences.setString(lastNameKey, lastName);
+    }
+
+    if (email != null) {
+      await sharedPreferences.setString(emailKey, email);
+    }
+
+    if (dateOfBirth != null) {
+      await sharedPreferences.setString(dateOfBirthKey, dateOfBirth);
+    }
 
     return UserDetail(
-      firstName: first,
-      lastName: last,
+      firstName: firstName,
+      lastName: lastName,
       email: email,
-      dateOfBirth: birthday == null ? null : DateTime.parse(birthday),
+      dateOfBirth: dateOfBirth == null ? null : DateTime.parse(dateOfBirth),
     );
+  }
+
+  @override
+  clear() async {
+    await sharedPreferences.remove(firstNameKey);
+    await sharedPreferences.remove(lastNameKey);
+    await sharedPreferences.remove(emailKey);
+    await sharedPreferences.remove(dateOfBirthKey);
   }
 }

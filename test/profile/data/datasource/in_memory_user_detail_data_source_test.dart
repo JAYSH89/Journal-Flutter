@@ -31,12 +31,29 @@ void main() {
   });
 
   group('saveUserDetail()', () {
-    test('saveUserDetail successful should override user detail', () {
+    test('saveUserDetail successful should override user detail', () async {
       // arrange + act
-      final result = dataSource.saveUserDetail(testUserDetail);
+      final result = await dataSource.saveUserDetail(testUserDetail);
 
       // assert
       expect(result, equals(testUserDetail));
+    });
+  });
+
+  group('clear()', () {
+    test('clear should remove all user detail properties', () async {
+      // arrange
+      await dataSource.saveUserDetail(testUserDetail);
+
+      // act
+      dataSource.clear();
+      final result = dataSource.getUserDetail();
+
+      // assert
+      expect(result.firstName, isNull);
+      expect(result.lastName, isNull);
+      expect(result.email, isNull);
+      expect(result.dateOfBirth, isNull);
     });
   });
 }

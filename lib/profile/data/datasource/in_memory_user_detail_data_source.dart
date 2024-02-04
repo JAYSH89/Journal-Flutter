@@ -8,8 +8,13 @@ class InMemoryUserDetailDataSource extends UserDetailsDataSource {
   UserDetail getUserDetail() => user;
 
   @override
-  UserDetail saveUserDetail(UserDetail userDetail) {
+  Future<UserDetail> saveUserDetail(UserDetail userDetail) async {
     user = userDetail;
     return user;
+  }
+
+  @override
+  clear() {
+    user = const UserDetail();
   }
 }

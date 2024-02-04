@@ -3,20 +3,22 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:async' as _i9;
+
 import 'package:journal/food/data/datasource/food_data_source.dart' as _i6;
 import 'package:journal/food/domain/models/food.dart' as _i2;
-import 'package:journal/food/domain/repository/food_repository.dart' as _i11;
+import 'package:journal/food/domain/repository/food_repository.dart' as _i12;
 import 'package:journal/journal/data/datasource/journal_data_source.dart'
     as _i7;
 import 'package:journal/journal/domain/models/journal_entry.dart' as _i3;
 import 'package:journal/profile/data/datasource/user_details_data_source.dart'
     as _i8;
 import 'package:journal/profile/data/datasource/weight_measurement_data_source.dart'
-    as _i9;
+    as _i10;
 import 'package:journal/profile/domain/models/user_detail.dart' as _i4;
 import 'package:journal/profile/domain/models/weight_measurement.dart' as _i5;
-import 'package:journal/profile/domain/repository/weight_repository.dart'
-    as _i10;
+import 'package:journal/profile/domain/repository/profile_repository.dart'
+    as _i11;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -257,27 +259,27 @@ class MockUserDetailsDataSource extends _i1.Mock
       ) as _i4.UserDetail);
 
   @override
-  _i4.UserDetail saveUserDetail(_i4.UserDetail? userDetail) =>
+  _i9.Future<_i4.UserDetail> saveUserDetail(_i4.UserDetail? userDetail) =>
       (super.noSuchMethod(
         Invocation.method(
           #saveUserDetail,
           [userDetail],
         ),
-        returnValue: _FakeUserDetail_2(
+        returnValue: _i9.Future<_i4.UserDetail>.value(_FakeUserDetail_2(
           this,
           Invocation.method(
             #saveUserDetail,
             [userDetail],
           ),
-        ),
-      ) as _i4.UserDetail);
+        )),
+      ) as _i9.Future<_i4.UserDetail>);
 }
 
 /// A class which mocks [WeightMeasurementDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockWeightMeasurementDataSource extends _i1.Mock
-    implements _i9.WeightMeasurementDataSource {
+    implements _i10.WeightMeasurementDataSource {
   MockWeightMeasurementDataSource() {
     _i1.throwOnMissingStub(this);
   }
@@ -317,10 +319,41 @@ class MockWeightMeasurementDataSource extends _i1.Mock
 /// A class which mocks [ProfileRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockProfileRepository extends _i1.Mock implements _i10.ProfileRepository {
+class MockProfileRepository extends _i1.Mock implements _i11.ProfileRepository {
   MockProfileRepository() {
     _i1.throwOnMissingStub(this);
   }
+
+  @override
+  _i4.UserDetail getUserDetails() => (super.noSuchMethod(
+        Invocation.method(
+          #getUserDetails,
+          [],
+        ),
+        returnValue: _FakeUserDetail_2(
+          this,
+          Invocation.method(
+            #getUserDetails,
+            [],
+          ),
+        ),
+      ) as _i4.UserDetail);
+
+  @override
+  _i9.Future<_i4.UserDetail> saveUserDetails(_i4.UserDetail? profile) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #saveUserDetails,
+          [profile],
+        ),
+        returnValue: _i9.Future<_i4.UserDetail>.value(_FakeUserDetail_2(
+          this,
+          Invocation.method(
+            #saveUserDetails,
+            [profile],
+          ),
+        )),
+      ) as _i9.Future<_i4.UserDetail>);
 
   @override
   List<_i5.WeightMeasurement> getAllWeightMeasurements() => (super.noSuchMethod(
@@ -359,7 +392,7 @@ class MockProfileRepository extends _i1.Mock implements _i10.ProfileRepository {
 /// A class which mocks [FoodRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFoodRepository extends _i1.Mock implements _i11.FoodRepository {
+class MockFoodRepository extends _i1.Mock implements _i12.FoodRepository {
   MockFoodRepository() {
     _i1.throwOnMissingStub(this);
   }

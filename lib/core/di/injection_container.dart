@@ -8,7 +8,7 @@ import 'package:journal/profile/data/datasource/user_detail_data_source_impl.dar
 import 'package:journal/profile/data/datasource/user_details_data_source.dart';
 import 'package:journal/profile/data/datasource/weight_measurement_data_source.dart';
 import 'package:journal/profile/data/repository/profile_repository_impl.dart';
-import 'package:journal/profile/domain/repository/weight_repository.dart';
+import 'package:journal/profile/domain/repository/profile_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
