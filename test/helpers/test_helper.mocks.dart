@@ -7,10 +7,12 @@ import 'dart:async' as _i9;
 
 import 'package:journal/food/data/datasource/food_data_source.dart' as _i6;
 import 'package:journal/food/domain/models/food.dart' as _i2;
-import 'package:journal/food/domain/repository/food_repository.dart' as _i12;
+import 'package:journal/food/domain/repository/food_repository.dart' as _i13;
 import 'package:journal/journal/data/datasource/journal_data_source.dart'
     as _i7;
 import 'package:journal/journal/domain/models/journal_entry.dart' as _i3;
+import 'package:journal/journal/domain/repository/journal_repository.dart'
+    as _i11;
 import 'package:journal/profile/data/datasource/user_details_data_source.dart'
     as _i8;
 import 'package:journal/profile/data/datasource/weight_measurement_data_source.dart'
@@ -18,7 +20,7 @@ import 'package:journal/profile/data/datasource/weight_measurement_data_source.d
 import 'package:journal/profile/domain/models/user_detail.dart' as _i4;
 import 'package:journal/profile/domain/models/weight_measurement.dart' as _i5;
 import 'package:journal/profile/domain/repository/profile_repository.dart'
-    as _i11;
+    as _i12;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -172,6 +174,13 @@ class MockJournalDataSource extends _i1.Mock implements _i7.JournalDataSource {
       ) as List<_i3.JournalEntry>);
 
   @override
+  _i3.JournalEntry? getById(String? id) =>
+      (super.noSuchMethod(Invocation.method(
+        #getById,
+        [id],
+      )) as _i3.JournalEntry?);
+
+  @override
   List<_i3.JournalEntry> getBetween(
     DateTime? start,
     DateTime? end,
@@ -316,10 +325,97 @@ class MockWeightMeasurementDataSource extends _i1.Mock
       ));
 }
 
+/// A class which mocks [JournalRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockJournalRepository extends _i1.Mock implements _i11.JournalRepository {
+  MockJournalRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  List<_i3.JournalEntry> getAll() => (super.noSuchMethod(
+        Invocation.method(
+          #getAll,
+          [],
+        ),
+        returnValue: <_i3.JournalEntry>[],
+      ) as List<_i3.JournalEntry>);
+
+  @override
+  _i3.JournalEntry? getById(String? id) =>
+      (super.noSuchMethod(Invocation.method(
+        #getById,
+        [id],
+      )) as _i3.JournalEntry?);
+
+  @override
+  List<_i3.JournalEntry> getBetween(
+    DateTime? start,
+    DateTime? end,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getBetween,
+          [
+            start,
+            end,
+          ],
+        ),
+        returnValue: <_i3.JournalEntry>[],
+      ) as List<_i3.JournalEntry>);
+
+  @override
+  _i3.JournalEntry update(
+    String? id,
+    _i3.JournalEntry? entry,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #update,
+          [
+            id,
+            entry,
+          ],
+        ),
+        returnValue: _FakeJournalEntry_1(
+          this,
+          Invocation.method(
+            #update,
+            [
+              id,
+              entry,
+            ],
+          ),
+        ),
+      ) as _i3.JournalEntry);
+
+  @override
+  _i3.JournalEntry save(_i3.JournalEntry? entry) => (super.noSuchMethod(
+        Invocation.method(
+          #save,
+          [entry],
+        ),
+        returnValue: _FakeJournalEntry_1(
+          this,
+          Invocation.method(
+            #save,
+            [entry],
+          ),
+        ),
+      ) as _i3.JournalEntry);
+
+  @override
+  dynamic delete(String? id) => super.noSuchMethod(Invocation.method(
+        #delete,
+        [id],
+      ));
+}
+
 /// A class which mocks [ProfileRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockProfileRepository extends _i1.Mock implements _i11.ProfileRepository {
+class MockProfileRepository extends _i1.Mock implements _i12.ProfileRepository {
   MockProfileRepository() {
     _i1.throwOnMissingStub(this);
   }
@@ -392,7 +488,7 @@ class MockProfileRepository extends _i1.Mock implements _i11.ProfileRepository {
 /// A class which mocks [FoodRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFoodRepository extends _i1.Mock implements _i12.FoodRepository {
+class MockFoodRepository extends _i1.Mock implements _i13.FoodRepository {
   MockFoodRepository() {
     _i1.throwOnMissingStub(this);
   }
