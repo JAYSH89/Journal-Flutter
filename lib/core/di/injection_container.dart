@@ -3,6 +3,8 @@ import 'package:journal/food/data/datasource/food_data_source.dart';
 import 'package:journal/food/data/datasource/in_memory_food_data_source.dart';
 import 'package:journal/food/data/repository/food_repository_impl.dart';
 import 'package:journal/food/domain/repository/food_repository.dart';
+import 'package:journal/journal/data/datasource/in_memory_journal_data_source.dart';
+import 'package:journal/journal/data/datasource/journal_data_source.dart';
 import 'package:journal/journal/data/repository/journal_repository_impl.dart';
 import 'package:journal/journal/domain/repository/journal_repository.dart';
 import 'package:journal/profile/data/datasource/in_memory_weight_measurement_data_source.dart';
@@ -26,10 +28,16 @@ void setupLocator() {
         userDetailsDataSource: getIt(),
       ));
 
-  getIt.registerLazySingleton<JournalRepository>(() => JournalRepositoryImpl());
+  getIt.registerLazySingleton<JournalRepository>(() {
+    return JournalRepositoryImpl(dataSource: getIt());
+  });
 
   // data source
   getIt.registerLazySingleton<FoodDataSource>(() => InMemoryFoodDataSource());
+
+  getIt.registerLazySingleton<JournalDataSource>(() {
+    return InMemoryJournalDataSource();
+  });
 
   getIt.registerLazySingleton<UserDetailsDataSource>(() {
     return UserDetailDataSourceImpl(sharedPreferences: getIt());
