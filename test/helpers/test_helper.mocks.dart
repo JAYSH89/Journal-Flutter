@@ -3,17 +3,20 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:journal/food/data/datasource/food_data_source.dart' as _i5;
+import 'package:journal/food/data/datasource/food_data_source.dart' as _i6;
 import 'package:journal/food/domain/models/food.dart' as _i2;
-import 'package:journal/food/domain/repository/food_repository.dart' as _i9;
+import 'package:journal/food/domain/repository/food_repository.dart' as _i11;
 import 'package:journal/journal/data/datasource/journal_data_source.dart'
-    as _i6;
-import 'package:journal/journal/domain/models/journal_entry.dart' as _i3;
-import 'package:journal/profile/data/datasource/weight_measurement_data_source.dart'
     as _i7;
-import 'package:journal/profile/domain/models/weight_measurement.dart' as _i4;
-import 'package:journal/profile/domain/repository/weight_repository.dart'
+import 'package:journal/journal/domain/models/journal_entry.dart' as _i3;
+import 'package:journal/profile/data/datasource/user_details_data_source.dart'
     as _i8;
+import 'package:journal/profile/data/datasource/weight_measurement_data_source.dart'
+    as _i9;
+import 'package:journal/profile/domain/models/user_detail.dart' as _i4;
+import 'package:journal/profile/domain/models/weight_measurement.dart' as _i5;
+import 'package:journal/profile/domain/repository/weight_repository.dart'
+    as _i10;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -49,9 +52,19 @@ class _FakeJournalEntry_1 extends _i1.SmartFake implements _i3.JournalEntry {
         );
 }
 
-class _FakeWeightMeasurement_2 extends _i1.SmartFake
-    implements _i4.WeightMeasurement {
-  _FakeWeightMeasurement_2(
+class _FakeUserDetail_2 extends _i1.SmartFake implements _i4.UserDetail {
+  _FakeUserDetail_2(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeWeightMeasurement_3 extends _i1.SmartFake
+    implements _i5.WeightMeasurement {
+  _FakeWeightMeasurement_3(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -63,7 +76,7 @@ class _FakeWeightMeasurement_2 extends _i1.SmartFake
 /// A class which mocks [FoodDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFoodDataSource extends _i1.Mock implements _i5.FoodDataSource {
+class MockFoodDataSource extends _i1.Mock implements _i6.FoodDataSource {
   MockFoodDataSource() {
     _i1.throwOnMissingStub(this);
   }
@@ -142,7 +155,7 @@ class MockFoodDataSource extends _i1.Mock implements _i5.FoodDataSource {
 /// A class which mocks [JournalDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockJournalDataSource extends _i1.Mock implements _i6.JournalDataSource {
+class MockJournalDataSource extends _i1.Mock implements _i7.JournalDataSource {
   MockJournalDataSource() {
     _i1.throwOnMissingStub(this);
   }
@@ -219,39 +232,80 @@ class MockJournalDataSource extends _i1.Mock implements _i6.JournalDataSource {
       ));
 }
 
+/// A class which mocks [UserDetailsDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockUserDetailsDataSource extends _i1.Mock
+    implements _i8.UserDetailsDataSource {
+  MockUserDetailsDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.UserDetail getUserDetail() => (super.noSuchMethod(
+        Invocation.method(
+          #getUserDetail,
+          [],
+        ),
+        returnValue: _FakeUserDetail_2(
+          this,
+          Invocation.method(
+            #getUserDetail,
+            [],
+          ),
+        ),
+      ) as _i4.UserDetail);
+
+  @override
+  _i4.UserDetail saveUserDetail(_i4.UserDetail? userDetail) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #saveUserDetail,
+          [userDetail],
+        ),
+        returnValue: _FakeUserDetail_2(
+          this,
+          Invocation.method(
+            #saveUserDetail,
+            [userDetail],
+          ),
+        ),
+      ) as _i4.UserDetail);
+}
+
 /// A class which mocks [WeightMeasurementDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockWeightMeasurementDataSource extends _i1.Mock
-    implements _i7.WeightMeasurementDataSource {
+    implements _i9.WeightMeasurementDataSource {
   MockWeightMeasurementDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  List<_i4.WeightMeasurement> getAll() => (super.noSuchMethod(
+  List<_i5.WeightMeasurement> getAll() => (super.noSuchMethod(
         Invocation.method(
           #getAll,
           [],
         ),
-        returnValue: <_i4.WeightMeasurement>[],
-      ) as List<_i4.WeightMeasurement>);
+        returnValue: <_i5.WeightMeasurement>[],
+      ) as List<_i5.WeightMeasurement>);
 
   @override
-  _i4.WeightMeasurement save(_i4.WeightMeasurement? measurement) =>
+  _i5.WeightMeasurement save(_i5.WeightMeasurement? measurement) =>
       (super.noSuchMethod(
         Invocation.method(
           #save,
           [measurement],
         ),
-        returnValue: _FakeWeightMeasurement_2(
+        returnValue: _FakeWeightMeasurement_3(
           this,
           Invocation.method(
             #save,
             [measurement],
           ),
         ),
-      ) as _i4.WeightMeasurement);
+      ) as _i5.WeightMeasurement);
 
   @override
   dynamic delete(String? id) => super.noSuchMethod(Invocation.method(
@@ -263,36 +317,36 @@ class MockWeightMeasurementDataSource extends _i1.Mock
 /// A class which mocks [ProfileRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockProfileRepository extends _i1.Mock implements _i8.ProfileRepository {
+class MockProfileRepository extends _i1.Mock implements _i10.ProfileRepository {
   MockProfileRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  List<_i4.WeightMeasurement> getAllWeightMeasurements() => (super.noSuchMethod(
+  List<_i5.WeightMeasurement> getAllWeightMeasurements() => (super.noSuchMethod(
         Invocation.method(
           #getAllWeightMeasurements,
           [],
         ),
-        returnValue: <_i4.WeightMeasurement>[],
-      ) as List<_i4.WeightMeasurement>);
+        returnValue: <_i5.WeightMeasurement>[],
+      ) as List<_i5.WeightMeasurement>);
 
   @override
-  _i4.WeightMeasurement saveWeightMeasurement(
-          _i4.WeightMeasurement? measurement) =>
+  _i5.WeightMeasurement saveWeightMeasurement(
+          _i5.WeightMeasurement? measurement) =>
       (super.noSuchMethod(
         Invocation.method(
           #saveWeightMeasurement,
           [measurement],
         ),
-        returnValue: _FakeWeightMeasurement_2(
+        returnValue: _FakeWeightMeasurement_3(
           this,
           Invocation.method(
             #saveWeightMeasurement,
             [measurement],
           ),
         ),
-      ) as _i4.WeightMeasurement);
+      ) as _i5.WeightMeasurement);
 
   @override
   dynamic deleteWeightMeasurement(String? id) =>
@@ -305,7 +359,7 @@ class MockProfileRepository extends _i1.Mock implements _i8.ProfileRepository {
 /// A class which mocks [FoodRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFoodRepository extends _i1.Mock implements _i9.FoodRepository {
+class MockFoodRepository extends _i1.Mock implements _i11.FoodRepository {
   MockFoodRepository() {
     _i1.throwOnMissingStub(this);
   }

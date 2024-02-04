@@ -1,4 +1,4 @@
-import 'package:journal/profile/data/repository/weight_repository_impl.dart';
+import 'package:journal/profile/data/repository/profile_repository_impl.dart';
 import 'package:journal/profile/domain/models/weight_measurement.dart';
 import 'package:journal/profile/domain/repository/weight_repository.dart';
 import 'package:mockito/mockito.dart';
