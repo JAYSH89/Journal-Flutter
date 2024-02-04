@@ -27,59 +27,78 @@ void main() {
   );
 
   test('get all successful', () {
+    // arrange
     when(datasource.getAll()).thenAnswer((_) => [potato]);
 
+    // act
     final result = repository.getAll();
 
+    // assert
     expect(result, equals([potato]));
     verify(datasource.getAll());
     verifyNoMoreInteractions(datasource);
   });
 
   test('get food by id', () {
+    // arrange
     when(datasource.getFoodById(any)).thenAnswer((_) => potato);
 
+    // act
     final result = repository.getFoodById(potato.id!);
 
+    // assert
     expect(result, equals(potato));
     verify(datasource.getFoodById(potato.id!));
     verifyNoMoreInteractions(datasource);
   });
 
   test('search food by name', () {
+    // arrange
     when(datasource.searchFoodByName(any)).thenAnswer((_) => [potato]);
 
+    // act
     final result = repository.searchFoodByName("potato");
 
+    // assert
     expect(result, equals([potato]));
     verify(datasource.searchFoodByName(any));
     verifyNoMoreInteractions(datasource);
   });
 
   test('update food', () {
+    // arrange
     when(datasource.updateFood(any, any)).thenAnswer((_) => potato);
 
+    // act
     final result = repository.updateFood(potato.id!, potato);
 
+    // assert
     expect(result, equals(potato));
     verify(datasource.updateFood(potato.id!, potato));
     verifyNoMoreInteractions(datasource);
   });
 
   test('save food', () {
+    // arrange
     when(datasource.saveFood(potato)).thenAnswer((_) => potato);
 
+    // act
     final result = repository.saveFood(potato);
 
+    // assert
     expect(result, equals(potato));
     verify(datasource.saveFood(potato));
     verifyNoMoreInteractions(datasource);
   });
 
   test('delete food', () {
+    // arrange
     when(datasource.deleteFood(any)).thenAnswer((_) {});
+
+    // act
     repository.deleteFood(potato.id!);
 
+    // assert
     verify(datasource.deleteFood(potato.id!));
     verifyNoMoreInteractions(datasource);
   });

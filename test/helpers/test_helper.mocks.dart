@@ -5,13 +5,15 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:journal/food/data/datasource/food_data_source.dart' as _i5;
 import 'package:journal/food/domain/models/food.dart' as _i2;
-import 'package:journal/food/domain/repository/food_repository.dart' as _i8;
+import 'package:journal/food/domain/repository/food_repository.dart' as _i9;
 import 'package:journal/journal/data/datasource/journal_data_source.dart'
     as _i6;
 import 'package:journal/journal/domain/models/journal_entry.dart' as _i3;
 import 'package:journal/profile/data/datasource/weight_measurement_data_source.dart'
     as _i7;
 import 'package:journal/profile/domain/models/weight_measurement.dart' as _i4;
+import 'package:journal/profile/domain/repository/weight_repository.dart'
+    as _i8;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -258,10 +260,19 @@ class MockWeightMeasurementDataSource extends _i1.Mock
       ));
 }
 
+/// A class which mocks [WeightRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockWeightRepository extends _i1.Mock implements _i8.WeightRepository {
+  MockWeightRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+}
+
 /// A class which mocks [FoodRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFoodRepository extends _i1.Mock implements _i8.FoodRepository {
+class MockFoodRepository extends _i1.Mock implements _i9.FoodRepository {
   MockFoodRepository() {
     _i1.throwOnMissingStub(this);
   }
