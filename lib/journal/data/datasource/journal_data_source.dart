@@ -3,7 +3,7 @@ import 'package:journal/journal/domain/models/journal_entry.dart';
 abstract class JournalDataSource {
   List<JournalEntry> getAll();
 
-  JournalEntry? getById();
+  JournalEntry? getById(String id);
 
   List<JournalEntry> getBetween(DateTime start, DateTime end);
 
