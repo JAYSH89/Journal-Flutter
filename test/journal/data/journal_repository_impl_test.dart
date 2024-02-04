@@ -87,7 +87,7 @@ void main() {
           .thenAnswer((_) => testJournalEntry);
 
       // act
-      final result = repository.update("id", testJournalEntry);
+      repository.update("id", testJournalEntry);
 
       // assert
       verify(dataSource.update("id", testJournalEntry));
@@ -102,7 +102,7 @@ void main() {
           .thenAnswer((_) => testJournalEntry);
 
       // act
-      final result = repository.save(testJournalEntry);
+      repository.save(testJournalEntry);
 
       // assert
       verify(dataSource.save(any));
