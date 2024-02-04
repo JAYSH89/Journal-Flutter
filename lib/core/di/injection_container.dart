@@ -15,18 +15,17 @@ final getIt = GetIt.instance;
 
 void setupLocator() {
   // repository
-  getIt.registerLazySingleton<FoodRepository>(() {
-    return FoodRepositoryImpl(dataSource: getIt());
-  });
+  getIt.registerLazySingleton<FoodRepository>(() => FoodRepositoryImpl(
+        dataSource: getIt(),
+      ));
 
-  getIt.registerLazySingleton<ProfileRepository>(() {
-    return ProfileRepositoryImpl(weightMeasurementDataSource: getIt());
-  });
+  getIt.registerLazySingleton<ProfileRepository>(() => ProfileRepositoryImpl(
+        weightMeasurementDataSource: getIt(),
+        userDetailsDataSource: getIt(),
+      ));
 
   // data source
-  getIt.registerLazySingleton<FoodDataSource>(() {
-    return InMemoryFoodDataSource();
-  });
+  getIt.registerLazySingleton<FoodDataSource>(() => InMemoryFoodDataSource());
 
   getIt.registerLazySingleton<UserDetailsDataSource>(() {
     return UserDetailDataSourceImpl(sharedPreferences: getIt());
