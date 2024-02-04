@@ -11,8 +11,7 @@
 * bloc_test [link](https://pub.dev/packages/bloc_test)
 * mockito [link](https://pub.dev/packages/mockito)
 * mappable [link](https://pub.dev/packages/dart_mappable)
-*
-drift [link](https://pub.dev/packages/drift) [docs](https://drift.simonbinder.eu/docs/getting-started/)
+* drift [link](https://pub.dev/packages/drift) [docs](https://drift.simonbinder.eu/docs/getting-started/)
 * fpdart [link](https://pub.dev/packages/fpdart)
 
 # Testing

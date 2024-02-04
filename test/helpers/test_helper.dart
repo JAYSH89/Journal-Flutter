@@ -10,7 +10,7 @@ import 'package:mockito/annotations.dart';
     FoodDataSource,
     JournalDataSource,
     WeightMeasurementDataSource,
-    WeightRepository,
+    ProfileRepository,
     FoodRepository,
   ],
 )

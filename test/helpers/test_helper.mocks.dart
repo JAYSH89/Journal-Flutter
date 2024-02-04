@@ -260,13 +260,46 @@ class MockWeightMeasurementDataSource extends _i1.Mock
       ));
 }
 
-/// A class which mocks [WeightRepository].
+/// A class which mocks [ProfileRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockWeightRepository extends _i1.Mock implements _i8.WeightRepository {
-  MockWeightRepository() {
+class MockProfileRepository extends _i1.Mock implements _i8.ProfileRepository {
+  MockProfileRepository() {
     _i1.throwOnMissingStub(this);
   }
+
+  @override
+  List<_i4.WeightMeasurement> getAllWeightMeasurements() => (super.noSuchMethod(
+        Invocation.method(
+          #getAllWeightMeasurements,
+          [],
+        ),
+        returnValue: <_i4.WeightMeasurement>[],
+      ) as List<_i4.WeightMeasurement>);
+
+  @override
+  _i4.WeightMeasurement saveWeightMeasurement(
+          _i4.WeightMeasurement? measurement) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #saveWeightMeasurement,
+          [measurement],
+        ),
+        returnValue: _FakeWeightMeasurement_2(
+          this,
+          Invocation.method(
+            #saveWeightMeasurement,
+            [measurement],
+          ),
+        ),
+      ) as _i4.WeightMeasurement);
+
+  @override
+  dynamic deleteWeightMeasurement(String? id) =>
+      super.noSuchMethod(Invocation.method(
+        #deleteWeightMeasurement,
+        [id],
+      ));
 }
 
 /// A class which mocks [FoodRepository].

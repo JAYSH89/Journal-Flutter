@@ -3,17 +3,16 @@ import 'package:journal/profile/domain/models/weight_measurement.dart';
 import 'package:journal/profile/domain/repository/weight_repository.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../helpers/test_helper.mocks.dart';
 
 void main() {
   late MockWeightMeasurementDataSource dataSource;
-  late WeightRepository repository;
+  late ProfileRepository repository;
 
   setUp(() {
     dataSource = MockWeightMeasurementDataSource();
-    repository = WeightRepositoryImpl(dataSource: dataSource);
+    repository = ProfileRepositoryImpl(weightMeasurementDataSource: dataSource);
   });
 
   WeightMeasurement testMeasurement = WeightMeasurement(
@@ -21,13 +20,13 @@ void main() {
     measuredAt: DateTime.parse("2024-01-31T17:23:02Z"),
   );
 
-  group('WeightRepository getAll()', () {
-    test('get all successful', () {
+  group('ProfileRepository getAllWeightMeasurements()', () {
+    test('get all weightMeasurement successful', () {
       // arrange
       when(dataSource.getAll()).thenAnswer((_) => [testMeasurement]);
 
       // act
-      final result = repository.getAll();
+      final result = repository.getAllWeightMeasurements();
 
       // assert
       expect(result, equals([testMeasurement]));
@@ -36,13 +35,13 @@ void main() {
     });
   });
 
-  group('WeightRepository save()', () {
-    test('save measurement successful', () {
+  group('ProfileRepository saveWeightMeasurement()', () {
+    test('save weightMeasurement successful', () {
       // arrange
       when(dataSource.save(any)).thenAnswer((_) => testMeasurement);
 
       // act
-      final result = repository.save(testMeasurement);
+      final result = repository.saveWeightMeasurement(testMeasurement);
 
       // assert
       expect(result, equals(testMeasurement));
@@ -51,14 +50,14 @@ void main() {
     });
   });
 
-  group('WeightRepository delete()', () {
-    test('', () {
+  group('ProfileRepository deleteWeightMeasurement()', () {
+    test('save weightMeasurement successful', () {
       // arrange
       const testId = "test id";
       when(dataSource.delete(any)).thenAnswer((_) {});
 
       // act
-      repository.delete(testId);
+      repository.deleteWeightMeasurement(testId);
 
       // assert
       verify(dataSource.delete(testId));

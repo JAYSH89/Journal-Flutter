@@ -2,23 +2,23 @@ import 'package:journal/profile/data/datasource/weight_measurement_data_source.d
 import 'package:journal/profile/domain/models/weight_measurement.dart';
 import 'package:journal/profile/domain/repository/weight_repository.dart';
 
-class WeightRepositoryImpl extends WeightRepository {
-  final WeightMeasurementDataSource dataSource;
+class ProfileRepositoryImpl extends ProfileRepository {
+  final WeightMeasurementDataSource weightMeasurementDataSource;
 
-  WeightRepositoryImpl({required this.dataSource});
+  ProfileRepositoryImpl({required this.weightMeasurementDataSource});
 
   @override
-  List<WeightMeasurement> getAll() {
-    return dataSource.getAll();
+  List<WeightMeasurement> getAllWeightMeasurements() {
+    return weightMeasurementDataSource.getAll();
   }
 
   @override
-  WeightMeasurement save(WeightMeasurement measurement) {
-    return dataSource.save(measurement);
+  WeightMeasurement saveWeightMeasurement(WeightMeasurement measurement) {
+    return weightMeasurementDataSource.save(measurement);
   }
 
   @override
-  delete(String id) {
-    dataSource.delete(id);
+  deleteWeightMeasurement(String id) {
+    weightMeasurementDataSource.delete(id);
   }
 }

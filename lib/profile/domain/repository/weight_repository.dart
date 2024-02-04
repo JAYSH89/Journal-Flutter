@@ -1,9 +1,9 @@
 import 'package:journal/profile/domain/models/weight_measurement.dart';
 
-abstract class WeightRepository {
-  List<WeightMeasurement> getAll();
+abstract class ProfileRepository {
+  List<WeightMeasurement> getAllWeightMeasurements();
 
-  WeightMeasurement save(WeightMeasurement measurement);
+  WeightMeasurement saveWeightMeasurement(WeightMeasurement measurement);
 
-  delete(String id);
+  deleteWeightMeasurement(String id);
 }
