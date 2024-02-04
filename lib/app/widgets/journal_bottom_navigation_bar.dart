@@ -14,17 +14,12 @@ class JournalBottomNavigationBar extends StatelessWidget {
   final List<Routes> routes;
 
   @override
-  Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData(useMaterial3: false),
-      child: BottomNavigationBar(
+  Widget build(BuildContext context) => BottomNavigationBar(
         items: _items(),
         onTap: onItemTapped,
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
-      ),
-    );
-  }
+      );
 
   List<BottomNavigationBarItem> _items() => routes
       .map((e) => BottomNavigationBarItem(

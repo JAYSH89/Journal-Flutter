@@ -11,5 +11,5 @@ abstract class FoodDataSource {
 
   Food saveFood(Food food);
 
-  void deleteFood(String id);
+  deleteFood(String id);
 }

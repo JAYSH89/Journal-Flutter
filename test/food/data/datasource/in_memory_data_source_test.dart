@@ -5,10 +5,10 @@ import 'package:journal/food/domain/models/food_unit.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  late InMemoryFoodDataSource datasource;
+  late InMemoryFoodDataSource dataSource;
 
   setUp(() {
-    datasource = InMemoryFoodDataSource();
+    dataSource = InMemoryFoodDataSource();
   });
 
   const testFood = Food(
@@ -23,10 +23,10 @@ void main() {
   group('getAll()', () {
     test('should return list of food successful', () {
       // arrange
-      final expected = datasource.saveFood(testFood);
+      final expected = dataSource.saveFood(testFood);
 
       // act
-      final result = datasource.getAll();
+      final result = dataSource.getAll();
 
       // assert
       expect(result, isA<List<Food>>());
@@ -34,7 +34,7 @@ void main() {
     });
 
     test('should return empty list of no food', () {
-      final result = datasource.getAll();
+      final result = dataSource.getAll();
 
       expect(result, equals(List<Food>.empty()));
       expect(result, isA<List<Food>>());
@@ -44,10 +44,10 @@ void main() {
   group('getFoodById()', () {
     test('should return Food when list contains food with id', () {
       // arrange
-      final expected = datasource.saveFood(testFood);
+      final expected = dataSource.saveFood(testFood);
 
       // act
-      final result = datasource.getFoodById(expected.id!);
+      final result = dataSource.getFoodById(expected.id!);
 
       // assert
       expect(result, equals(expected));
@@ -55,7 +55,7 @@ void main() {
     });
 
     test('should return null if list not contains food id', () {
-      final result = datasource.getFoodById("non existing id");
+      final result = dataSource.getFoodById("non existing id");
       expect(result, isNull);
     });
   });
@@ -63,10 +63,10 @@ void main() {
   group('searchFoodByName()', () {
     test('should return list of food if list contains query', () {
       // arrange
-      final savedFood = datasource.saveFood(testFood);
+      final savedFood = dataSource.saveFood(testFood);
 
       // act
-      final result = datasource.searchFoodByName(savedFood.name);
+      final result = dataSource.searchFoodByName(savedFood.name);
 
       // assert
       expect(result, equals([savedFood]));
@@ -74,11 +74,11 @@ void main() {
 
     test('should query successful ignoring capitalized characters query', () {
       // arrange
-      final savedFood = datasource.saveFood(testFood);
+      final savedFood = dataSource.saveFood(testFood);
       final capitalizedSavedFood = savedFood.name.toUpperCase();
 
       // act
-      final result = datasource.searchFoodByName(capitalizedSavedFood);
+      final result = dataSource.searchFoodByName(capitalizedSavedFood);
 
       // assert
       expect(result, equals([savedFood]));
@@ -86,10 +86,10 @@ void main() {
 
     test('should return empty list if list does not contain query', () {
       // arrange
-      final savedFood = datasource.saveFood(testFood);
+      dataSource.saveFood(testFood);
 
       // act
-      final result = datasource.searchFoodByName('non existent name');
+      final result = dataSource.searchFoodByName('non existent name');
 
       // assert
       expect(result, equals([]));
@@ -97,10 +97,10 @@ void main() {
 
     test('should return empty list if query is empty string', () {
       // arrange
-      final savedFood = datasource.saveFood(testFood);
+      dataSource.saveFood(testFood);
 
       // act
-      final result = datasource.searchFoodByName('');
+      final result = dataSource.searchFoodByName('');
 
       // assert
       expect(result, equals([]));
@@ -110,7 +110,7 @@ void main() {
   group('updateFood()', () {
     test('should update food successful with id unchanged', () {
       // arrange
-      final savedFood = datasource.saveFood(testFood);
+      final savedFood = dataSource.saveFood(testFood);
       const updatedFoodName = "update name";
 
       final foodToUpdate = Food(
@@ -124,7 +124,7 @@ void main() {
       );
 
       // act
-      final result = datasource.updateFood(savedFood.id!, foodToUpdate);
+      final result = dataSource.updateFood(savedFood.id!, foodToUpdate);
 
       // assert
       expect(result.id, equals(savedFood.id));
@@ -133,16 +133,16 @@ void main() {
 
     test('should throw InMemoryNotFoundException if id not in list', () {
       expect(
-        () => datasource.updateFood("non existent id", testFood),
+        () => dataSource.updateFood("non existent id", testFood),
         throwsA(isA<InMemoryNotFoundException>()),
       );
     });
   });
 
   group('saveFood()', () {
-    test('save food should generate uuid', () {
+    test('save food should generate uuid for id field', () {
       // arrange + act
-      final result = datasource.saveFood(testFood);
+      final result = dataSource.saveFood(testFood);
 
       // assert
       expect(result.id, isNotNull);
@@ -152,11 +152,11 @@ void main() {
   group('deleteFood()', () {
     test('should delete food successful', () {
       // arrange
-      final newFood = datasource.saveFood(testFood);
+      final newFood = dataSource.saveFood(testFood);
 
       // act
-      datasource.deleteFood(newFood.id!);
-      final result = datasource.getFoodById(newFood.id!);
+      dataSource.deleteFood(newFood.id!);
+      final result = dataSource.getFoodById(newFood.id!);
 
       // assert
       expect(result, isNull);
@@ -164,7 +164,7 @@ void main() {
 
     test('should throw InMemoryNotFoundException if id not in list', () {
       expect(
-        () => datasource.deleteFood("non existent id"),
+        () => dataSource.deleteFood("non existent id"),
         throwsA(isA<InMemoryNotFoundException>()),
       );
     });

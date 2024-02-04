@@ -8,12 +8,12 @@ import 'package:uuid/uuid.dart';
 import '../../../helpers/test_helper.mocks.dart';
 
 void main() {
-  late MockFoodDataSource datasource;
+  late MockFoodDataSource dataSource;
   late FoodRepositoryImpl repository;
 
   setUp(() {
-    datasource = MockFoodDataSource();
-    repository = FoodRepositoryImpl(dataSource: datasource);
+    dataSource = MockFoodDataSource();
+    repository = FoodRepositoryImpl(dataSource: dataSource);
   });
 
   final potato = Food(
@@ -27,59 +27,79 @@ void main() {
   );
 
   test('get all successful', () {
-    when(datasource.getAll()).thenAnswer((_) => [potato]);
+    // arrange
+    when(dataSource.getAll()).thenAnswer((_) => [potato]);
 
+    // act
     final result = repository.getAll();
 
+    // assert
     expect(result, equals([potato]));
-    verify(datasource.getAll());
-    verifyNoMoreInteractions(datasource);
+    verify(dataSource.getAll());
+    verifyNoMoreInteractions(dataSource);
   });
 
   test('get food by id', () {
-    when(datasource.getFoodById(any)).thenAnswer((_) => potato);
+    // arrange
+    when(dataSource.getFoodById(any)).thenAnswer((_) => potato);
 
+    // act
     final result = repository.getFoodById(potato.id!);
 
+    // assert
     expect(result, equals(potato));
-    verify(datasource.getFoodById(potato.id!));
-    verifyNoMoreInteractions(datasource);
+    verify(dataSource.getFoodById(potato.id!));
+    verifyNoMoreInteractions(dataSource);
   });
 
   test('search food by name', () {
-    when(datasource.searchFoodByName(any)).thenAnswer((_) => [potato]);
+    // arrange
+    when(dataSource.searchFoodByName(any)).thenAnswer((_) => [potato]);
 
+    // act
     final result = repository.searchFoodByName("potato");
 
+    // assert
     expect(result, equals([potato]));
-    verify(datasource.searchFoodByName(any));
-    verifyNoMoreInteractions(datasource);
+    verify(dataSource.searchFoodByName(any));
+    verifyNoMoreInteractions(dataSource);
   });
 
   test('update food', () {
-    when(datasource.updateFood(any, any)).thenAnswer((_) => potato);
+    // arrange
+    when(dataSource.updateFood(any, any)).thenAnswer((_) => potato);
 
+    // act
     final result = repository.updateFood(potato.id!, potato);
 
+    // assert
     expect(result, equals(potato));
-    verify(datasource.updateFood(potato.id!, potato));
-    verifyNoMoreInteractions(datasource);
+    verify(dataSource.updateFood(potato.id!, potato));
+    verifyNoMoreInteractions(dataSource);
   });
 
   test('save food', () {
-    when(datasource.saveFood(potato)).thenAnswer((_) => potato);
+    // arrange
+    when(dataSource.saveFood(potato)).thenAnswer((_) => potato);
 
+    // act
     final result = repository.saveFood(potato);
 
+    // assert
     expect(result, equals(potato));
-    verify(datasource.saveFood(potato));
-    verifyNoMoreInteractions(datasource);
+    verify(dataSource.saveFood(potato));
+    verifyNoMoreInteractions(dataSource);
   });
 
   test('delete food', () {
+    // arrange
+    when(dataSource.deleteFood(any)).thenAnswer((_) {});
+
+    // act
     repository.deleteFood(potato.id!);
 
-    verify(datasource.deleteFood(potato.id!));
-    verifyNoMoreInteractions(datasource);
+    // assert
+    verify(dataSource.deleteFood(potato.id!));
+    verifyNoMoreInteractions(dataSource);
   });
 }
