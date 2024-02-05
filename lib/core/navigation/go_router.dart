@@ -1,80 +1,38 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:journal/core/navigation/home_page.dart';
-import 'package:journal/food/presentation/food_page.dart';
-import 'package:journal/journal/presentation/journal_page.dart';
-import 'package:journal/profile/presentation/profile_page.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: JournalRoute().path,
+  initialLocation: HomeRoute().path,
   routes: [
-    ShellRoute(
-      builder: (_, state, child) => HomePage(routerState: state, child: child),
-      routes: _routes,
-    ),
+    GoRoute(
+      path: HomeRoute().path,
+      builder: (_, __) => const HomePage(),
+    )
   ],
 );
-
-final List<RouteBase> _routes = <RouteBase>[
-  GoRoute(
-    path: JournalRoute().path,
-    builder: (_, __) => const JournalPage(),
-    // pageBuilder: (context, state) =>
-    //     CustomTransitionPage(
-    //       key: state.pageKey,
-    //       child: const JournalPage(),
-    //       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-    //         return FadeTransition(
-    //           opacity: CurveTween(curve: Curves.easeInOutCirc)
-    //               .animate(animation),
-    //           child: child,
-    //         );
-    //       },
-    //     ),
-  ),
-  GoRoute(
-    path: FoodRoute().path,
-    builder: (_, __) => const FoodPage(),
-    // pageBuilder: (context, state) =>
-    //     CustomTransitionPage(
-    //       key: state.pageKey,
-    //       child: const FoodPage(),
-    //       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-    //         return FadeTransition(
-    //           opacity: CurveTween(curve: Curves.easeInOutCirc)
-    //               .animate(animation),
-    //           child: child,
-    //         );
-    //       },
-    //     ),
-  ),
-  GoRoute(
-    path: ProfileRoute().path,
-    builder: (_, __) => const ProfilePage(),
-    // pageBuilder: (context, state) =>
-    //     CustomTransitionPage(
-    //       key: state.pageKey,
-    //       child: const ProfilePage(),
-    //       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-    //         return FadeTransition(
-    //           opacity: CurveTween(curve: Curves.easeInOutCirc)
-    //               .animate(animation),
-    //           child: child,
-    //         );
-    //       },
-    //     ),
-  ),
-];
 
 sealed class Routes {
   late String path;
   late String title;
-  late IconData icon;
+  late IconData materialIcon;
+  late IconData cupertinoIcon;
 
   Routes({
     required this.path,
     required this.title,
-    required this.icon,
+    required this.materialIcon,
+    required this.cupertinoIcon,
+  });
+}
+
+class HomeRoute extends Routes {
+  HomeRoute({
+    super.path = '/home',
+    super.title = 'Home',
+    super.materialIcon = Icons.home,
+    super.cupertinoIcon = CupertinoIcons.home,
   });
 }
 
@@ -82,7 +40,8 @@ class JournalRoute extends Routes {
   JournalRoute({
     super.path = '/journal',
     super.title = 'Journal',
-    super.icon = Icons.calendar_today,
+    super.materialIcon = Icons.calendar_today,
+    super.cupertinoIcon = CupertinoIcons.calendar,
   });
 }
 
@@ -90,7 +49,8 @@ class FoodRoute extends Routes {
   FoodRoute({
     super.path = '/food',
     super.title = 'Food',
-    super.icon = Icons.restaurant,
+    super.materialIcon = Icons.restaurant,
+    super.cupertinoIcon = CupertinoIcons.bookmark,
   });
 }
 
@@ -98,6 +58,7 @@ class ProfileRoute extends Routes {
   ProfileRoute({
     super.path = '/profile',
     super.title = 'Profile',
-    super.icon = Icons.person,
+    super.materialIcon = Icons.person,
+    super.cupertinoIcon = CupertinoIcons.profile_circled,
   });
 }
