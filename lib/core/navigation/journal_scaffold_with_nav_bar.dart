@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:journal/app/widgets/journal_bottom_navigation_bar.dart';
 import 'package:journal/app/widgets/journal_scaffold.dart';
 import 'package:journal/core/navigation/go_router.dart';
@@ -6,15 +7,10 @@ import 'package:journal/food/presentation/food_page.dart';
 import 'package:journal/journal/presentation/journal_page.dart';
 import 'package:journal/profile/presentation/profile_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class JournalScaffoldWithNavBar extends StatelessWidget {
+  JournalScaffoldWithNavBar({super.key, required this.navigationShell});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+  final StatefulNavigationShell navigationShell;
 
   final routes = <TabRoute>[
     (route: JournalRoute(), page: const JournalPage()),
@@ -29,24 +25,21 @@ class _HomePageState extends State<HomePage> {
     switch (platform) {
       case TargetPlatform.iOS:
         return JournalCupertinoScaffold(
-          selectedIndex: _selectedIndex,
           routes: routes,
-          onTabBarItemTapped: _onTabBarItemTapped,
+          currentIndex: navigationShell.currentIndex,
+          onTap: _onTap,
         );
       default:
         return JournalMaterialScaffold(
-          selectedIndex: _selectedIndex,
           routes: routes,
-          onTabBarItemTapped: _onTabBarItemTapped,
+          navigationShell: navigationShell,
+          onTap: _onTap,
         );
     }
   }
 
-  void _onTabBarItemTapped(int index) {
-    if (index == _selectedIndex) return;
-
-    setState(() {
-      _selectedIndex = index;
-    });
+  void _onTap(int index) {
+    final initialLocation = index == navigationShell.currentIndex;
+    navigationShell.goBranch(index, initialLocation: initialLocation);
   }
 }

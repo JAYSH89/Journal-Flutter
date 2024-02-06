@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:journal/app/widgets/journal_app_bar.dart';
 import 'package:journal/core/theme/typography.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class DeveloperPage extends StatelessWidget {
+  const DeveloperPage({super.key});
 
   @override
-  Widget build(BuildContext context) => const ProfileView();
+  Widget build(BuildContext context) => const _DeveloperView();
 }
 
-class ProfileView extends StatelessWidget {
-  const ProfileView({super.key});
+class _DeveloperView extends StatelessWidget {
+  const _DeveloperView({super.key});
 
-  final String _title = "Profile";
+  final String _title = "Developer";
 
   @override
   Widget build(BuildContext context) {
@@ -24,23 +24,23 @@ class ProfileView extends StatelessWidget {
         return CupertinoPageScaffold(
           child: JournalCupertinoAppBar(
             titleLabel: _title,
-            child: const _ProfileViewContent(),
+            child: const _DeveloperViewContent(),
           ),
         );
       default:
         return Scaffold(
           appBar: JournalMaterialAppBar(titleLabel: _title),
-          body: const Center(child: _ProfileViewContent()),
+          body: const Center(child: _DeveloperViewContent()),
         );
     }
   }
 }
 
-class _ProfileViewContent extends StatelessWidget {
-  const _ProfileViewContent({super.key});
+class _DeveloperViewContent extends StatelessWidget {
+  const _DeveloperViewContent({super.key});
 
   @override
   Widget build(BuildContext context) => Center(
-        child: Text("Hello, Profile", style: satoshiRegular),
+        child: Text("Developer page", style: satoshiRegular),
       );
 }

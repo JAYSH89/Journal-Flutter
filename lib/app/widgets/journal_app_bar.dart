@@ -7,21 +7,27 @@ class JournalMaterialAppBar extends AppBar {
 
   JournalMaterialAppBar({super.key, required this.titleLabel})
       : super(
-          backgroundColor: Colors.black,
-          title: Text(
-            titleLabel,
-            style: satoshiBlack.copyWith(color: Colors.white),
-          ),
-          centerTitle: false,
+          title: Text(titleLabel, style: satoshiBlack),
         );
 }
 
-class JournalCupertinoAppBar extends CupertinoNavigationBar {
+class JournalCupertinoAppBar extends CustomScrollView {
   final String titleLabel;
+  final Widget child;
 
-  JournalCupertinoAppBar({super.key, required this.titleLabel})
-      : super(
-          backgroundColor: Colors.black,
-          middle: Text(titleLabel, style: const TextStyle(color: Colors.white)),
+  JournalCupertinoAppBar({
+    super.key,
+    required this.titleLabel,
+    required this.child,
+  }) : super(
+          slivers: <Widget>[
+            CupertinoSliverNavigationBar(
+              largeTitle: Text(titleLabel, style: satoshiBlack),
+            ),
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: child,
+            ),
+          ],
         );
 }
