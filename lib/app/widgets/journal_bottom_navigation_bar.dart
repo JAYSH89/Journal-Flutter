@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:journal/core/navigation/go_router.dart';
 
+typedef TabRoute = ({Routes route, Widget page});
+
 class JournalBottomNavigationBar extends StatelessWidget {
   const JournalBottomNavigationBar({
     super.key,
@@ -12,7 +14,7 @@ class JournalBottomNavigationBar extends StatelessWidget {
 
   final int currentIndex;
   final Function(int) onItemTapped;
-  final List<Routes> routes;
+  final List<TabRoute> routes;
 
   @override
   Widget build(BuildContext context) => Theme(
@@ -26,18 +28,28 @@ class JournalBottomNavigationBar extends StatelessWidget {
       );
 
   List<BottomNavigationBarItem> _items() => routes
-      .map((e) => BottomNavigationBarItem(
-            icon: Icon(e.materialIcon),
-            label: e.title,
+      .map((tabRoute) => BottomNavigationBarItem(
+            icon: Icon(tabRoute.route.materialIcon),
+            label: tabRoute.route.title,
           ))
       .toList();
 }
 
-class JournalBottomCupertinoNavigationBar extends StatelessWidget {
-  const JournalBottomCupertinoNavigationBar({super.key});
+class JournalCupertinoBottomNavigationBar extends CupertinoTabBar {
+  final List<TabRoute> routes;
+  final Function(int) onTabBarItemTapped;
 
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
+  JournalCupertinoBottomNavigationBar({
+    super.key,
+    required this.routes,
+    required this.onTabBarItemTapped,
+  }) : super(
+          onTap: onTabBarItemTapped,
+          items: routes.map((e) {
+            return BottomNavigationBarItem(
+              icon: Icon(e.route.cupertinoIcon),
+              label: e.route.title,
+            );
+          }).toList(),
+        );
 }
