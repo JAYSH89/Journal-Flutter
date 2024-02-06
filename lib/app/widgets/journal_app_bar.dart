@@ -1,22 +1,27 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:journal/core/theme/typography.dart';
 
-class JournalAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const JournalAppBar({super.key, required this.title});
+class JournalMaterialAppBar extends AppBar {
+  final String titleLabel;
 
-  final String title;
+  JournalMaterialAppBar({super.key, required this.titleLabel})
+      : super(
+          backgroundColor: Colors.black,
+          title: Text(
+            titleLabel,
+            style: satoshiBlack.copyWith(color: Colors.white),
+          ),
+          centerTitle: false,
+        );
+}
 
-  @override
-  Widget build(BuildContext context) {
-    final TargetPlatform platform = Theme.of(context).platform;
+class JournalCupertinoAppBar extends CupertinoNavigationBar {
+  final String titleLabel;
 
-    return AppBar(
-      backgroundColor: Colors.black,
-      title: Text(title, style: satoshiBlack.copyWith(color: Colors.white)),
-      centerTitle: platform == TargetPlatform.iOS,
-    );
-  }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  JournalCupertinoAppBar({super.key, required this.titleLabel})
+      : super(
+          backgroundColor: Colors.black,
+          middle: Text(titleLabel, style: const TextStyle(color: Colors.white)),
+        );
 }

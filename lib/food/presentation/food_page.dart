@@ -12,6 +12,6 @@ class FoodView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const Center(
-    child: Text("Hello, Food"),
-  );
+        child: Text("Hello, Food"),
+      );
 }
