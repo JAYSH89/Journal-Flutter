@@ -12,6 +12,6 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const Center(
-    child: Text("Hello, Profile"),
-  );
+        child: Text("Hello, Profile"),
+      );
 }
