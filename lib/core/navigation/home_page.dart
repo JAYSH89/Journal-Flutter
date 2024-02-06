@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:journal/app/widgets/journal_app_bar.dart';
 import 'package:journal/app/widgets/journal_bottom_navigation_bar.dart';
 import 'package:journal/app/widgets/journal_scaffold.dart';
 import 'package:journal/core/navigation/go_router.dart';
