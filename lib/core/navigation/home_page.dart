@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
         return JournalMaterialScaffold(
           selectedIndex: _selectedIndex,
           routes: routes,
-          onTabBarItemTapped: _onTabBarItemTapped,
+                            onTabBarItemTapped: _onTabBarItemTapped,
         );
     }
   }
