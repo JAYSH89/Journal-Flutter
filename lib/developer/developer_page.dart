@@ -7,12 +7,10 @@ class DeveloperPage extends StatelessWidget {
   const DeveloperPage({super.key});
 
   @override
-  Widget build(BuildContext context) => const _DeveloperView();
+  Widget build(BuildContext context) => _DeveloperView();
 }
 
 class _DeveloperView extends StatelessWidget {
-  const _DeveloperView({super.key});
-
   final String _title = "Developer";
 
   @override
@@ -23,19 +21,18 @@ class _DeveloperView extends StatelessWidget {
       case TargetPlatform.iOS:
         return CupertinoPageScaffold(
           navigationBar: JournalCupertinoAppBar(titleLabel: _title),
-          child: const _DeveloperViewContent(),
+          child: _DeveloperViewContent(),
         );
       default:
         return Scaffold(
           appBar: JournalMaterialAppBar(titleLabel: _title),
-          body: const Center(child: _DeveloperViewContent()),
+          body: Center(child: _DeveloperViewContent()),
         );
     }
   }
 }
 
 class _DeveloperViewContent extends StatelessWidget {
-  const _DeveloperViewContent({super.key});
 
   @override
   Widget build(BuildContext context) => Center(

@@ -24,20 +24,19 @@ class ProfileView extends StatelessWidget {
         return CupertinoPageScaffold(
           child: JournalCupertinoSliverAppBar(
             titleLabel: _title,
-            child: const _ProfileViewContent(),
+            child: _ProfileViewContent(),
           ),
         );
       default:
         return Scaffold(
           appBar: JournalMaterialAppBar(titleLabel: _title),
-          body: const Center(child: _ProfileViewContent()),
+          body: Center(child: _ProfileViewContent()),
         );
     }
   }
 }
 
 class _ProfileViewContent extends StatelessWidget {
-  const _ProfileViewContent({super.key});
 
   @override
   Widget build(BuildContext context) => Center(

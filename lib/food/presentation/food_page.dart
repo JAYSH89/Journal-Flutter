@@ -24,24 +24,28 @@ class FoodView extends StatelessWidget {
         return CupertinoPageScaffold(
           child: JournalCupertinoSliverAppBar(
             titleLabel: _title,
-            child: const _FoodViewContent(),
+            child: _FoodViewContent(),
           ),
         );
       default:
         return Scaffold(
-          appBar: JournalMaterialAppBar(titleLabel: _title),
-          body: const Center(child: _FoodViewContent()),
+          appBar: JournalMaterialAppBar(
+            titleLabel: _title,
+            actions: [
+              IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
+            ],
+          ),
+          body: Center(child: _FoodViewContent()),
         );
     }
   }
 }
 
 class _FoodViewContent extends StatelessWidget {
-  const _FoodViewContent({super.key});
 
   @override
   Widget build(BuildContext context) => const Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(children: [JournalTextField()]),
       );
 }

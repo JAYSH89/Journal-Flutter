@@ -5,9 +5,13 @@ import 'package:journal/core/theme/typography.dart';
 class JournalMaterialAppBar extends AppBar {
   final String titleLabel;
 
-  JournalMaterialAppBar({super.key, required this.titleLabel})
-      : super(
+  JournalMaterialAppBar({
+    super.key,
+    super.actions,
+    required this.titleLabel,
+  }) : super(
           title: Text(titleLabel, style: satoshiBlack),
+          // actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.add))],
         );
 }
 
