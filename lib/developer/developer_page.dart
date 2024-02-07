@@ -33,7 +33,6 @@ class _DeveloperView extends StatelessWidget {
 }
 
 class _DeveloperViewContent extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) => Center(
         child: Text("Developer page", style: satoshiRegular),

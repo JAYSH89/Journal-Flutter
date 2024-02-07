@@ -42,7 +42,6 @@ class FoodView extends StatelessWidget {
 }
 
 class _FoodViewContent extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) => const Padding(
         padding: EdgeInsets.all(16.0),

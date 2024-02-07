@@ -39,7 +39,6 @@ class JournalView extends StatelessWidget {
 }
 
 class _JournalViewContent extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.center,

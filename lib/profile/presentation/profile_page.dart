@@ -37,7 +37,6 @@ class ProfileView extends StatelessWidget {
 }
 
 class _ProfileViewContent extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) => Center(
         child: Text("Hello, Profile", style: satoshiRegular),
