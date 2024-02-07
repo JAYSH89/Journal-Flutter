@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:journal/app/widgets/journal_bottom_navigation_bar.dart';
 import 'package:journal/app/widgets/journal_scaffold.dart';
 import 'package:journal/core/navigation/go_router.dart';
-import 'package:journal/food/presentation/food_page.dart';
-import 'package:journal/journal/presentation/journal_page.dart';
-import 'package:journal/profile/presentation/profile_page.dart';
 
 class JournalScaffoldWithNavBar extends StatelessWidget {
   JournalScaffoldWithNavBar({super.key, required this.navigationShell});
