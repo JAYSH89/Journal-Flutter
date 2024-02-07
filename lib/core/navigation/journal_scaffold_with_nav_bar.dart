@@ -11,12 +11,7 @@ class JournalScaffoldWithNavBar extends StatelessWidget {
   JournalScaffoldWithNavBar({super.key, required this.navigationShell});
 
   final StatefulNavigationShell navigationShell;
-
-  final routes = <TabRoute>[
-    (route: JournalRoute(), page: const JournalPage()),
-    (route: FoodRoute(), page: const FoodPage()),
-    (route: ProfileRoute(), page: const ProfilePage()),
-  ];
+  final routes = <Routes>[JournalRoute(), FoodRoute(), ProfileRoute()];
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +21,7 @@ class JournalScaffoldWithNavBar extends StatelessWidget {
       case TargetPlatform.iOS:
         return JournalCupertinoScaffold(
           routes: routes,
+          navigationShell: navigationShell,
           currentIndex: navigationShell.currentIndex,
           onTap: _onTap,
         );

@@ -29,7 +29,10 @@ final GoRouter router = GoRouter(
         GoRouterState state,
         StatefulNavigationShell navigationShell,
       ) {
-        return JournalScaffoldWithNavBar(navigationShell: navigationShell);
+        return JournalScaffoldWithNavBar(
+          key: GlobalKey(debugLabel: "shell"),
+          navigationShell: navigationShell,
+        );
       },
       branches: <StatefulShellBranch>[
         StatefulShellBranch(
@@ -37,11 +40,11 @@ final GoRouter router = GoRouter(
           routes: <RouteBase>[
             GoRoute(
               path: JournalRoute().path,
-              builder: (_, __) => const JournalPage(),
+              builder: (_, state) => JournalPage(key: state.pageKey),
               routes: <RouteBase>[
                 GoRoute(
                     path: DeveloperRoute().path,
-                    builder: (_, __) => const DeveloperPage())
+                    builder: (_, state) => DeveloperPage(key: state.pageKey)),
               ],
             ),
           ],
@@ -50,9 +53,8 @@ final GoRouter router = GoRouter(
           // navigatorKey: _sectionBNavigatorKey,
           routes: <RouteBase>[
             GoRoute(
-              path: FoodRoute().path,
-              builder: (_, __) => const FoodPage(),
-            ),
+                path: FoodRoute().path,
+                builder: (_, state) => FoodPage(key: state.pageKey)),
           ],
         ),
         StatefulShellBranch(
@@ -60,7 +62,7 @@ final GoRouter router = GoRouter(
           routes: <RouteBase>[
             GoRoute(
               path: ProfileRoute().path,
-              builder: (_, __) => const ProfilePage(),
+              builder: (_, state) => ProfilePage(key: state.pageKey),
             ),
           ],
         ),

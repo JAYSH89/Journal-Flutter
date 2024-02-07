@@ -24,10 +24,7 @@ class JournalCupertinoAppBar extends CustomScrollView {
             CupertinoSliverNavigationBar(
               largeTitle: Text(titleLabel, style: satoshiBlack),
             ),
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: child,
-            ),
+            SliverFillRemaining(child: child),
           ],
         );
 }

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:journal/core/navigation/go_router.dart';
 
-typedef TabRoute = ({Routes route, Widget page});
-
 class JournalMaterialTabBar extends StatelessWidget {
   const JournalMaterialTabBar({
     super.key,
@@ -14,7 +12,7 @@ class JournalMaterialTabBar extends StatelessWidget {
 
   final int currentIndex;
   final Function(int) onTap;
-  final List<TabRoute> routes;
+  final List<Routes> routes;
 
   @override
   Widget build(BuildContext context) => BottomNavigationBar(
@@ -25,15 +23,15 @@ class JournalMaterialTabBar extends StatelessWidget {
       );
 
   List<BottomNavigationBarItem> _items() => routes
-      .map((tabRoute) => BottomNavigationBarItem(
-            icon: Icon(tabRoute.route.materialIcon),
-            label: tabRoute.route.title,
+      .map((route) => BottomNavigationBarItem(
+            icon: Icon(route.materialIcon),
+            label: route.title,
           ))
       .toList();
 }
 
 class JournalCupertinoTabBar extends CupertinoTabBar {
-  final List<TabRoute> routes;
+  final List<Routes> routes;
 
   JournalCupertinoTabBar({
     super.key,
@@ -41,10 +39,10 @@ class JournalCupertinoTabBar extends CupertinoTabBar {
     required super.currentIndex,
     required this.routes,
   }) : super(
-          items: routes.map((e) {
+          items: routes.map((route) {
             return BottomNavigationBarItem(
-              icon: Icon(e.route.cupertinoIcon),
-              label: e.route.title,
+              icon: Icon(route.cupertinoIcon),
+              label: route.title,
             );
           }).toList(),
         );
