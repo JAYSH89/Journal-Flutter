@@ -2,11 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:journal/food/domain/models/food.dart';
 
 class JournalEntry extends Equatable {
-  final String? id;
-  final Food food;
-  final DateTime date;
-  final double amount;
-
   const JournalEntry({
     this.id,
     required this.food,
@@ -14,13 +9,13 @@ class JournalEntry extends Equatable {
     required this.amount,
   });
 
+  final String? id;
+  final Food food;
+  final DateTime date;
+  final double amount;
+
   @override
-  List<Object?> get props => [
-        id,
-        food,
-        date,
-        amount,
-      ];
+  List<Object?> get props => [id, food, date, amount];
 }
 
 extension JournalEntryExtension on JournalEntry {

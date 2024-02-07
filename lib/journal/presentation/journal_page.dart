@@ -57,17 +57,19 @@ class _JournalViewContent extends StatelessWidget {
     switch (platform) {
       case TargetPlatform.iOS:
         return CupertinoButton(
-          child: Text(buttonTitle, style: satoshiBold.copyWith(color: Colors.black)),
-          onPressed: () {
-            GoRouter.of(context).go("/journal/developer");
-          },
+          child: Text(
+            buttonTitle,
+            style: satoshiBold.copyWith(color: Colors.black),
+          ),
+          onPressed: () => context.go("/journal/developer"),
         );
       default:
         return MaterialButton(
-          child: Text(buttonTitle, style: satoshiBold.copyWith(color: Colors.black)),
-          onPressed: () {
-            GoRouter.of(context).go("/journal/developer");
-          },
+          child: Text(
+            buttonTitle,
+            style: satoshiBold.copyWith(color: Colors.black),
+          ),
+          onPressed: () => context.go("/journal/developer"),
         );
     }
   }

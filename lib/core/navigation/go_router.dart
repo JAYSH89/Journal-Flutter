@@ -43,8 +43,9 @@ final GoRouter router = GoRouter(
               builder: (_, state) => JournalPage(key: state.pageKey),
               routes: <RouteBase>[
                 GoRoute(
-                    path: DeveloperRoute().path,
-                    builder: (_, state) => DeveloperPage(key: state.pageKey)),
+                  path: DeveloperRoute().path,
+                  builder: (_, state) => DeveloperPage(key: state.pageKey),
+                ),
               ],
             ),
           ],
@@ -53,8 +54,9 @@ final GoRouter router = GoRouter(
           // navigatorKey: _sectionBNavigatorKey,
           routes: <RouteBase>[
             GoRoute(
-                path: FoodRoute().path,
-                builder: (_, state) => FoodPage(key: state.pageKey)),
+              path: FoodRoute().path,
+              builder: (_, state) => FoodPage(key: state.pageKey),
+            ),
           ],
         ),
         StatefulShellBranch(
