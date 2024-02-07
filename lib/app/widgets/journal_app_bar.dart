@@ -11,11 +11,20 @@ class JournalMaterialAppBar extends AppBar {
         );
 }
 
-class JournalCupertinoAppBar extends CustomScrollView {
+class JournalCupertinoAppBar extends CupertinoNavigationBar {
+  final String titleLabel;
+
+  JournalCupertinoAppBar({
+    super.key,
+    required this.titleLabel,
+  }) : super(middle: Text(titleLabel));
+}
+
+class JournalCupertinoSliverAppBar extends CustomScrollView {
   final String titleLabel;
   final Widget child;
 
-  JournalCupertinoAppBar({
+  JournalCupertinoSliverAppBar({
     super.key,
     required this.titleLabel,
     required this.child,

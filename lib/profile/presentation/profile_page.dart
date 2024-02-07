@@ -22,7 +22,7 @@ class ProfileView extends StatelessWidget {
     switch (platform) {
       case TargetPlatform.iOS:
         return CupertinoPageScaffold(
-          child: JournalCupertinoAppBar(
+          child: JournalCupertinoSliverAppBar(
             titleLabel: _title,
             child: const _ProfileViewContent(),
           ),

@@ -22,10 +22,8 @@ class _DeveloperView extends StatelessWidget {
     switch (platform) {
       case TargetPlatform.iOS:
         return CupertinoPageScaffold(
-          child: JournalCupertinoAppBar(
-            titleLabel: _title,
-            child: const _DeveloperViewContent(),
-          ),
+          navigationBar: JournalCupertinoAppBar(titleLabel: _title),
+          child: const _DeveloperViewContent(),
         );
       default:
         return Scaffold(
