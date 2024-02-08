@@ -11,7 +11,6 @@ class JournalMaterialAppBar extends AppBar {
     required this.titleLabel,
   }) : super(
           title: Text(titleLabel, style: satoshiBlack),
-          // actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.add))],
         );
 }
 
@@ -27,15 +26,18 @@ class JournalCupertinoAppBar extends CupertinoNavigationBar {
 class JournalCupertinoSliverAppBar extends CustomScrollView {
   final String titleLabel;
   final Widget child;
+  final Widget? trailing;
 
   JournalCupertinoSliverAppBar({
     super.key,
     required this.titleLabel,
+    this.trailing,
     required this.child,
   }) : super(
           slivers: <Widget>[
             CupertinoSliverNavigationBar(
               largeTitle: Text(titleLabel, style: satoshiBlack),
+              trailing: trailing,
             ),
             SliverFillRemaining(child: child),
           ],

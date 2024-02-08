@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:journal/core/navigation/journal_scaffold_with_nav_bar.dart';
 import 'package:journal/developer/developer_page.dart';
+import 'package:journal/food/presentation/create_food_page.dart';
 import 'package:journal/food/presentation/food_page.dart';
 import 'package:journal/journal/presentation/journal_page.dart';
 import 'package:journal/profile/presentation/profile_page.dart';
@@ -56,6 +57,26 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: FoodRoute().path,
               builder: (_, state) => FoodPage(key: state.pageKey),
+              routes: [
+                GoRoute(
+                  path: CreateFoodRoute().path,
+                  pageBuilder: (context, state) {
+                    final TargetPlatform platform = Theme.of(context).platform;
+
+                    if (platform == TargetPlatform.iOS) {
+                      return const CupertinoPage(
+                        fullscreenDialog: true,
+                        child: CreateFoodPage(),
+                      );
+                    }
+
+                    return const MaterialPage(
+                      fullscreenDialog: true,
+                      child: CreateFoodPage(),
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),
@@ -108,6 +129,15 @@ class JournalRoute extends Routes {
 class FoodRoute extends Routes {
   FoodRoute({
     super.path = '/food',
+    super.title = 'Food',
+    super.materialIcon = Icons.restaurant,
+    super.cupertinoIcon = CupertinoIcons.bookmark,
+  });
+}
+
+class CreateFoodRoute extends Routes {
+  CreateFoodRoute({
+    super.path = 'create_food',
     super.title = 'Food',
     super.materialIcon = Icons.restaurant,
     super.cupertinoIcon = CupertinoIcons.bookmark,
