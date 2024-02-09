@@ -1,21 +1,16 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:journal/food/domain/models/food.dart';
 
-class JournalEntry extends Equatable {
-  const JournalEntry({
-    this.id,
-    required this.food,
-    required this.date,
-    required this.amount,
-  });
+part 'journal_entry.freezed.dart';
 
-  final String? id;
-  final Food food;
-  final DateTime date;
-  final double amount;
-
-  @override
-  List<Object?> get props => [id, food, date, amount];
+@freezed
+class JournalEntry with _$JournalEntry {
+  factory JournalEntry({
+    String? id,
+    required Food food,
+    required DateTime date,
+    required double amount,
+  }) = _JournalEntry;
 }
 
 extension JournalEntryExtension on JournalEntry {

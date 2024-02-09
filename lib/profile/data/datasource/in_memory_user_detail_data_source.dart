@@ -2,7 +2,7 @@ import 'package:journal/profile/data/datasource/user_details_data_source.dart';
 import 'package:journal/profile/domain/models/user_detail.dart';
 
 class InMemoryUserDetailDataSource extends UserDetailsDataSource {
-  var user = const UserDetail();
+  var user = UserDetail();
 
   @override
   UserDetail getUserDetail() => user;
@@ -15,6 +15,6 @@ class InMemoryUserDetailDataSource extends UserDetailsDataSource {
 
   @override
   clear() {
-    user = const UserDetail();
+    user = UserDetail();
   }
 }
