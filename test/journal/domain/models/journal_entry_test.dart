@@ -4,7 +4,7 @@ import 'package:journal/food/domain/models/food_unit.dart';
 import 'package:journal/journal/domain/models/journal_entry.dart';
 
 void main() {
-  const potato = Food(
+  final potato = Food(
     name: 'Potato',
     carbs: 23.2,
     proteins: 3.1,

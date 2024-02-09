@@ -1,35 +1,19 @@
 import 'package:journal/food/domain/models/food_unit.dart';
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Food extends Equatable {
-  final String? id;
-  final String name;
-  final double carbs;
-  final double proteins;
-  final double fats;
-  final double amount;
-  final FoodUnit unit;
+part 'food.freezed.dart';
 
-  const Food({
-    this.id,
-    required this.name,
-    required this.carbs,
-    required this.proteins,
-    required this.fats,
-    required this.amount,
-    required this.unit,
-  });
-
-  @override
-  List<Object?> get props => [
-        id,
-        name,
-        carbs,
-        proteins,
-        fats,
-        amount,
-        unit,
-      ];
+@freezed
+class Food with _$Food {
+  factory Food({
+    String? id,
+    required String name,
+    required double carbs,
+    required double proteins,
+    required double fats,
+    required double amount,
+    required FoodUnit unit,
+  }) = _Food;
 }
 
 extension FoodExtension on Food {

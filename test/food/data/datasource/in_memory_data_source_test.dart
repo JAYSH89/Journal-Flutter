@@ -11,7 +11,7 @@ void main() {
     dataSource = InMemoryFoodDataSource();
   });
 
-  const testFood = Food(
+  final testFood = Food(
     name: 'Potato',
     carbs: 23.2,
     proteins: 3.1,

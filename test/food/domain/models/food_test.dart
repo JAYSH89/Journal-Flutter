@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('get calories from Food() class', () {
     // arrange
-    const food = Food(
+    final food = Food(
       name: 'Potato',
       carbs: 23.2,
       proteins: 3.1,
