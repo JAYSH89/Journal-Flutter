@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:journal/app/widgets/buttons/journal_add_button.dart';
 import 'package:journal/app/widgets/journal_app_bar.dart';
 import 'package:journal/app/widgets/journal_text_field.dart';
-import 'package:journal/food/presentation/create_food_page.dart';
 
 class FoodPage extends StatelessWidget {
   const FoodPage({super.key});

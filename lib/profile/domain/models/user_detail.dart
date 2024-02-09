@@ -11,4 +11,3 @@ class UserDetail with _$UserDetail {
     DateTime? dateOfBirth,
   }) = _UserDetail;
 }
-

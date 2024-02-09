@@ -3,13 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:journal/core/navigation/journal_scaffold_with_nav_bar.dart';
 import 'package:journal/developer/developer_page.dart';
-import 'package:journal/food/presentation/bloc/create_food_bloc.dart';
 import 'package:journal/food/presentation/create_food_page.dart';
 import 'package:journal/food/presentation/food_page.dart';
 import 'package:journal/journal/presentation/journal_page.dart';
 import 'package:journal/profile/presentation/profile_page.dart';
-import 'package:journal/core/di/injection_container.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 // final GlobalKey<NavigatorState> _rootNavigatorKey =
 //     GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -28,9 +25,11 @@ final GoRouter router = GoRouter(
   initialLocation: JournalRoute().path,
   routes: <RouteBase>[
     StatefulShellRoute.indexedStack(
-      builder: (BuildContext context,
-          GoRouterState state,
-          StatefulNavigationShell navigationShell,) {
+      builder: (
+        BuildContext context,
+        GoRouterState state,
+        StatefulNavigationShell navigationShell,
+      ) {
         return JournalScaffoldWithNavBar(
           key: GlobalKey(debugLabel: "shell"),
           navigationShell: navigationShell,
@@ -62,9 +61,7 @@ final GoRouter router = GoRouter(
                 GoRoute(
                   path: CreateFoodRoute().path,
                   pageBuilder: (context, state) {
-                    final TargetPlatform platform = Theme
-                        .of(context)
-                        .platform;
+                    final TargetPlatform platform = Theme.of(context).platform;
 
                     if (platform == TargetPlatform.iOS) {
                       return const CupertinoPage(
