@@ -3,6 +3,7 @@ import 'package:journal/food/data/datasource/food_data_source.dart';
 import 'package:journal/food/data/datasource/in_memory_food_data_source.dart';
 import 'package:journal/food/data/repository/food_repository_impl.dart';
 import 'package:journal/food/domain/repository/food_repository.dart';
+import 'package:journal/food/presentation/bloc/create_food_bloc.dart';
 import 'package:journal/journal/data/datasource/in_memory_journal_data_source.dart';
 import 'package:journal/journal/data/datasource/journal_data_source.dart';
 import 'package:journal/journal/data/repository/journal_repository_impl.dart';
@@ -18,6 +19,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 final getIt = GetIt.instance;
 
 void setupLocator() {
+  // bloc
+  getIt.registerFactory(() => CreateFoodBloc());
+
   // repository
   getIt.registerLazySingleton<FoodRepository>(() => FoodRepositoryImpl(
         dataSource: getIt(),
