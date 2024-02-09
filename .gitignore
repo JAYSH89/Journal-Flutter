@@ -4,6 +4,7 @@
 ### Dart ###
 *.mapper.dart
 *.mocks.dart
+*.freezed.dart
 
 # See https://www.dartlang.org/guides/libraries/private-files
 
