@@ -19,20 +19,19 @@ class ProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     final TargetPlatform platform = Theme.of(context).platform;
 
-    switch (platform) {
-      case TargetPlatform.iOS:
-        return CupertinoPageScaffold(
-          child: JournalCupertinoSliverAppBar(
-            titleLabel: _title,
-            child: _ProfileViewContent(),
-          ),
-        );
-      default:
-        return Scaffold(
-          appBar: JournalMaterialAppBar(titleLabel: _title),
-          body: Center(child: _ProfileViewContent()),
-        );
+    if (platform == TargetPlatform.iOS) {
+      return CupertinoPageScaffold(
+        child: JournalCupertinoSliverAppBar(
+          titleLabel: _title,
+          child: _ProfileViewContent(),
+        ),
+      );
     }
+
+    return Scaffold(
+      appBar: JournalMaterialAppBar(titleLabel: _title),
+      body: Center(child: _ProfileViewContent()),
+    );
   }
 }
 

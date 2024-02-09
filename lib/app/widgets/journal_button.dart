@@ -12,23 +12,22 @@ class JournalButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final TargetPlatform platform = Theme.of(context).platform;
 
-    switch (platform) {
-      case TargetPlatform.iOS:
-        return CupertinoButton(
-          onPressed: onPressed,
-          child: Text(
-            buttonTitle,
-            style: satoshiBold.copyWith(color: Colors.black),
-          ),
-        );
-      default:
-        return MaterialButton(
-          onPressed: onPressed,
-          child: Text(
-            buttonTitle,
-            style: satoshiBold.copyWith(color: Colors.black),
-          ),
-        );
+    if (platform == TargetPlatform.iOS) {
+      return CupertinoButton(
+        onPressed: onPressed,
+        child: Text(
+          buttonTitle,
+          style: satoshiBold.copyWith(color: Colors.black),
+        ),
+      );
     }
+
+    return MaterialButton(
+      onPressed: onPressed,
+      child: Text(
+        buttonTitle,
+        style: satoshiBold.copyWith(color: Colors.black),
+      ),
+    );
   }
 }

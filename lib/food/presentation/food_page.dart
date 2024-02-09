@@ -22,68 +22,33 @@ class FoodView extends StatelessWidget {
   Widget build(BuildContext context) {
     final TargetPlatform platform = Theme.of(context).platform;
 
-    switch (platform) {
-      case TargetPlatform.iOS:
-        return CupertinoPageScaffold(
-          child: JournalCupertinoSliverAppBar(
-            titleLabel: _title,
-            trailing: JournalAddButton(onPressed: () {
-              // context.push("/food/create_food", MaterialPageRoute);
-              // _showBottomSheet(context, platform);
-              _onPressAdd(context, platform);
-            }),
-            child: _FoodViewContent(),
-          ),
-        );
-      default:
-        return Scaffold(
-          appBar: JournalMaterialAppBar(
-            titleLabel: _title,
-            actions: [
-              JournalAddButton(onPressed: () {
-                _onPressAdd(context, platform);
-                // _showBottomSheet(context, platform);
-              }),
-            ],
-          ),
-          body: Center(child: _FoodViewContent()),
-        );
+    if (platform == TargetPlatform.iOS) {
+      return CupertinoPageScaffold(
+        child: JournalCupertinoSliverAppBar(
+          titleLabel: _title,
+          trailing: JournalAddButton(onPressed: () {
+            _onPressAdd(context, platform);
+          }),
+          child: _FoodViewContent(),
+        ),
+      );
     }
+
+    return Scaffold(
+      appBar: JournalMaterialAppBar(
+        titleLabel: _title,
+        actions: [
+          JournalAddButton(onPressed: () {
+            _onPressAdd(context, platform);
+          }),
+        ],
+      ),
+      body: Center(child: _FoodViewContent()),
+    );
   }
 
   _onPressAdd(BuildContext context, TargetPlatform platform) {
     context.go("/food/create_food");
-  }
-
-  _showBottomSheet(BuildContext context, TargetPlatform platform) {
-    switch (platform) {
-      case TargetPlatform.iOS:
-        showCupertinoModalPopup(
-          context: context,
-          builder: (BuildContext context) {
-            return CupertinoPopupSurface(
-              child: Container(
-                color: CupertinoColors.white,
-                alignment: Alignment.center,
-                width: double.infinity,
-                height: 600,
-                child: const Center(child: Text("Hello world")),
-              ),
-            );
-          },
-        );
-      default:
-        showModalBottomSheet<void>(
-          context: context,
-          builder: (context) {
-            return const SizedBox(
-              width: double.infinity,
-              height: 600,
-              child: Center(child: Text("Hello world")),
-            );
-          },
-        );
-    }
   }
 }
 
@@ -91,6 +56,6 @@ class _FoodViewContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(children: [JournalTextField()]),
+        child: Column(children: [JournalTextField(placeholder: "Search")]),
       );
 }

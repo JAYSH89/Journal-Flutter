@@ -10,18 +10,16 @@ class JournalAddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final TargetPlatform platform = Theme.of(context).platform;
 
-    switch (platform) {
-      case TargetPlatform.iOS:
-        return _JournalCupertinoAddButton(onPressed: onPressed);
-      default:
-        return _JournalMaterialAddButton(onPressed: onPressed);
+    if (platform == TargetPlatform.iOS) {
+      return _JournalCupertinoAddButton(onPressed: onPressed);
     }
+
+    return _JournalMaterialAddButton(onPressed: onPressed);
   }
 }
 
 class _JournalCupertinoAddButton extends CupertinoButton {
   const _JournalCupertinoAddButton({
-    super.key,
     required super.onPressed,
   }) : super(
           padding: EdgeInsets.zero,
@@ -31,7 +29,6 @@ class _JournalCupertinoAddButton extends CupertinoButton {
 
 class _JournalMaterialAddButton extends IconButton {
   const _JournalMaterialAddButton({
-    super.key,
     required super.onPressed,
   }) : super(icon: const Icon(Icons.add));
 }
