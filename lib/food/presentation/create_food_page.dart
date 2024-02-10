@@ -21,7 +21,7 @@ class CreateFoodPage extends StatelessWidget {
 }
 
 class _CreateFoodView extends StatelessWidget {
-  const _CreateFoodView({super.key}) : _title = "Add food";
+  const _CreateFoodView() : _title = "Add food";
 
   final String _title;
 

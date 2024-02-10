@@ -13,8 +13,13 @@
 * mappable [link](https://pub.dev/packages/dart_mappable)
 * drift [link](https://pub.dev/packages/drift) [docs](https://drift.simonbinder.eu/docs/getting-started/)
 * fpdart [link](https://pub.dev/packages/fpdart)
+* shared_preferences [link](https://pub.dev/packages/shared_preferences)
+* uuid [link](https://pub.dev/packages/uuid)
+* freezed [link](https://pub.dev/packages/freezed)
+* freezed_annotation [link](https://pub.dev/packages/freezed_annotation)
+* very_good_analysis [link](https://pub.dev/packages/very_good_analysis)
 
-# Testing
+## Testing
 
 Run tests:
 
@@ -35,4 +40,18 @@ genhtml coverage/lcov.info -o coverage/html
 
 # Open report
 open coverage/html/index.html
+```
+
+## Build runner
+
+```shell
+dart run build_runner build
+```
+
+```shell
+dart run build_runner watch
+```
+
+```shell
+dart run build_runner build --delete-conflicting-outputs
 ```
