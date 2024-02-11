@@ -23,7 +23,6 @@ class JournalSegmentedControl extends StatefulWidget {
 }
 
 class _JournalSegmentedControlState extends State<JournalSegmentedControl> {
-
   @override
   Widget build(BuildContext context) {
     final TargetPlatform platform = Theme.of(context).platform;

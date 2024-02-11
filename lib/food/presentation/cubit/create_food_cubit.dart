@@ -29,7 +29,30 @@ class CreateFoodCubit extends Cubit<CreateFoodState> {
   }
 
   void submit() {
-    print("Submit:");
+    final name = state.fields[CreateFoodTextFieldKey.name];
+    final validatedName = _validateTextInput(name);
+
+    final carbs = state.fields[CreateFoodTextFieldKey.carbs];
+    final validatedCarbs = _validateNumericInput(carbs);
+
+    final proteins = state.fields[CreateFoodTextFieldKey.proteins];
+    final validatedProteins = _validateNumericInput(proteins);
+
+    final fats = state.fields[CreateFoodTextFieldKey.fats];
+    final validatedFats = _validateNumericInput(fats);
+
+    final amount = state.fields[CreateFoodTextFieldKey.amount];
+    final validatedAmount = _validateNumericInput(amount);
+
+    final formValid = validatedName &&
+        validatedCarbs &&
+        validatedProteins &&
+        validatedFats &&
+        validatedAmount;
+
+    emit(state.copyWith(formValid: formValid));
+
+    // TODO: Convert to Food Object + Store
   }
 
   bool _validateTextInput(String? input) {
@@ -53,5 +76,6 @@ class CreateFoodState with _$CreateFoodState {
   const factory CreateFoodState({
     @Default({}) Map<CreateFoodTextFieldKey, String> fields,
     @Default(FoodUnit.gram) FoodUnit unit,
+    @Default(null) bool? formValid,
   }) = _CreateFoodState;
 }
