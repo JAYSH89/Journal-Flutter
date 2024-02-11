@@ -7,15 +7,14 @@ import 'package:journal/app/widgets/journal_app_bar.dart';
 import 'package:journal/app/widgets/journal_text_field.dart';
 import 'package:journal/core/di/injection_container.dart';
 import 'package:journal/core/theme/typography.dart';
-import 'package:journal/food/domain/models/food_unit.dart';
-import 'package:journal/food/presentation/bloc/create_food_bloc.dart';
+import 'package:journal/food/presentation/cubit/create_food_cubit.dart';
 
 class CreateFoodPage extends StatelessWidget {
   const CreateFoodPage({super.key});
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (_) => getIt<CreateFoodBloc>(),
+        create: (_) => getIt<CreateFoodCubit>(),
         child: const _CreateFoodView(),
       );
 }
@@ -43,47 +42,72 @@ class _CreateFoodView extends StatelessWidget {
   }
 }
 
-class _CreateFoodViewContent extends StatelessWidget {
+class _CreateFoodViewContent extends StatefulWidget {
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              _journalInputRow(label: "Name:"),
-              const SizedBox(height: 20),
-              _macroRow(),
-              const SizedBox(height: 20),
-              _journalAmountRow(label: "Amount:"),
-              const SizedBox(height: 20),
-              _submitButton(onPressed: () {
-                const create = CreateFoodEvent.submit(
-                  name: "Example name",
-                  carbs: "1",
-                  proteins: "2",
-                  fats: "3",
-                  amount: "4",
-                  unit: FoodUnit.gram,
-                );
+  State<_CreateFoodViewContent> createState() => _CreateFoodViewContentState();
+}
 
-                BlocProvider.of<CreateFoodBloc>(context).add(create);
-              }),
-            ],
-          ),
+// Improvement: Can this be done stateless? -> Use BloC?
+// Improvement: Single object versus various [String]
+class _CreateFoodViewContentState extends State<_CreateFoodViewContent> {
+  String name = "";
+  String carbs = "";
+  String proteins = "";
+  String fats = "";
+  String amount = "";
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            _journalInputRow(
+              key: CreateFoodTextFieldKey.name,
+              label: "Name:",
+            ),
+            const SizedBox(height: 20),
+            _macroRow(),
+            const SizedBox(height: 20),
+            _journalAmountRow(label: "Amount:"),
+            const SizedBox(height: 20),
+            _submitButton(onPressed: () {
+              BlocProvider.of<CreateFoodCubit>(context).submit();
+            }),
+          ],
         ),
-      );
+      ),
+    );
+  }
 
   Widget _macroRow() => Row(
         children: [
-          Expanded(child: _journalInputRow(label: "Carbs:")),
+          Expanded(
+            child: _journalInputRow(
+              key: CreateFoodTextFieldKey.carbs,
+              label: "Carbs:",
+            ),
+          ),
           const SizedBox(width: 8),
-          Expanded(child: _journalInputRow(label: "Proteins:")),
+          Expanded(
+            child: _journalInputRow(
+              key: CreateFoodTextFieldKey.proteins,
+              label: "Proteins:",
+            ),
+          ),
           const SizedBox(width: 8),
-          Expanded(child: _journalInputRow(label: "Fats:")),
+          Expanded(
+            child: _journalInputRow(
+                key: CreateFoodTextFieldKey.fats, label: "Fats:"),
+          ),
         ],
       );
 
-  Widget _journalAmountRow({String label = ""}) {
+  Widget _journalAmountRow({
+    CreateFoodTextFieldKey key = CreateFoodTextFieldKey.amount,
+    String label = "",
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -97,11 +121,25 @@ class _CreateFoodViewContent extends StatelessWidget {
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
                 textInputAction: TextInputAction.go,
+                onChanged: (text) {
+                  context.read<CreateFoodCubit>().setText(key, text);
+                },
                 onSubmitted: (_) {},
               ),
             ),
             const SizedBox(width: 8),
-            const Expanded(child: JournalSegmentedControl()),
+            Expanded(
+              child: BlocBuilder<CreateFoodCubit, CreateFoodState>(
+                builder: (context, state) {
+                  return JournalSegmentedControl(
+                    selectedFoodUnit: state.unit,
+                    onSelectionChanged: (value) {
+                      context.read<CreateFoodCubit>().setUnit(value);
+                    },
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ],
@@ -109,9 +147,11 @@ class _CreateFoodViewContent extends StatelessWidget {
   }
 
   Widget _journalInputRow({
+    required CreateFoodTextFieldKey key,
     String label = "",
     TextInputType keyboardType = TextInputType.text,
     TextInputAction textInputAction = TextInputAction.next,
+    bool isError = false,
   }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -122,7 +162,17 @@ class _CreateFoodViewContent extends StatelessWidget {
         JournalTextField(
           keyboardType: keyboardType,
           textInputAction: textInputAction,
+          onChanged: (text) {
+            context.read<CreateFoodCubit>().setText(key, text);
+          },
         ),
+        if (isError) ...[
+          const SizedBox(height: 8),
+          Text(
+            "Error occurred",
+            style: satoshiRegular.copyWith(color: Colors.red),
+          )
+        ],
       ],
     );
   }

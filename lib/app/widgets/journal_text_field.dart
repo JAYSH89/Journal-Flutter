@@ -9,12 +9,14 @@ class JournalTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.textInputAction,
     this.onSubmitted,
+    this.onChanged,
   });
 
   final String placeholder;
   final TextInputType keyboardType;
   final TextInputAction? textInputAction;
   final Function(String)? onSubmitted;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class JournalTextField extends StatelessWidget {
           keyboardType: keyboardType,
           placeholder: placeholder,
           textInputAction: textInputAction,
+          onChanged: onChanged,
           onSubmitted: onSubmitted,
         );
       default:
@@ -33,6 +36,7 @@ class JournalTextField extends StatelessWidget {
           keyboardType: keyboardType,
           placeholder: placeholder,
           textInputAction: textInputAction,
+          onChanged: onChanged,
           onSubmitted: onSubmitted,
         );
     }
@@ -80,5 +84,10 @@ class JournalCupertinoTextField extends CupertinoTextField {
   }) : super(
           clearButtonMode: OverlayVisibilityMode.editing,
           style: satoshiRegular,
+          decoration: BoxDecoration(
+            border: Border.all(color: CupertinoColors.systemGrey),
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+          padding: const EdgeInsets.all(8.0),
         );
 }

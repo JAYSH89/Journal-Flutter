@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:journal/core/theme/typography.dart';
 
 class JournalTextButton extends StatelessWidget {
   const JournalTextButton({
@@ -19,7 +20,7 @@ class JournalTextButton extends StatelessWidget {
       return CupertinoButton(
         color: CupertinoColors.black,
         onPressed: onPressed,
-        child: Text(text),
+        child: Text(text, style: satoshiBold),
       );
     }
 
@@ -29,7 +30,7 @@ class JournalTextButton extends StatelessWidget {
         backgroundColor: Colors.black,
       ),
       onPressed: onPressed,
-      child: Text(text),
+      child: Text(text, style: satoshiBold),
     );
   }
 }

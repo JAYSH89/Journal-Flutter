@@ -4,8 +4,17 @@ import 'package:journal/core/theme/typography.dart';
 import 'package:journal/core/util/string_extension.dart';
 import 'package:journal/food/domain/models/food_unit.dart';
 
+// TODO: This segmented control is for create_food - Make it more dynamic
+
 class JournalSegmentedControl extends StatefulWidget {
-  const JournalSegmentedControl({super.key});
+  const JournalSegmentedControl({
+    super.key,
+    required this.selectedFoodUnit,
+    required this.onSelectionChanged,
+  });
+
+  final FoodUnit selectedFoodUnit;
+  final Function(FoodUnit) onSelectionChanged;
 
   @override
   State<JournalSegmentedControl> createState() {
@@ -14,7 +23,6 @@ class JournalSegmentedControl extends StatefulWidget {
 }
 
 class _JournalSegmentedControlState extends State<JournalSegmentedControl> {
-  FoodUnit selectedFoodUnit = FoodUnit.gram;
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +35,9 @@ class _JournalSegmentedControlState extends State<JournalSegmentedControl> {
   _JournalMaterialSegmentedControl _materialSegmentControl() {
     return _JournalMaterialSegmentedControl(
       segments: _buildMaterialSegments(),
-      selected: <FoodUnit>{selectedFoodUnit},
+      selected: <FoodUnit>{widget.selectedFoodUnit},
       onSelectionChanged: (newSelection) {
-        setState(() {
-          selectedFoodUnit = newSelection.first;
-        });
+        widget.onSelectionChanged(newSelection.first);
       },
     );
   }
@@ -49,11 +55,10 @@ class _JournalSegmentedControlState extends State<JournalSegmentedControl> {
     return _JournalCupertinoSegmentedControl(
       children: _buildCupertinoSegments(),
       onValueChanged: (value) {
-        setState(() {
-          selectedFoodUnit = value as FoodUnit;
-        });
+        final newSelection = value as FoodUnit;
+        widget.onSelectionChanged(newSelection);
       },
-      groupValue: selectedFoodUnit,
+      groupValue: widget.selectedFoodUnit,
     );
   }
 
