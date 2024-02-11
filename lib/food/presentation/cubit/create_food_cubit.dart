@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:journal/food/domain/models/food.dart';
 import 'package:journal/food/domain/models/food_unit.dart';
+import 'package:journal/food/domain/repository/food_repository.dart';
 
 part 'create_food_cubit.freezed.dart';
 
@@ -14,7 +16,9 @@ enum CreateFoodTextFieldKey {
 }
 
 class CreateFoodCubit extends Cubit<CreateFoodState> {
-  CreateFoodCubit() : super(const CreateFoodState());
+  CreateFoodCubit(this._repository) : super(const CreateFoodState());
+
+  final FoodRepository _repository;
 
   void setText(CreateFoodTextFieldKey key, String text) {
     final currentFields = state.fields;
@@ -26,6 +30,15 @@ class CreateFoodCubit extends Cubit<CreateFoodState> {
 
   void setUnit(FoodUnit unit) {
     emit(state.copyWith(unit: unit));
+  }
+
+  void getAllFood() {
+    final result = _repository.getAll();
+    emit(state.copyWith(food: result));
+  }
+
+  void reset() {
+    emit(const CreateFoodState());
   }
 
   void submit() {
@@ -50,9 +63,17 @@ class CreateFoodCubit extends Cubit<CreateFoodState> {
         validatedFats &&
         validatedAmount;
 
-    emit(state.copyWith(formValid: formValid));
+    final result = Food(
+      name: name ?? "",
+      carbs: double.tryParse(carbs ?? "") ?? 0,
+      proteins: double.tryParse(proteins ?? "") ?? 0,
+      fats: double.tryParse(fats ?? "") ?? 0,
+      amount: double.tryParse(amount ?? "") ?? 0,
+      unit: state.unit,
+    );
 
-    // TODO: Convert to Food Object + Store
+    _repository.saveFood(result);
+    emit(state.copyWith(formValid: formValid));
   }
 
   bool _validateTextInput(String? input) {
@@ -77,5 +98,6 @@ class CreateFoodState with _$CreateFoodState {
     @Default({}) Map<CreateFoodTextFieldKey, String> fields,
     @Default(FoodUnit.gram) FoodUnit unit,
     @Default(null) bool? formValid,
+    @Default([]) List<Food> food,
   }) = _CreateFoodState;
 }

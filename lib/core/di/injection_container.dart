@@ -20,7 +20,7 @@ final getIt = GetIt.instance;
 
 void setupLocator() {
   // bloc
-  getIt.registerFactory(() => CreateFoodCubit());
+  getIt.registerFactory(() => CreateFoodCubit(getIt()));
 
   // repository
   getIt.registerLazySingleton<FoodRepository>(() => FoodRepositoryImpl(

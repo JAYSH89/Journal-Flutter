@@ -1,10 +1,16 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:journal/food/domain/models/food.dart';
 import 'package:journal/food/domain/models/food_unit.dart';
 import 'package:journal/food/presentation/cubit/create_food_cubit.dart';
+import 'package:mockito/mockito.dart';
+
+import '../../../helpers/test_helper.mocks.dart';
 
 void main() {
   late CreateFoodCubit createFoodCubit;
+  late MockFoodRepository foodRepository;
 
   const testState = CreateFoodState(
     fields: {
@@ -18,8 +24,19 @@ void main() {
     formValid: true,
   );
 
+  final testFood = Food(
+    id: "example id",
+    name: "Apple",
+    carbs: 1,
+    proteins: 2,
+    fats: 3,
+    amount: 1,
+    unit: FoodUnit.unit,
+  );
+
   setUp(() {
-    createFoodCubit = CreateFoodCubit();
+    foodRepository = MockFoodRepository();
+    createFoodCubit = CreateFoodCubit(foodRepository);
   });
 
   tearDown(() {
@@ -31,11 +48,15 @@ void main() {
     required Map<CreateFoodTextFieldKey, String> inputs,
     required FoodUnit foodUnit,
     required CreateFoodState expectedState,
+    Function(Cubit)? verify,
     int skip = 0,
   }) {
     blocTest<CreateFoodCubit, CreateFoodState>(
       description,
-      build: () => CreateFoodCubit(),
+      build: () {
+        when(foodRepository.saveFood(any)).thenReturn(testFood);
+        return createFoodCubit;
+      },
       act: (cubit) {
         inputs.forEach((key, value) {
           cubit.setText(key, value);
@@ -45,6 +66,7 @@ void main() {
       },
       skip: skip,
       expect: () => [expectedState],
+      verify: verify,
     );
   }
 
@@ -91,6 +113,10 @@ void main() {
         unit: FoodUnit.unit,
         formValid: true,
       ),
+      verify: (_) {
+        verify(foodRepository.saveFood(any)).called(1);
+        verifyNoMoreInteractions(foodRepository);
+      },
     );
 
     createFoodCubitHelper(
@@ -101,7 +127,6 @@ void main() {
       expectedState: testState.copyWith(
         fields: Map.from(testState.fields)
           ..[CreateFoodTextFieldKey.carbs] = "-1",
-        unit: FoodUnit.unit,
         formValid: false,
       ),
     );
@@ -114,7 +139,6 @@ void main() {
       expectedState: testState.copyWith(
         fields: Map.from(testState.fields)
           ..remove(CreateFoodTextFieldKey.carbs),
-        unit: FoodUnit.unit,
         formValid: false,
       ),
     );
@@ -126,9 +150,31 @@ void main() {
       skip: 6,
       expectedState: testState.copyWith(
         fields: Map.from(testState.fields)..[CreateFoodTextFieldKey.name] = "",
-        unit: FoodUnit.unit,
         formValid: false,
       ),
+    );
+
+    blocTest(
+      "get all food successful should update list food",
+      build: () {
+        when(foodRepository.getAll()).thenReturn([testFood]);
+        return createFoodCubit;
+      },
+      act: (cubit) {
+        cubit.getAllFood();
+      },
+      expect: () => [
+        CreateFoodState(food: [testFood])
+      ],
+    );
+
+    blocTest(
+      "reset should revert state back to initial state",
+      build: () => createFoodCubit,
+      act: (cubit) {
+        cubit.reset();
+      },
+      expect: () => [const CreateFoodState()],
     );
   });
 }
