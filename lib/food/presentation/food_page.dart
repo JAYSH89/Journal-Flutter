@@ -86,23 +86,25 @@ class _FoodViewContent extends StatelessWidget {
         child: Column(
           children: [
             const JournalTextField(placeholder: "Search"),
-            BlocSelector<FoodCubit, FoodState, List<Food>>(
-              selector: (state) => state.foods,
-              builder: (_, foods) => Expanded(
-                child: MediaQuery.removePadding(
-                  removeTop: true,
-                  context: context,
-                  child: ListView.builder(
-                    itemCount: foods.length,
-                    itemBuilder: (_, index) => JournalInkWell(
-                      onTap: () {
-                        _showModal(rootContext: context, food: foods[index]);
-                      },
-                      child: _foodCard(foods[index]),
+            BlocBuilder<FoodCubit, FoodState>(
+              builder: (context, state) {
+                return Expanded(
+                  child: MediaQuery.removePadding(
+                    removeTop: true,
+                    context: context,
+                    child: ListView.builder(
+                      itemCount: state.foods.length,
+                      itemBuilder: (_, index) => JournalInkWell(
+                        onTap: () {
+                          _showModal(
+                              context: context, food: state.foods[index]);
+                        },
+                        child: _foodCard(state.foods[index]),
+                      ),
                     ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ],
         ),
@@ -144,28 +146,29 @@ class _FoodViewContent extends StatelessWidget {
       );
 
   void _showModal({
-    required BuildContext rootContext,
+    required BuildContext context,
     required Food food,
   }) {
-    final TargetPlatform platform = Theme.of(rootContext).platform;
+    final TargetPlatform platform = Theme.of(context).platform;
 
     if (platform == TargetPlatform.iOS) {
-      _showCupertinoModal(rootContext: rootContext, food: food);
+      _showCupertinoModal(context: context, food: food);
       return;
     }
 
-    _showMaterialModal(rootContext: rootContext, food: food);
+    _showMaterialModal(context: context, food: food);
   }
 
   void _showCupertinoModal({
-    required BuildContext rootContext,
+    required BuildContext context,
     required Food food,
   }) {
     showCupertinoModalPopup(
       useRootNavigator: true,
-      context: rootContext,
-      builder: (BuildContext context) {
-        return Container(
+      context: context,
+      builder: (_) => BlocProvider.value(
+        value: BlocProvider.of<FoodCubit>(context),
+        child: Container(
           decoration: BoxDecoration(
             color: CupertinoColors.systemBackground.resolveFrom(context),
             borderRadius: const BorderRadius.only(
@@ -176,34 +179,32 @@ class _FoodViewContent extends StatelessWidget {
           height: 400,
           child: SafeArea(
             top: false,
-            child: _FoodModal(
-              rootContext: rootContext,
-              food: food,
-            ),
+            child: _FoodModal(food: food),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
-  void _showMaterialModal(
-      {required BuildContext rootContext, required Food food}) {
+  void _showMaterialModal({
+    required BuildContext context,
+    required Food food,
+  }) {
     showModalBottomSheet<void>(
       useRootNavigator: true,
       isScrollControlled: true,
-      context: rootContext,
-      builder: (BuildContext context) => _FoodModal(
-        rootContext: rootContext,
-        food: food,
+      context: context,
+      builder: (_) => BlocProvider.value(
+        value: BlocProvider.of<FoodCubit>(context),
+        child: _FoodModal(food: food),
       ),
     );
   }
 }
 
 class _FoodModal extends StatelessWidget {
-  const _FoodModal({super.key, required this.rootContext, required this.food});
+  const _FoodModal({required this.food});
 
-  final BuildContext rootContext;
   final Food food;
 
   @override
@@ -214,36 +215,18 @@ class _FoodModal extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: Column(
             children: [
-              _header(context, food.name, () => Navigator.pop(context)),
+              _header(context, food.name),
               const Spacer(),
-              Row(
-                children: [
-                  Expanded(
-                    child: JournalTextButton(
-                      text: "Delete",
-                      onPressed: () {
-                        final id = food.id;
-                        if (id != null) {
-                          BlocProvider.of<FoodCubit>(rootContext).deleteFood(id);
-                          Navigator.pop(context);
-                        }
-                      },
-                    ),
-                  )
-                ],
-              ),
+              _deleteButton(context),
             ],
           ),
         ),
       );
 
-  Widget _header(BuildContext context, String name, Function() onPressed) {
+  Widget _header(BuildContext context, String name) {
     return Row(
       children: <Widget>[
-        Text(
-          food.name,
-          style: satoshiBlack.copyWith(fontSize: 22),
-        ),
+        Text(food.name, style: satoshiBlack.copyWith(fontSize: 22)),
         const Spacer(),
         JournalIconButton(
           buttonType: IconButtonType.close,
@@ -253,7 +236,20 @@ class _FoodModal extends StatelessWidget {
     );
   }
 
-  Widget _deleteButton(Function() onPressed) {
-    return JournalTextButton(text: "Delete", onPressed: onPressed);
-  }
+  Widget _deleteButton(BuildContext context) => Row(
+        children: [
+          Expanded(
+            child: JournalTextButton(
+              text: "Delete",
+              onPressed: () {
+                final id = food.id;
+                if (id != null) {
+                  BlocProvider.of<FoodCubit>(context).deleteFood(id);
+                  Navigator.pop(context);
+                }
+              },
+            ),
+          )
+        ],
+      );
 }

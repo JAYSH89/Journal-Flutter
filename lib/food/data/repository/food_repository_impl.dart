@@ -3,9 +3,9 @@ import 'package:journal/food/domain/models/food.dart';
 import 'package:journal/food/domain/repository/food_repository.dart';
 
 class FoodRepositoryImpl implements FoodRepository {
-  final FoodDataSource dataSource;
-
   FoodRepositoryImpl({required this.dataSource});
+
+  final FoodDataSource dataSource;
 
   @override
   List<Food> getAll() => dataSource.getAll();
