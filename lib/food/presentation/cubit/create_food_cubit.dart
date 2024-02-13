@@ -32,11 +32,6 @@ class CreateFoodCubit extends Cubit<CreateFoodState> {
     emit(state.copyWith(unit: unit));
   }
 
-  void getAllFood() {
-    final result = _repository.getAll();
-    emit(state.copyWith(food: result));
-  }
-
   void reset() {
     emit(const CreateFoodState());
   }
@@ -63,17 +58,20 @@ class CreateFoodCubit extends Cubit<CreateFoodState> {
         validatedFats &&
         validatedAmount;
 
-    final result = Food(
-      name: name ?? "",
-      carbs: double.tryParse(carbs ?? "") ?? 0,
-      proteins: double.tryParse(proteins ?? "") ?? 0,
-      fats: double.tryParse(fats ?? "") ?? 0,
-      amount: double.tryParse(amount ?? "") ?? 0,
-      unit: state.unit,
-    );
+    if (formValid) {
+      final result = Food(
+        name: name ?? "",
+        carbs: double.tryParse(carbs ?? "") ?? 0,
+        proteins: double.tryParse(proteins ?? "") ?? 0,
+        fats: double.tryParse(fats ?? "") ?? 0,
+        amount: double.tryParse(amount ?? "") ?? 0,
+        unit: state.unit,
+      );
 
-    _repository.saveFood(result);
-    emit(state.copyWith(formValid: formValid));
+      _repository.saveFood(result);
+    }
+
+    emit(state.copyWith(formSubmitted: formValid));
   }
 
   bool _validateTextInput(String? input) {
@@ -97,7 +95,7 @@ class CreateFoodState with _$CreateFoodState {
   const factory CreateFoodState({
     @Default({}) Map<CreateFoodTextFieldKey, String> fields,
     @Default(FoodUnit.gram) FoodUnit unit,
-    @Default(null) bool? formValid,
+    @Default(null) bool? formSubmitted,
     @Default([]) List<Food> food,
   }) = _CreateFoodState;
 }

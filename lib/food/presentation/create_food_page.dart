@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:journal/app/widgets/buttons/journal_segmented_button.dart';
 import 'package:journal/app/widgets/buttons/journal_text_button.dart';
 import 'package:journal/app/widgets/journal_app_bar.dart';
 import 'package:journal/app/widgets/journal_text_field.dart';
 import 'package:journal/core/di/injection_container.dart';
 import 'package:journal/core/theme/typography.dart';
+import 'package:journal/food/domain/models/food_unit.dart';
 import 'package:journal/food/presentation/cubit/create_food_cubit.dart';
 
 class CreateFoodPage extends StatelessWidget {
@@ -15,7 +17,12 @@ class CreateFoodPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocProvider(
         create: (_) => getIt<CreateFoodCubit>(),
-        child: const _CreateFoodView(),
+        child: BlocListener<CreateFoodCubit, CreateFoodState>(
+          listener: (context, state) {
+            if (state.formSubmitted == true) context.pop();
+          },
+          child: const _CreateFoodView(),
+        ),
       );
 }
 
@@ -47,15 +54,7 @@ class _CreateFoodViewContent extends StatefulWidget {
   State<_CreateFoodViewContent> createState() => _CreateFoodViewContentState();
 }
 
-// Improvement: Can this be done stateless? -> Use BloC?
-// Improvement: Single object versus various [String]
 class _CreateFoodViewContentState extends State<_CreateFoodViewContent> {
-  String name = "";
-  String carbs = "";
-  String proteins = "";
-  String fats = "";
-  String amount = "";
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -129,15 +128,14 @@ class _CreateFoodViewContentState extends State<_CreateFoodViewContent> {
             ),
             const SizedBox(width: 8),
             Expanded(
-              child: BlocBuilder<CreateFoodCubit, CreateFoodState>(
-                builder: (context, state) {
-                  return JournalSegmentedControl(
-                    selectedFoodUnit: state.unit,
-                    onSelectionChanged: (value) {
-                      context.read<CreateFoodCubit>().setUnit(value);
-                    },
-                  );
-                },
+              child: BlocSelector<CreateFoodCubit, CreateFoodState, FoodUnit>(
+                selector: (state) => state.unit,
+                builder: (_, unit) => JournalSegmentedControl(
+                  selectedFoodUnit: unit,
+                  onSelectionChanged: (value) {
+                    context.read<CreateFoodCubit>().setUnit(value);
+                  },
+                ),
               ),
             ),
           ],

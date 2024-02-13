@@ -1,1 +1,1 @@
-enum FoodUnit { gram, unit }
+enum FoodUnit { gram, portion }

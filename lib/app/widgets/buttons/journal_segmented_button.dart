@@ -79,5 +79,7 @@ class _JournalMaterialSegmentedControl extends SegmentedButton {
     required super.segments,
     required super.selected,
     required super.onSelectionChanged,
-  });
+  }) : super(
+          showSelectedIcon: false,
+        );
 }

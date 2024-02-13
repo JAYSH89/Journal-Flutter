@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:journal/core/theme/typography.dart';
 
+
+
 class JournalTextButton extends StatelessWidget {
   const JournalTextButton({
     super.key,

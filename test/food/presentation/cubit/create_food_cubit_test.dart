@@ -20,8 +20,8 @@ void main() {
       CreateFoodTextFieldKey.fats: "3",
       CreateFoodTextFieldKey.amount: "1",
     },
-    unit: FoodUnit.unit,
-    formValid: true,
+    unit: FoodUnit.portion,
+    formSubmitted: true,
   );
 
   final testFood = Food(
@@ -31,7 +31,7 @@ void main() {
     proteins: 2,
     fats: 3,
     amount: 1,
-    unit: FoodUnit.unit,
+    unit: FoodUnit.portion,
   );
 
   setUp(() {
@@ -43,7 +43,7 @@ void main() {
     createFoodCubit.close();
   });
 
-  void createFoodCubitHelper({
+  void submitHelper({
     required String description,
     required Map<CreateFoodTextFieldKey, String> inputs,
     required FoodUnit foodUnit,
@@ -77,7 +77,7 @@ void main() {
           const expected = CreateFoodState(
             fields: {},
             unit: FoodUnit.gram,
-            formValid: null,
+            formSubmitted: null,
           );
           expect(cubit.state, equals(expected));
         });
@@ -97,21 +97,21 @@ void main() {
     blocTest<CreateFoodCubit, CreateFoodState>(
       "setUnit updates the state with the correct Unit",
       build: () => createFoodCubit,
-      act: (cubit) => cubit.setUnit(FoodUnit.unit),
+      act: (cubit) => cubit.setUnit(FoodUnit.portion),
       expect: () => [
-        const CreateFoodState(fields: {}, unit: FoodUnit.unit),
+        const CreateFoodState(fields: {}, unit: FoodUnit.portion),
       ],
     );
 
-    createFoodCubitHelper(
+    submitHelper(
       description: "submit with valid inputs should true",
       inputs: testState.fields,
-      foodUnit: FoodUnit.unit,
+      foodUnit: FoodUnit.portion,
       skip: 6,
       expectedState: testState.copyWith(
         fields: testState.fields,
-        unit: FoodUnit.unit,
-        formValid: true,
+        unit: FoodUnit.portion,
+        formSubmitted: true,
       ),
       verify: (_) {
         verify(foodRepository.saveFood(any)).called(1);
@@ -119,53 +119,48 @@ void main() {
       },
     );
 
-    createFoodCubitHelper(
-      description: "submit negative amount should formValid false",
-      inputs: Map.from(testState.fields)..[CreateFoodTextFieldKey.carbs] = "-1",
-      foodUnit: FoodUnit.unit,
-      skip: 6,
-      expectedState: testState.copyWith(
-        fields: Map.from(testState.fields)
+    submitHelper(
+        description: "submit negative amount should formSubmitted false",
+        inputs: Map.from(testState.fields)
           ..[CreateFoodTextFieldKey.carbs] = "-1",
-        formValid: false,
-      ),
-    );
+        foodUnit: FoodUnit.portion,
+        skip: 6,
+        expectedState: testState.copyWith(
+          fields: Map.from(testState.fields)
+            ..[CreateFoodTextFieldKey.carbs] = "-1",
+          formSubmitted: false,
+        ),
+        verify: (_) {
+          verifyNever(foodRepository.saveFood(any));
+        });
 
-    createFoodCubitHelper(
-      description: "submit without carb values should formValid false",
+    submitHelper(
+      description: "submit without carb values should formSubmitted false",
       inputs: Map.from(testState.fields)..remove(CreateFoodTextFieldKey.carbs),
-      foodUnit: FoodUnit.unit,
+      foodUnit: FoodUnit.portion,
       skip: 5,
       expectedState: testState.copyWith(
         fields: Map.from(testState.fields)
           ..remove(CreateFoodTextFieldKey.carbs),
-        formValid: false,
+        formSubmitted: false,
       ),
+      verify: (_) {
+        verifyNever(foodRepository.saveFood(any));
+      },
     );
 
-    createFoodCubitHelper(
-      description: "submit empty name should formValid false",
+    submitHelper(
+      description: "submit empty name should formSubmitted false",
       inputs: Map.from(testState.fields)..[CreateFoodTextFieldKey.name] = "",
-      foodUnit: FoodUnit.unit,
+      foodUnit: FoodUnit.portion,
       skip: 6,
       expectedState: testState.copyWith(
         fields: Map.from(testState.fields)..[CreateFoodTextFieldKey.name] = "",
-        formValid: false,
+        formSubmitted: false,
       ),
-    );
-
-    blocTest(
-      "get all food successful should update list food",
-      build: () {
-        when(foodRepository.getAll()).thenReturn([testFood]);
-        return createFoodCubit;
+      verify: (_) {
+        verifyNever(foodRepository.saveFood(any));
       },
-      act: (cubit) {
-        cubit.getAllFood();
-      },
-      expect: () => [
-        CreateFoodState(food: [testFood])
-      ],
     );
 
     blocTest(
