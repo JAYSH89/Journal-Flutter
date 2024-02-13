@@ -96,7 +96,7 @@ class _FoodViewContent extends StatelessWidget {
                     itemCount: foods.length,
                     itemBuilder: (_, index) => JournalInkWell(
                       onTap: () {
-                        _showModal(context: context, food: foods[index]);
+                        _showModal(rootContext: context, food: foods[index]);
                       },
                       child: _foodCard(foods[index]),
                     ),
@@ -144,26 +144,26 @@ class _FoodViewContent extends StatelessWidget {
       );
 
   void _showModal({
-    required BuildContext context,
+    required BuildContext rootContext,
     required Food food,
   }) {
-    final TargetPlatform platform = Theme.of(context).platform;
+    final TargetPlatform platform = Theme.of(rootContext).platform;
 
     if (platform == TargetPlatform.iOS) {
-      _showCupertinoModal(context: context, food: food);
+      _showCupertinoModal(rootContext: rootContext, food: food);
       return;
     }
 
-    _showMaterialModal(context: context, food: food);
+    _showMaterialModal(rootContext: rootContext, food: food);
   }
 
   void _showCupertinoModal({
-    required BuildContext context,
+    required BuildContext rootContext,
     required Food food,
   }) {
     showCupertinoModalPopup(
       useRootNavigator: true,
-      context: context,
+      context: rootContext,
       builder: (BuildContext context) {
         return Container(
           decoration: BoxDecoration(
@@ -174,25 +174,36 @@ class _FoodViewContent extends StatelessWidget {
             ),
           ),
           height: 400,
-          child: SafeArea(top: false, child: _FoodModal(food: food)),
+          child: SafeArea(
+            top: false,
+            child: _FoodModal(
+              rootContext: rootContext,
+              food: food,
+            ),
+          ),
         );
       },
     );
   }
 
-  void _showMaterialModal({required BuildContext context, required Food food}) {
+  void _showMaterialModal(
+      {required BuildContext rootContext, required Food food}) {
     showModalBottomSheet<void>(
       useRootNavigator: true,
       isScrollControlled: true,
-      context: context,
-      builder: (BuildContext context) => _FoodModal(food: food),
+      context: rootContext,
+      builder: (BuildContext context) => _FoodModal(
+        rootContext: rootContext,
+        food: food,
+      ),
     );
   }
 }
 
 class _FoodModal extends StatelessWidget {
-  const _FoodModal({super.key, required this.food});
+  const _FoodModal({super.key, required this.rootContext, required this.food});
 
+  final BuildContext rootContext;
   final Food food;
 
   @override
@@ -206,7 +217,20 @@ class _FoodModal extends StatelessWidget {
               _header(context, food.name, () => Navigator.pop(context)),
               const Spacer(),
               Row(
-                children: [Expanded(child: _deleteButton(() {}))],
+                children: [
+                  Expanded(
+                    child: JournalTextButton(
+                      text: "Delete",
+                      onPressed: () {
+                        final id = food.id;
+                        if (id != null) {
+                          BlocProvider.of<FoodCubit>(rootContext).deleteFood(id);
+                          Navigator.pop(context);
+                        }
+                      },
+                    ),
+                  )
+                ],
               ),
             ],
           ),
