@@ -205,7 +205,7 @@ class _FoodModal extends StatelessWidget {
               const SizedBox(height: 16),
               _macroDisplay(),
               const SizedBox(height: 16),
-              _calorieDisplay(),
+              _calorieBarChart(),
               const Spacer(),
               _deleteButton(context),
             ],
@@ -254,39 +254,27 @@ class _FoodModal extends StatelessWidget {
         ],
       );
 
-  Widget _calorieDisplay() => SizedBox(
-        height: 32,
-        child: _calorieBarChart(),
-      );
-
-  Widget _calorieBarChart() => Container(
-        height: 36,
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(16),
+  Widget _calorieBarChart() => ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: SizedBox(
+          height: 44,
+          child: Stack(children: [_calorieBars(), _calorieOverlay()]),
         ),
-        child: Stack(children: [_calorieBars(), _calorieOverlay()]),
       );
 
   Widget _calorieBars() => Row(
         children: [
           Expanded(
             flex: (food.percentageFats * 100).toInt(),
-            child: Container(
-              color: const Color.fromARGB(255, 231, 194, 53),
-            ),
+            child: Container(color: const Color.fromARGB(255, 231, 194, 53)),
           ),
           Expanded(
             flex: (food.percentageCarbs * 100).toInt(),
-            child: Container(
-              color: const Color.fromARGB(255, 228, 110, 107),
-            ),
+            child: Container(color: const Color.fromARGB(255, 228, 110, 107)),
           ),
           Expanded(
             flex: (food.percentageProteins * 100).toInt(),
-            child: Container(
-              color: const Color.fromARGB(255, 71, 177, 242),
-            ),
+            child: Container(color: const Color.fromARGB(255, 71, 177, 242)),
           ),
         ],
       );
@@ -325,7 +313,7 @@ class _FoodModal extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: background,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(8),
         ),
         height: 120,
         child: Stack(
@@ -347,10 +335,7 @@ class _FoodModal extends StatelessWidget {
               alignment: Alignment.bottomRight,
               child: Text(
                 "${(percentage * 100).toStringAsFixed(2)} %",
-                style: satoshiBold.copyWith(
-                  color: Colors.white,
-                  fontSize: 12,
-                ),
+                style: satoshiBold.copyWith(color: Colors.white, fontSize: 12),
               ),
             )
           ],
