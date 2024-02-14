@@ -11,7 +11,6 @@ import 'package:journal/core/di/injection_container.dart';
 import 'package:journal/core/theme/typography.dart';
 import 'package:journal/core/util/string_extension.dart';
 import 'package:journal/food/domain/models/food.dart';
-import 'package:journal/food/domain/models/food_unit.dart';
 import 'package:journal/food/presentation/cubit/food_cubit.dart';
 
 class FoodPage extends StatelessWidget {
