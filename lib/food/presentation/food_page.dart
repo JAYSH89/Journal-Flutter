@@ -114,7 +114,10 @@ class _FoodViewContent extends StatelessWidget {
               children: [
                 _foodTitle(food: food),
                 const Spacer(),
-                Text("${food.calories()} kcal", style: satoshiBold),
+                Text(
+                  "${food.calories().toStringAsFixed(0)} kcal",
+                  style: satoshiBold,
+                ),
               ],
             ),
           ),
@@ -127,7 +130,7 @@ class _FoodViewContent extends StatelessWidget {
         children: [
           Text(food.name, style: satoshiBold),
           Text(
-            "${food.amount} ${food.unit.name.capitalized}",
+            "${food.amount.toStringAsFixed(0)} ${food.unit.name.capitalized}",
             style: satoshiRegular.copyWith(fontSize: 10),
           ),
         ],
@@ -203,7 +206,7 @@ class _FoodModal extends StatelessWidget {
               _macroDisplay(),
               const SizedBox(height: 16),
               _calorieDisplay(),
-              const SizedBox(height: 16),
+              const Spacer(),
               _deleteButton(context),
             ],
           ),
@@ -212,15 +215,12 @@ class _FoodModal extends StatelessWidget {
 
   Widget _header(BuildContext context) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.baseline,
-        textBaseline: TextBaseline.alphabetic,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
             food.name.capitalized,
             style: satoshiBlack.copyWith(fontSize: 26),
           ),
-          const SizedBox(width: 12),
-          _subHeader(),
           const Spacer(),
           JournalIconButton(
             buttonType: IconButtonType.close,
@@ -229,49 +229,100 @@ class _FoodModal extends StatelessWidget {
         ],
       );
 
-  Widget _subHeader() {
-    final calorie = food.calories().toStringAsFixed(0);
-    final quantity = food.amount.toStringAsFixed(0);
-    final unit = food.unit.name.capitalized;
-
-    return Text(
-      "$quantity $unit - $calorie kcal",
-      style: satoshiRegular.copyWith(fontSize: 14),
-    );
-  }
-
   Widget _macroDisplay() => Row(
         children: [
           _macroBlock(
             title: "Fats",
             amount: food.fats,
             background: const Color.fromARGB(255, 231, 194, 53),
+            percentage: food.percentageFats,
           ),
           const SizedBox(width: 16),
           _macroBlock(
             title: "Carbs",
             amount: food.carbs,
             background: const Color.fromARGB(255, 228, 110, 107),
+            percentage: food.percentageCarbs,
           ),
           const SizedBox(width: 16),
           _macroBlock(
             title: "Proteins",
             amount: food.proteins,
             background: const Color.fromARGB(255, 71, 177, 242),
+            percentage: food.percentageProteins,
           ),
         ],
       );
 
-  Widget _calorieDisplay() => const Expanded(child: Placeholder());
+  Widget _calorieDisplay() => SizedBox(
+        height: 32,
+        child: _calorieBarChart(),
+      );
+
+  Widget _calorieBarChart() => Container(
+        height: 36,
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Stack(children: [_calorieBars(), _calorieOverlay()]),
+      );
+
+  Widget _calorieBars() => Row(
+        children: [
+          Expanded(
+            flex: (food.percentageFats * 100).toInt(),
+            child: Container(
+              color: const Color.fromARGB(255, 231, 194, 53),
+            ),
+          ),
+          Expanded(
+            flex: (food.percentageCarbs * 100).toInt(),
+            child: Container(
+              color: const Color.fromARGB(255, 228, 110, 107),
+            ),
+          ),
+          Expanded(
+            flex: (food.percentageProteins * 100).toInt(),
+            child: Container(
+              color: const Color.fromARGB(255, 71, 177, 242),
+            ),
+          ),
+        ],
+      );
+
+  Widget _calorieOverlay() {
+    final calorie = food.calories().toStringAsFixed(0);
+    final quantity = food.amount.toStringAsFixed(0);
+    final unit = food.unit.name.capitalized;
+
+    return Row(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 4),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "$quantity $unit - $calorie kcal",
+                style: satoshiBlack.copyWith(fontSize: 18, color: Colors.white),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _macroBlock({
     required String title,
     required double amount,
     required Color background,
+    required double percentage,
   }) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: background,
           borderRadius: BorderRadius.circular(16),
@@ -283,21 +334,25 @@ class _FoodModal extends StatelessWidget {
               alignment: Alignment.topLeft,
               child: _macroBlockText(
                 "$title:",
-                style: satoshiBold.copyWith(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
+                style: satoshiBold.copyWith(color: Colors.white, fontSize: 18),
               ),
             ),
             Center(
               child: _macroBlockText(
                 amount.toStringAsFixed(0),
-                style: satoshiBlack.copyWith(
-                  color: Colors.white,
-                  fontSize: 34,
-                ),
+                style: satoshiBlack.copyWith(color: Colors.white, fontSize: 34),
               ),
             ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Text(
+                "${(percentage * 100).toStringAsFixed(2)} %",
+                style: satoshiBold.copyWith(
+                  color: Colors.white,
+                  fontSize: 12,
+                ),
+              ),
+            )
           ],
         ),
       ),

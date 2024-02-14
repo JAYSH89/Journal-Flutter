@@ -15,11 +15,10 @@ class JournalApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final TargetPlatform platform = Theme.of(context).platform;
 
-    switch (platform) {
-      case TargetPlatform.iOS:
-        return CupertinoApp.router(routerConfig: router);
-      default:
-        return MaterialApp.router(routerConfig: router);
+    if (platform == TargetPlatform.iOS) {
+      return CupertinoApp.router(routerConfig: router);
     }
+
+    return MaterialApp.router(routerConfig: router);
   }
 }

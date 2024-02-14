@@ -22,24 +22,23 @@ class JournalTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final TargetPlatform platform = Theme.of(context).platform;
 
-    switch (platform) {
-      case TargetPlatform.iOS:
-        return JournalCupertinoTextField(
-          keyboardType: keyboardType,
-          placeholder: placeholder,
-          textInputAction: textInputAction,
-          onChanged: onChanged,
-          onSubmitted: onSubmitted,
-        );
-      default:
-        return JournalMaterialTextField(
-          keyboardType: keyboardType,
-          placeholder: placeholder,
-          textInputAction: textInputAction,
-          onChanged: onChanged,
-          onSubmitted: onSubmitted,
-        );
+    if (platform == TargetPlatform.iOS) {
+      return JournalCupertinoTextField(
+        keyboardType: keyboardType,
+        placeholder: placeholder,
+        textInputAction: textInputAction,
+        onChanged: onChanged,
+        onSubmitted: onSubmitted,
+      );
     }
+
+    return JournalMaterialTextField(
+      keyboardType: keyboardType,
+      placeholder: placeholder,
+      textInputAction: textInputAction,
+      onChanged: onChanged,
+      onSubmitted: onSubmitted,
+    );
   }
 }
 

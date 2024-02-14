@@ -13,21 +13,20 @@ class JournalScaffoldWithNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final platform = Theme.of(context).platform;
 
-    switch (platform) {
-      case TargetPlatform.iOS:
-        return JournalCupertinoScaffold(
-          routes: routes,
-          navigationShell: navigationShell,
-          currentIndex: navigationShell.currentIndex,
-          onTap: _onTap,
-        );
-      default:
-        return JournalMaterialScaffold(
-          routes: routes,
-          navigationShell: navigationShell,
-          onTap: _onTap,
-        );
+    if (platform == TargetPlatform.iOS) {
+      return JournalCupertinoScaffold(
+        routes: routes,
+        navigationShell: navigationShell,
+        currentIndex: navigationShell.currentIndex,
+        onTap: _onTap,
+      );
     }
+
+    return JournalMaterialScaffold(
+      routes: routes,
+      navigationShell: navigationShell,
+      onTap: _onTap,
+    );
   }
 
   void _onTap(int index) {
