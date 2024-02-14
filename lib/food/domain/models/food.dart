@@ -24,4 +24,19 @@ extension FoodExtension on Food {
     final total = caloricCarbs + caloricProteins + caloricFats;
     return num.parse(total.toStringAsFixed(2)).toDouble();
   }
+
+  double get percentageFats {
+    final caloricFats = fats * 9;
+    return caloricFats / calories();
+  }
+
+  double get percentageCarbs {
+    final caloricCarbs = carbs * 4;
+    return caloricCarbs / calories();
+  }
+
+  double get percentageProteins {
+    final caloricProteins = proteins * 4;
+    return caloricProteins / calories();
+  }
 }

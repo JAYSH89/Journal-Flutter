@@ -11,6 +11,7 @@ import 'package:journal/core/di/injection_container.dart';
 import 'package:journal/core/theme/typography.dart';
 import 'package:journal/core/util/string_extension.dart';
 import 'package:journal/food/domain/models/food.dart';
+import 'package:journal/food/domain/models/food_unit.dart';
 import 'package:journal/food/presentation/cubit/food_cubit.dart';
 
 class FoodPage extends StatelessWidget {
@@ -49,9 +50,7 @@ class _FoodViewState extends State<FoodView> {
           titleLabel: _title,
           trailing: JournalIconButton(
             buttonType: IconButtonType.add,
-            onPressed: () {
-              _onPressAdd(context, platform);
-            },
+            onPressed: () => _onPressAdd(context, platform),
           ),
           child: _FoodViewContent(),
         ),
@@ -64,9 +63,7 @@ class _FoodViewState extends State<FoodView> {
         actions: [
           JournalIconButton(
             buttonType: IconButtonType.add,
-            onPressed: () {
-              _onPressAdd(context, platform);
-            },
+            onPressed: () => _onPressAdd(context, platform),
           ),
         ],
       ),
@@ -95,10 +92,10 @@ class _FoodViewContent extends StatelessWidget {
                     child: ListView.builder(
                       itemCount: state.foods.length,
                       itemBuilder: (_, index) => JournalInkWell(
-                        onTap: () {
-                          _showModal(
-                              context: context, food: state.foods[index]);
-                        },
+                        onTap: () => _showModal(
+                          context: context,
+                          food: state.foods[index],
+                        ),
                         child: _foodCard(state.foods[index]),
                       ),
                     ),
@@ -145,24 +142,18 @@ class _FoodViewContent extends StatelessWidget {
         endIndent: 0,
       );
 
-  void _showModal({
-    required BuildContext context,
-    required Food food,
-  }) {
+  void _showModal({required BuildContext context, required Food food}) {
     final TargetPlatform platform = Theme.of(context).platform;
 
     if (platform == TargetPlatform.iOS) {
-      _showCupertinoModal(context: context, food: food);
+      _cupertinoModal(context: context, food: food);
       return;
     }
 
-    _showMaterialModal(context: context, food: food);
+    _materialModal(context: context, food: food);
   }
 
-  void _showCupertinoModal({
-    required BuildContext context,
-    required Food food,
-  }) {
+  void _cupertinoModal({required BuildContext context, required Food food}) {
     showCupertinoModalPopup(
       useRootNavigator: true,
       context: context,
@@ -177,19 +168,13 @@ class _FoodViewContent extends StatelessWidget {
             ),
           ),
           height: 400,
-          child: SafeArea(
-            top: false,
-            child: _FoodModal(food: food),
-          ),
+          child: SafeArea(top: false, child: _FoodModal(food: food)),
         ),
       ),
     );
   }
 
-  void _showMaterialModal({
-    required BuildContext context,
-    required Food food,
-  }) {
+  void _materialModal({required BuildContext context, required Food food}) {
     showModalBottomSheet<void>(
       useRootNavigator: true,
       isScrollControlled: true,
@@ -210,31 +195,122 @@ class _FoodModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SizedBox(
         height: 400,
-        width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: Column(
             children: [
-              _header(context, food.name),
-              const Spacer(),
+              _header(context),
+              const SizedBox(height: 16),
+              _macroDisplay(),
+              const SizedBox(height: 16),
+              _calorieDisplay(),
+              const SizedBox(height: 16),
               _deleteButton(context),
             ],
           ),
         ),
       );
 
-  Widget _header(BuildContext context, String name) {
-    return Row(
-      children: <Widget>[
-        Text(food.name, style: satoshiBlack.copyWith(fontSize: 22)),
-        const Spacer(),
-        JournalIconButton(
-          buttonType: IconButtonType.close,
-          onPressed: () => Navigator.pop(context),
-        ),
-      ],
+  Widget _header(BuildContext context) => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic,
+        children: <Widget>[
+          Text(
+            food.name.capitalized,
+            style: satoshiBlack.copyWith(fontSize: 26),
+          ),
+          const SizedBox(width: 12),
+          _subHeader(),
+          const Spacer(),
+          JournalIconButton(
+            buttonType: IconButtonType.close,
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      );
+
+  Widget _subHeader() {
+    final calorie = food.calories().toStringAsFixed(0);
+    final quantity = food.amount.toStringAsFixed(0);
+    final unit = food.unit.name.capitalized;
+
+    return Text(
+      "$quantity $unit - $calorie kcal",
+      style: satoshiRegular.copyWith(fontSize: 14),
     );
   }
+
+  Widget _macroDisplay() => Row(
+        children: [
+          _macroBlock(
+            title: "Fats",
+            amount: food.fats,
+            background: const Color.fromARGB(255, 231, 194, 53),
+          ),
+          const SizedBox(width: 16),
+          _macroBlock(
+            title: "Carbs",
+            amount: food.carbs,
+            background: const Color.fromARGB(255, 228, 110, 107),
+          ),
+          const SizedBox(width: 16),
+          _macroBlock(
+            title: "Proteins",
+            amount: food.proteins,
+            background: const Color.fromARGB(255, 71, 177, 242),
+          ),
+        ],
+      );
+
+  Widget _calorieDisplay() => const Expanded(child: Placeholder());
+
+  Widget _macroBlock({
+    required String title,
+    required double amount,
+    required Color background,
+  }) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: background,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        height: 120,
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: _macroBlockText(
+                "$title:",
+                style: satoshiBold.copyWith(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            Center(
+              child: _macroBlockText(
+                amount.toStringAsFixed(0),
+                style: satoshiBlack.copyWith(
+                  color: Colors.white,
+                  fontSize: 34,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _macroBlockText(String text, {TextStyle? style}) => Text(
+        text,
+        style: style,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      );
 
   Widget _deleteButton(BuildContext context) => Row(
         children: [
