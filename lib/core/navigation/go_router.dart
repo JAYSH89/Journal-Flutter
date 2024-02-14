@@ -42,12 +42,6 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: JournalRoute().path,
               builder: (_, state) => JournalPage(key: state.pageKey),
-              routes: <RouteBase>[
-                GoRoute(
-                  path: DeveloperRoute().path,
-                  builder: (_, state) => DeveloperPage(key: state.pageKey),
-                ),
-              ],
             ),
           ],
         ),
@@ -86,6 +80,12 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: ProfileRoute().path,
               builder: (_, state) => ProfilePage(key: state.pageKey),
+              routes: <RouteBase>[
+                GoRoute(
+                  path: DeveloperRoute().path,
+                  builder: (_, state) => DeveloperPage(key: state.pageKey),
+                ),
+              ],
             ),
           ],
         ),

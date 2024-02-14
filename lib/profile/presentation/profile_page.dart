@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:journal/app/widgets/journal_app_bar.dart';
+import 'package:journal/app/widgets/journal_button.dart';
 import 'package:journal/core/theme/typography.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -37,7 +39,12 @@ class ProfileView extends StatelessWidget {
 
 class _ProfileViewContent extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Center(
-        child: Text("Hello, Profile", style: satoshiRegular),
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(child: Text("Hello, Profile", style: satoshiRegular)),
+          JournalButton(onPressed: () => context.go("/profile/developer")),
+        ],
       );
 }

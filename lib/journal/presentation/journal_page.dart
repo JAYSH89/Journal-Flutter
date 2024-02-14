@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:journal/app/widgets/journal_app_bar.dart';
-import 'package:journal/app/widgets/journal_button.dart';
 import 'package:journal/core/theme/typography.dart';
 
 class JournalPage extends StatelessWidget {
@@ -44,11 +42,6 @@ class _JournalViewContent extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text("Hello, Journal", style: satoshiRegular),
-          JournalButton(
-            onPressed: () {
-              context.go("/journal/developer");
-            },
-          ),
         ],
       );
 }
