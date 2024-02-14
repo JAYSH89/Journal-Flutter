@@ -1,69 +1,47 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:journal/app/widgets/journal_app_bar.dart';
+import 'package:go_router/go_router.dart';
 import 'package:journal/app/widgets/journal_bottom_navigation_bar.dart';
+import 'package:journal/core/navigation/go_router.dart';
 
 class JournalMaterialScaffold extends Scaffold {
-  final int selectedIndex;
-  final List<TabRoute> routes;
-  final Function(int) onTabBarItemTapped;
+  final List<Routes> routes;
+  final StatefulNavigationShell navigationShell;
+  final Function(int) onTap;
 
   JournalMaterialScaffold({
     super.key,
-    required this.selectedIndex,
     required this.routes,
-    required this.onTabBarItemTapped,
+    required this.navigationShell,
+    required this.onTap,
   }) : super(
-          appBar: JournalMaterialAppBar(
-            titleLabel: routes[selectedIndex].route.title,
-          ),
-          bottomNavigationBar: JournalBottomNavigationBar(
-            currentIndex: selectedIndex,
-            onItemTapped: onTabBarItemTapped,
+          bottomNavigationBar: JournalMaterialTabBar(
+            currentIndex: navigationShell.currentIndex,
+            onTap: onTap,
             routes: routes,
           ),
-          body: routes[selectedIndex].page,
+          body: navigationShell,
         );
 }
 
-class JournalCupertinoScaffold extends CupertinoPageScaffold {
-  final int selectedIndex;
-  final List<TabRoute> routes;
-  final Function(int) onTabBarItemTapped;
+class JournalCupertinoScaffold extends CupertinoTabScaffold {
+  final List<Routes> routes;
+  final StatefulNavigationShell navigationShell;
+  final int currentIndex;
+  final Function(int) onTap;
 
   JournalCupertinoScaffold({
     super.key,
-    required this.selectedIndex,
     required this.routes,
-    required this.onTabBarItemTapped,
+    required this.navigationShell,
+    required this.currentIndex,
+    required this.onTap,
   }) : super(
-          child: CupertinoTabScaffold(
-            tabBar: JournalCupertinoBottomNavigationBar(
-              routes: routes,
-              onTabBarItemTapped: onTabBarItemTapped,
-            ),
-            tabBuilder: (_, int index) {
-              return JournalCupertinoSliverNavigationBar(
-                titleLabel: routes[selectedIndex].route.title,
-                child: routes[index].page,
-              );
-            },
+          tabBar: JournalCupertinoTabBar(
+            onTap: onTap,
+            currentIndex: currentIndex,
+            routes: routes,
           ),
-        );
-}
-
-class JournalCupertinoSliverNavigationBar extends CustomScrollView {
-  final String titleLabel;
-  final Widget child;
-
-  JournalCupertinoSliverNavigationBar({
-    super.key,
-    required this.titleLabel,
-    required this.child,
-  }) : super(
-          slivers: <Widget>[
-            CupertinoSliverNavigationBar(largeTitle: Text(titleLabel)),
-            SliverFillRemaining(child: child),
-          ],
+          tabBuilder: (_, int index) => navigationShell,
         );
 }

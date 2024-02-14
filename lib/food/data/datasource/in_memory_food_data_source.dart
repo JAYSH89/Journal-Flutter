@@ -38,7 +38,7 @@ class InMemoryFoodDataSource implements FoodDataSource {
       throw InMemoryNotFoundException('update food: $id not found');
     }
 
-    foods.remove(toUpdate);
+    foods = List.from(foods)..remove(toUpdate);
     final updatedFood = Food(
       id: toUpdate.id,
       name: food.name,
@@ -72,7 +72,7 @@ class InMemoryFoodDataSource implements FoodDataSource {
   deleteFood(String id) {
     final toDelete = foods.where((food) => food.id == id).toList();
     if (toDelete.isNotEmpty) {
-      foods.remove(toDelete.first);
+      foods = List.from(foods)..remove(toDelete.first);
       return;
     }
 

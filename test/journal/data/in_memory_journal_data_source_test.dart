@@ -12,7 +12,7 @@ void main() {
     dataSource = InMemoryJournalDataSource();
   });
 
-  const potato = Food(
+  final potato = Food(
     name: 'Potato',
     carbs: 23.2,
     proteins: 3.1,

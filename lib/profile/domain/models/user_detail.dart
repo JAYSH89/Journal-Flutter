@@ -1,23 +1,13 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class UserDetail extends Equatable {
-  final String? firstName;
-  final String? lastName;
-  final String? email;
-  final DateTime? dateOfBirth;
+part 'user_detail.freezed.dart';
 
-  const UserDetail({
-    this.firstName,
-    this.lastName,
-    this.email,
-    this.dateOfBirth,
-  });
-
-  @override
-  List<Object?> get props => [
-        firstName,
-        lastName,
-        email,
-        dateOfBirth,
-      ];
+@freezed
+class UserDetail with _$UserDetail {
+  factory UserDetail({
+    String? firstName,
+    String? lastName,
+    String? email,
+    DateTime? dateOfBirth,
+  }) = _UserDetail;
 }
