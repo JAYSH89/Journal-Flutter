@@ -1,6 +1,8 @@
 import 'package:journal/food/domain/models/food.dart';
 
 abstract class FoodRepository {
+  Stream<List<Food>> watchAll();
+
   Future<List<Food>> getAll();
 
   Future<Food?> getFoodById({required int id});

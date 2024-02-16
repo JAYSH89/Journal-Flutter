@@ -1,6 +1,8 @@
 import 'package:journal/food/data/local/food_entity.dart';
 
 abstract class FoodDataSource {
+  Stream<List<FoodEntity>> watchAll();
+
   Future<List<FoodEntity>> getAll();
 
   Future<FoodEntity?> getFoodById(int id);

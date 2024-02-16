@@ -11,10 +11,17 @@ class FoodRepositoryImpl implements FoodRepository {
   final FoodDataSource dataSource;
 
   @override
+  Stream<List<Food>> watchAll() => dataSource //
+      .watchAll()
+      .map((event) => event.map((foodEntity) {
+            return foodEntity.toFood();
+          }).toList());
+
+  @override
   Future<List<Food>> getAll() => dataSource //
       .getAll()
-      .then((entityList) => entityList.map((entity) {
-            return entity.toFood();
+      .then((entityList) => entityList.map((foodEntity) {
+            return foodEntity.toFood();
           }).toList());
 
   @override
@@ -25,8 +32,8 @@ class FoodRepositoryImpl implements FoodRepository {
   @override
   Future<List<Food>> searchFoodByName({required String name}) => dataSource //
       .searchFoodByName(name)
-      .then((entityList) => entityList.map((entity) {
-            return entity.toFood();
+      .then((entityList) => entityList.map((foodEntity) {
+            return foodEntity.toFood();
           }).toList());
 
   @override

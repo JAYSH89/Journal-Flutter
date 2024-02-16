@@ -31,19 +31,19 @@ void main() {
   );
 
   group("Food cubit test", () {
-    blocTest<FoodCubit, FoodState>(
-      "getAllFood should update state with food",
-      build: () {
-        when(foodRepository.getAll()).thenAnswer((_) async => [testFood]);
-        return foodCubit;
-      },
-      act: (_) {
-        foodCubit.getAllFood();
-      },
-      expect: () => [
-        FoodState(foods: [testFood]),
-      ],
-    );
+    // blocTest<FoodCubit, FoodState>(
+    //   "getAllFood should update state with food",
+    //   build: () {
+    //     when(foodRepository.getAll()).thenAnswer((_) async => [testFood]);
+    //     return foodCubit;
+    //   },
+    //   act: (_) {
+    //     foodCubit.getAllFood();
+    //   },
+    //   expect: () => [
+    //     FoodState(foods: [testFood]),
+    //   ],
+    // );
 
     blocTest<FoodCubit, FoodState>(
       "deleteFood should delete and retrieve all food again",

@@ -77,6 +77,15 @@ class MockFoodDataSource extends _i1.Mock implements _i5.FoodDataSource {
   }
 
   @override
+  _i6.Stream<List<_i7.FoodEntity>> watchAll() => (super.noSuchMethod(
+        Invocation.method(
+          #watchAll,
+          [],
+        ),
+        returnValue: _i6.Stream<List<_i7.FoodEntity>>.empty(),
+      ) as _i6.Stream<List<_i7.FoodEntity>>);
+
+  @override
   _i6.Future<List<_i7.FoodEntity>> getAll() => (super.noSuchMethod(
         Invocation.method(
           #getAll,
@@ -460,6 +469,15 @@ class MockFoodRepository extends _i1.Mock implements _i13.FoodRepository {
   MockFoodRepository() {
     _i1.throwOnMissingStub(this);
   }
+
+  @override
+  _i6.Stream<List<_i14.Food>> watchAll() => (super.noSuchMethod(
+        Invocation.method(
+          #watchAll,
+          [],
+        ),
+        returnValue: _i6.Stream<List<_i14.Food>>.empty(),
+      ) as _i6.Stream<List<_i14.Food>>);
 
   @override
   _i6.Future<List<_i14.Food>> getAll() => (super.noSuchMethod(
