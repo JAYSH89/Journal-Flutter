@@ -1,15 +1,13 @@
-import 'package:journal/food/domain/models/food.dart';
+import 'package:journal/food/data/local/food_entity.dart';
 
 abstract class FoodDataSource {
-  List<Food> getAll();
+  Future<List<FoodEntity>> getAll();
 
-  Food? getFoodById(String id);
+  Future<FoodEntity?> getFoodById(int id);
 
-  List<Food> searchFoodByName(String name);
+  Future<List<FoodEntity>> searchFoodByName(String name);
 
-  Food updateFood(String id, Food food);
+  Future<FoodEntity?> saveFood(FoodEntity food);
 
-  Food saveFood(Food food);
-
-  deleteFood(String id);
+  Future<bool> deleteFood(int id);
 }

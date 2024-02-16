@@ -12,14 +12,18 @@ class FoodCubit extends Cubit<FoodState> {
 
   final FoodRepository _repository;
 
-  void getAllFood() {
-    final result = _repository.getAll();
+  void getAllFood() async {
+    final result = await _repository.getAll();
     emit(state.copyWith(foods: result));
   }
 
-  void deleteFood(String id) {
-    _repository.deleteFood(id);
-    getAllFood();
+  void deleteFood({required int id}) async {
+    final success = await _repository.deleteFood(id: id);
+    if (success) {
+      getAllFood();
+      return;
+    }
+    emit(state.copyWith(errorMessage: "Error deleting $id"));
   }
 }
 
@@ -27,5 +31,6 @@ class FoodCubit extends Cubit<FoodState> {
 class FoodState with _$FoodState {
   const factory FoodState({
     @Default([]) List<Food> foods,
+    @Default(null) String? errorMessage,
   }) = _FoodState;
 }

@@ -6,13 +6,13 @@ part 'food.freezed.dart';
 @freezed
 class Food with _$Food {
   factory Food({
-    String? id,
+    int? id,
     required String name,
     required double carbs,
     required double proteins,
     required double fats,
     required double amount,
-    required FoodUnit unit,
+    required FoodUnit foodUnit,
   }) = _Food;
 }
 

@@ -130,7 +130,7 @@ class _FoodViewContent extends StatelessWidget {
         children: [
           Text(food.name, style: satoshiBold),
           Text(
-            "${food.amount.toStringAsFixed(0)} ${food.unit.name.capitalized}",
+            "${food.amount.toStringAsFixed(0)} ${food.foodUnit.name.capitalized}",
             style: satoshiRegular.copyWith(fontSize: 10),
           ),
         ],
@@ -282,7 +282,7 @@ class _FoodModal extends StatelessWidget {
   Widget _calorieOverlay() {
     final calorie = food.calories().toStringAsFixed(0);
     final quantity = food.amount.toStringAsFixed(0);
-    final unit = food.unit.name.capitalized;
+    final foodUnit = food.foodUnit.name.capitalized;
 
     return Row(
       children: [
@@ -292,7 +292,7 @@ class _FoodModal extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "$quantity $unit - $calorie kcal",
+                "$quantity $foodUnit - $calorie kcal",
                 style: satoshiBlack.copyWith(fontSize: 18, color: Colors.white),
               ),
             ),
@@ -359,7 +359,7 @@ class _FoodModal extends StatelessWidget {
               onPressed: () {
                 final id = food.id;
                 if (id != null) {
-                  BlocProvider.of<FoodCubit>(context).deleteFood(id);
+                  BlocProvider.of<FoodCubit>(context).deleteFood(id: id);
                   Navigator.pop(context);
                 }
               },

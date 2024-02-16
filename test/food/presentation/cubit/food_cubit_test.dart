@@ -21,20 +21,20 @@ void main() {
   });
 
   final testFood = Food(
-    id: "example id",
+    id: 1,
     name: "Apple",
     carbs: 1,
     proteins: 2,
     fats: 3,
     amount: 1,
-    unit: FoodUnit.portion,
+    foodUnit: FoodUnit.portion,
   );
 
   group("Food cubit test", () {
     blocTest<FoodCubit, FoodState>(
       "getAllFood should update state with food",
       build: () {
-        when(foodRepository.getAll()).thenReturn([testFood]);
+        when(foodRepository.getAll()).thenAnswer((_) async => [testFood]);
         return foodCubit;
       },
       act: (_) {
@@ -48,15 +48,16 @@ void main() {
     blocTest<FoodCubit, FoodState>(
       "deleteFood should delete and retrieve all food again",
       build: () {
-        when(foodRepository.deleteFood(any)).thenAnswer((_) {});
-        when(foodRepository.getAll()).thenReturn([testFood]);
+        when(foodRepository.deleteFood(id: testFood.id!))
+            .thenAnswer((_) async => true);
+        when(foodRepository.getAll()).thenAnswer((_) async => [testFood]);
         return foodCubit;
       },
       act: (_) {
-        foodCubit.deleteFood(testFood.id!);
+        foodCubit.deleteFood(id: testFood.id!);
       },
       verify: (_) {
-        verify(foodRepository.deleteFood(any)).called(1);
+        verify(foodRepository.deleteFood(id: testFood.id!)).called(1);
         verify(foodRepository.getAll()).called(1);
         verifyNoMoreInteractions(foodRepository);
       },

@@ -2,8 +2,6 @@ import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
 import 'package:journal/food/data/datasource/food_data_source.dart';
 import 'package:journal/food/data/local/food_entity.dart';
-import 'package:journal/food/domain/models/food.dart';
-import 'package:journal/food/domain/models/food_unit.dart';
 
 @Injectable(as: FoodDataSource)
 class FoodDataSourceImpl extends FoodDataSource {
@@ -11,40 +9,36 @@ class FoodDataSourceImpl extends FoodDataSource {
 
   final Isar database;
 
-  final deleteMe = Food(
-    name: 'Potato',
-    carbs: 23.2,
-    proteins: 3.1,
-    fats: 0.1,
-    amount: 1,
-    unit: FoodUnit.gram,
-  );
-
   @override
-  List<Food> getAll() {
-    return [deleteMe];
+  Future<List<FoodEntity>> getAll() async {
+    return database.collection<FoodEntity>().where().findAll();
   }
 
   @override
-  Food? getFoodById(String id) {
-    return deleteMe;
+  Future<FoodEntity?> getFoodById(int id) {
+    return database.foodEntitys.get(id);
   }
 
   @override
-  List<Food> searchFoodByName(String name) {
-    return [deleteMe];
+  Future<List<FoodEntity>> searchFoodByName(String name) {
+    return database.foodEntitys //
+        .filter()
+        .nameContains(name)
+        .findAll();
   }
 
   @override
-  Food saveFood(Food food) {
-    return deleteMe;
+  Future<FoodEntity?> saveFood(FoodEntity food) async {
+    return await database.writeTxn(() async {
+      final savedId = await database.foodEntitys.put(food);
+      return database.foodEntitys.get(savedId);
+    });
   }
 
   @override
-  Food updateFood(String id, Food food) {
-    return deleteMe;
+  Future<bool> deleteFood(int id) async {
+    return await database.writeTxn(() async {
+      return database.foodEntitys.delete(id);
+    });
   }
-
-  @override
-  deleteFood(String id) {}
 }

@@ -3,22 +3,23 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i9;
+import 'dart:async' as _i6;
 
-import 'package:journal/food/data/datasource/food_data_source.dart' as _i6;
-import 'package:journal/food/domain/models/food.dart' as _i2;
+import 'package:journal/food/data/datasource/food_data_source.dart' as _i5;
+import 'package:journal/food/data/local/food_entity.dart' as _i7;
+import 'package:journal/food/domain/models/food.dart' as _i14;
 import 'package:journal/food/domain/repository/food_repository.dart' as _i13;
 import 'package:journal/journal/data/datasource/journal_data_source.dart'
-    as _i7;
-import 'package:journal/journal/domain/models/journal_entry.dart' as _i3;
+    as _i8;
+import 'package:journal/journal/domain/models/journal_entry.dart' as _i2;
 import 'package:journal/journal/domain/repository/journal_repository.dart'
     as _i11;
 import 'package:journal/profile/data/datasource/user_details_data_source.dart'
-    as _i8;
+    as _i9;
 import 'package:journal/profile/data/datasource/weight_measurement_data_source.dart'
     as _i10;
-import 'package:journal/profile/domain/models/user_detail.dart' as _i4;
-import 'package:journal/profile/domain/models/weight_measurement.dart' as _i5;
+import 'package:journal/profile/domain/models/user_detail.dart' as _i3;
+import 'package:journal/profile/domain/models/weight_measurement.dart' as _i4;
 import 'package:journal/profile/domain/repository/profile_repository.dart'
     as _i12;
 import 'package:mockito/mockito.dart' as _i1;
@@ -36,8 +37,8 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeFood_0 extends _i1.SmartFake implements _i2.Food {
-  _FakeFood_0(
+class _FakeJournalEntry_0 extends _i1.SmartFake implements _i2.JournalEntry {
+  _FakeJournalEntry_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -46,8 +47,8 @@ class _FakeFood_0 extends _i1.SmartFake implements _i2.Food {
         );
 }
 
-class _FakeJournalEntry_1 extends _i1.SmartFake implements _i3.JournalEntry {
-  _FakeJournalEntry_1(
+class _FakeUserDetail_1 extends _i1.SmartFake implements _i3.UserDetail {
+  _FakeUserDetail_1(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -56,19 +57,9 @@ class _FakeJournalEntry_1 extends _i1.SmartFake implements _i3.JournalEntry {
         );
 }
 
-class _FakeUserDetail_2 extends _i1.SmartFake implements _i4.UserDetail {
-  _FakeUserDetail_2(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeWeightMeasurement_3 extends _i1.SmartFake
-    implements _i5.WeightMeasurement {
-  _FakeWeightMeasurement_3(
+class _FakeWeightMeasurement_2 extends _i1.SmartFake
+    implements _i4.WeightMeasurement {
+  _FakeWeightMeasurement_2(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -80,108 +71,85 @@ class _FakeWeightMeasurement_3 extends _i1.SmartFake
 /// A class which mocks [FoodDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFoodDataSource extends _i1.Mock implements _i6.FoodDataSource {
+class MockFoodDataSource extends _i1.Mock implements _i5.FoodDataSource {
   MockFoodDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  List<_i2.Food> getAll() => (super.noSuchMethod(
+  _i6.Future<List<_i7.FoodEntity>> getAll() => (super.noSuchMethod(
         Invocation.method(
           #getAll,
           [],
         ),
-        returnValue: <_i2.Food>[],
-      ) as List<_i2.Food>);
+        returnValue: _i6.Future<List<_i7.FoodEntity>>.value(<_i7.FoodEntity>[]),
+      ) as _i6.Future<List<_i7.FoodEntity>>);
 
   @override
-  _i2.Food? getFoodById(String? id) => (super.noSuchMethod(Invocation.method(
-        #getFoodById,
-        [id],
-      )) as _i2.Food?);
+  _i6.Future<_i7.FoodEntity?> getFoodById(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #getFoodById,
+          [id],
+        ),
+        returnValue: _i6.Future<_i7.FoodEntity?>.value(),
+      ) as _i6.Future<_i7.FoodEntity?>);
 
   @override
-  List<_i2.Food> searchFoodByName(String? name) => (super.noSuchMethod(
+  _i6.Future<List<_i7.FoodEntity>> searchFoodByName(String? name) =>
+      (super.noSuchMethod(
         Invocation.method(
           #searchFoodByName,
           [name],
         ),
-        returnValue: <_i2.Food>[],
-      ) as List<_i2.Food>);
+        returnValue: _i6.Future<List<_i7.FoodEntity>>.value(<_i7.FoodEntity>[]),
+      ) as _i6.Future<List<_i7.FoodEntity>>);
 
   @override
-  _i2.Food updateFood(
-    String? id,
-    _i2.Food? food,
-  ) =>
+  _i6.Future<_i7.FoodEntity?> saveFood(_i7.FoodEntity? food) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #updateFood,
-          [
-            id,
-            food,
-          ],
-        ),
-        returnValue: _FakeFood_0(
-          this,
-          Invocation.method(
-            #updateFood,
-            [
-              id,
-              food,
-            ],
-          ),
-        ),
-      ) as _i2.Food);
-
-  @override
-  _i2.Food saveFood(_i2.Food? food) => (super.noSuchMethod(
         Invocation.method(
           #saveFood,
           [food],
         ),
-        returnValue: _FakeFood_0(
-          this,
-          Invocation.method(
-            #saveFood,
-            [food],
-          ),
-        ),
-      ) as _i2.Food);
+        returnValue: _i6.Future<_i7.FoodEntity?>.value(),
+      ) as _i6.Future<_i7.FoodEntity?>);
 
   @override
-  dynamic deleteFood(String? id) => super.noSuchMethod(Invocation.method(
-        #deleteFood,
-        [id],
-      ));
+  _i6.Future<bool> deleteFood(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #deleteFood,
+          [id],
+        ),
+        returnValue: _i6.Future<bool>.value(false),
+      ) as _i6.Future<bool>);
 }
 
 /// A class which mocks [JournalDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockJournalDataSource extends _i1.Mock implements _i7.JournalDataSource {
+class MockJournalDataSource extends _i1.Mock implements _i8.JournalDataSource {
   MockJournalDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  List<_i3.JournalEntry> getAll() => (super.noSuchMethod(
+  List<_i2.JournalEntry> getAll() => (super.noSuchMethod(
         Invocation.method(
           #getAll,
           [],
         ),
-        returnValue: <_i3.JournalEntry>[],
-      ) as List<_i3.JournalEntry>);
+        returnValue: <_i2.JournalEntry>[],
+      ) as List<_i2.JournalEntry>);
 
   @override
-  _i3.JournalEntry? getById(String? id) =>
+  _i2.JournalEntry? getById(String? id) =>
       (super.noSuchMethod(Invocation.method(
         #getById,
         [id],
-      )) as _i3.JournalEntry?);
+      )) as _i2.JournalEntry?);
 
   @override
-  List<_i3.JournalEntry> getBetween(
+  List<_i2.JournalEntry> getBetween(
     DateTime? start,
     DateTime? end,
   ) =>
@@ -193,13 +161,13 @@ class MockJournalDataSource extends _i1.Mock implements _i7.JournalDataSource {
             end,
           ],
         ),
-        returnValue: <_i3.JournalEntry>[],
-      ) as List<_i3.JournalEntry>);
+        returnValue: <_i2.JournalEntry>[],
+      ) as List<_i2.JournalEntry>);
 
   @override
-  _i3.JournalEntry update(
+  _i2.JournalEntry update(
     String? id,
-    _i3.JournalEntry? entry,
+    _i2.JournalEntry? entry,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -209,7 +177,7 @@ class MockJournalDataSource extends _i1.Mock implements _i7.JournalDataSource {
             entry,
           ],
         ),
-        returnValue: _FakeJournalEntry_1(
+        returnValue: _FakeJournalEntry_0(
           this,
           Invocation.method(
             #update,
@@ -219,22 +187,22 @@ class MockJournalDataSource extends _i1.Mock implements _i7.JournalDataSource {
             ],
           ),
         ),
-      ) as _i3.JournalEntry);
+      ) as _i2.JournalEntry);
 
   @override
-  _i3.JournalEntry save(_i3.JournalEntry? entry) => (super.noSuchMethod(
+  _i2.JournalEntry save(_i2.JournalEntry? entry) => (super.noSuchMethod(
         Invocation.method(
           #save,
           [entry],
         ),
-        returnValue: _FakeJournalEntry_1(
+        returnValue: _FakeJournalEntry_0(
           this,
           Invocation.method(
             #save,
             [entry],
           ),
         ),
-      ) as _i3.JournalEntry);
+      ) as _i2.JournalEntry);
 
   @override
   dynamic delete(String? id) => super.noSuchMethod(Invocation.method(
@@ -247,41 +215,41 @@ class MockJournalDataSource extends _i1.Mock implements _i7.JournalDataSource {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockUserDetailsDataSource extends _i1.Mock
-    implements _i8.UserDetailsDataSource {
+    implements _i9.UserDetailsDataSource {
   MockUserDetailsDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.UserDetail getUserDetail() => (super.noSuchMethod(
+  _i3.UserDetail getUserDetail() => (super.noSuchMethod(
         Invocation.method(
           #getUserDetail,
           [],
         ),
-        returnValue: _FakeUserDetail_2(
+        returnValue: _FakeUserDetail_1(
           this,
           Invocation.method(
             #getUserDetail,
             [],
           ),
         ),
-      ) as _i4.UserDetail);
+      ) as _i3.UserDetail);
 
   @override
-  _i9.Future<_i4.UserDetail> saveUserDetail(_i4.UserDetail? userDetail) =>
+  _i6.Future<_i3.UserDetail> saveUserDetail(_i3.UserDetail? userDetail) =>
       (super.noSuchMethod(
         Invocation.method(
           #saveUserDetail,
           [userDetail],
         ),
-        returnValue: _i9.Future<_i4.UserDetail>.value(_FakeUserDetail_2(
+        returnValue: _i6.Future<_i3.UserDetail>.value(_FakeUserDetail_1(
           this,
           Invocation.method(
             #saveUserDetail,
             [userDetail],
           ),
         )),
-      ) as _i9.Future<_i4.UserDetail>);
+      ) as _i6.Future<_i3.UserDetail>);
 }
 
 /// A class which mocks [WeightMeasurementDataSource].
@@ -294,29 +262,29 @@ class MockWeightMeasurementDataSource extends _i1.Mock
   }
 
   @override
-  List<_i5.WeightMeasurement> getAll() => (super.noSuchMethod(
+  List<_i4.WeightMeasurement> getAll() => (super.noSuchMethod(
         Invocation.method(
           #getAll,
           [],
         ),
-        returnValue: <_i5.WeightMeasurement>[],
-      ) as List<_i5.WeightMeasurement>);
+        returnValue: <_i4.WeightMeasurement>[],
+      ) as List<_i4.WeightMeasurement>);
 
   @override
-  _i5.WeightMeasurement save(_i5.WeightMeasurement? measurement) =>
+  _i4.WeightMeasurement save(_i4.WeightMeasurement? measurement) =>
       (super.noSuchMethod(
         Invocation.method(
           #save,
           [measurement],
         ),
-        returnValue: _FakeWeightMeasurement_3(
+        returnValue: _FakeWeightMeasurement_2(
           this,
           Invocation.method(
             #save,
             [measurement],
           ),
         ),
-      ) as _i5.WeightMeasurement);
+      ) as _i4.WeightMeasurement);
 
   @override
   dynamic delete(String? id) => super.noSuchMethod(Invocation.method(
@@ -334,23 +302,23 @@ class MockJournalRepository extends _i1.Mock implements _i11.JournalRepository {
   }
 
   @override
-  List<_i3.JournalEntry> getAll() => (super.noSuchMethod(
+  List<_i2.JournalEntry> getAll() => (super.noSuchMethod(
         Invocation.method(
           #getAll,
           [],
         ),
-        returnValue: <_i3.JournalEntry>[],
-      ) as List<_i3.JournalEntry>);
+        returnValue: <_i2.JournalEntry>[],
+      ) as List<_i2.JournalEntry>);
 
   @override
-  _i3.JournalEntry? getById(String? id) =>
+  _i2.JournalEntry? getById(String? id) =>
       (super.noSuchMethod(Invocation.method(
         #getById,
         [id],
-      )) as _i3.JournalEntry?);
+      )) as _i2.JournalEntry?);
 
   @override
-  List<_i3.JournalEntry> getBetween(
+  List<_i2.JournalEntry> getBetween(
     DateTime? start,
     DateTime? end,
   ) =>
@@ -362,13 +330,13 @@ class MockJournalRepository extends _i1.Mock implements _i11.JournalRepository {
             end,
           ],
         ),
-        returnValue: <_i3.JournalEntry>[],
-      ) as List<_i3.JournalEntry>);
+        returnValue: <_i2.JournalEntry>[],
+      ) as List<_i2.JournalEntry>);
 
   @override
-  _i3.JournalEntry update(
+  _i2.JournalEntry update(
     String? id,
-    _i3.JournalEntry? entry,
+    _i2.JournalEntry? entry,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -378,7 +346,7 @@ class MockJournalRepository extends _i1.Mock implements _i11.JournalRepository {
             entry,
           ],
         ),
-        returnValue: _FakeJournalEntry_1(
+        returnValue: _FakeJournalEntry_0(
           this,
           Invocation.method(
             #update,
@@ -388,22 +356,22 @@ class MockJournalRepository extends _i1.Mock implements _i11.JournalRepository {
             ],
           ),
         ),
-      ) as _i3.JournalEntry);
+      ) as _i2.JournalEntry);
 
   @override
-  _i3.JournalEntry save(_i3.JournalEntry? entry) => (super.noSuchMethod(
+  _i2.JournalEntry save(_i2.JournalEntry? entry) => (super.noSuchMethod(
         Invocation.method(
           #save,
           [entry],
         ),
-        returnValue: _FakeJournalEntry_1(
+        returnValue: _FakeJournalEntry_0(
           this,
           Invocation.method(
             #save,
             [entry],
           ),
         ),
-      ) as _i3.JournalEntry);
+      ) as _i2.JournalEntry);
 
   @override
   dynamic delete(String? id) => super.noSuchMethod(Invocation.method(
@@ -421,61 +389,61 @@ class MockProfileRepository extends _i1.Mock implements _i12.ProfileRepository {
   }
 
   @override
-  _i4.UserDetail getUserDetails() => (super.noSuchMethod(
+  _i3.UserDetail getUserDetails() => (super.noSuchMethod(
         Invocation.method(
           #getUserDetails,
           [],
         ),
-        returnValue: _FakeUserDetail_2(
+        returnValue: _FakeUserDetail_1(
           this,
           Invocation.method(
             #getUserDetails,
             [],
           ),
         ),
-      ) as _i4.UserDetail);
+      ) as _i3.UserDetail);
 
   @override
-  _i9.Future<_i4.UserDetail> saveUserDetails(_i4.UserDetail? profile) =>
+  _i6.Future<_i3.UserDetail> saveUserDetails(_i3.UserDetail? profile) =>
       (super.noSuchMethod(
         Invocation.method(
           #saveUserDetails,
           [profile],
         ),
-        returnValue: _i9.Future<_i4.UserDetail>.value(_FakeUserDetail_2(
+        returnValue: _i6.Future<_i3.UserDetail>.value(_FakeUserDetail_1(
           this,
           Invocation.method(
             #saveUserDetails,
             [profile],
           ),
         )),
-      ) as _i9.Future<_i4.UserDetail>);
+      ) as _i6.Future<_i3.UserDetail>);
 
   @override
-  List<_i5.WeightMeasurement> getAllWeightMeasurements() => (super.noSuchMethod(
+  List<_i4.WeightMeasurement> getAllWeightMeasurements() => (super.noSuchMethod(
         Invocation.method(
           #getAllWeightMeasurements,
           [],
         ),
-        returnValue: <_i5.WeightMeasurement>[],
-      ) as List<_i5.WeightMeasurement>);
+        returnValue: <_i4.WeightMeasurement>[],
+      ) as List<_i4.WeightMeasurement>);
 
   @override
-  _i5.WeightMeasurement saveWeightMeasurement(
-          _i5.WeightMeasurement? measurement) =>
+  _i4.WeightMeasurement saveWeightMeasurement(
+          _i4.WeightMeasurement? measurement) =>
       (super.noSuchMethod(
         Invocation.method(
           #saveWeightMeasurement,
           [measurement],
         ),
-        returnValue: _FakeWeightMeasurement_3(
+        returnValue: _FakeWeightMeasurement_2(
           this,
           Invocation.method(
             #saveWeightMeasurement,
             [measurement],
           ),
         ),
-      ) as _i5.WeightMeasurement);
+      ) as _i4.WeightMeasurement);
 
   @override
   dynamic deleteWeightMeasurement(String? id) =>
@@ -494,72 +462,51 @@ class MockFoodRepository extends _i1.Mock implements _i13.FoodRepository {
   }
 
   @override
-  List<_i2.Food> getAll() => (super.noSuchMethod(
+  _i6.Future<List<_i14.Food>> getAll() => (super.noSuchMethod(
         Invocation.method(
           #getAll,
           [],
         ),
-        returnValue: <_i2.Food>[],
-      ) as List<_i2.Food>);
+        returnValue: _i6.Future<List<_i14.Food>>.value(<_i14.Food>[]),
+      ) as _i6.Future<List<_i14.Food>>);
 
   @override
-  _i2.Food? getFoodById(String? id) => (super.noSuchMethod(Invocation.method(
-        #getFoodById,
-        [id],
-      )) as _i2.Food?);
-
-  @override
-  List<_i2.Food> searchFoodByName(String? name) => (super.noSuchMethod(
+  _i6.Future<_i14.Food?> getFoodById({required int? id}) => (super.noSuchMethod(
         Invocation.method(
-          #searchFoodByName,
-          [name],
+          #getFoodById,
+          [],
+          {#id: id},
         ),
-        returnValue: <_i2.Food>[],
-      ) as List<_i2.Food>);
+        returnValue: _i6.Future<_i14.Food?>.value(),
+      ) as _i6.Future<_i14.Food?>);
 
   @override
-  _i2.Food updateFood(
-    String? id,
-    _i2.Food? food,
-  ) =>
+  _i6.Future<List<_i14.Food>> searchFoodByName({required String? name}) =>
       (super.noSuchMethod(
         Invocation.method(
-          #updateFood,
-          [
-            id,
-            food,
-          ],
+          #searchFoodByName,
+          [],
+          {#name: name},
         ),
-        returnValue: _FakeFood_0(
-          this,
-          Invocation.method(
-            #updateFood,
-            [
-              id,
-              food,
-            ],
-          ),
-        ),
-      ) as _i2.Food);
+        returnValue: _i6.Future<List<_i14.Food>>.value(<_i14.Food>[]),
+      ) as _i6.Future<List<_i14.Food>>);
 
   @override
-  _i2.Food saveFood(_i2.Food? food) => (super.noSuchMethod(
+  _i6.Future<_i14.Food?> saveFood(_i14.Food? food) => (super.noSuchMethod(
         Invocation.method(
           #saveFood,
           [food],
         ),
-        returnValue: _FakeFood_0(
-          this,
-          Invocation.method(
-            #saveFood,
-            [food],
-          ),
-        ),
-      ) as _i2.Food);
+        returnValue: _i6.Future<_i14.Food?>.value(),
+      ) as _i6.Future<_i14.Food?>);
 
   @override
-  dynamic deleteFood(String? id) => super.noSuchMethod(Invocation.method(
-        #deleteFood,
-        [id],
-      ));
+  _i6.Future<bool> deleteFood({required int? id}) => (super.noSuchMethod(
+        Invocation.method(
+          #deleteFood,
+          [],
+          {#id: id},
+        ),
+        returnValue: _i6.Future<bool>.value(false),
+      ) as _i6.Future<bool>);
 }

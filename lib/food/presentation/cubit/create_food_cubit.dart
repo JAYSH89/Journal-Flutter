@@ -67,7 +67,7 @@ class CreateFoodCubit extends Cubit<CreateFoodState> {
         proteins: double.tryParse(proteins ?? "") ?? 0,
         fats: double.tryParse(fats ?? "") ?? 0,
         amount: double.tryParse(amount ?? "") ?? 0,
-        unit: state.unit,
+        foodUnit: state.unit,
       );
 
       _repository.saveFood(result);

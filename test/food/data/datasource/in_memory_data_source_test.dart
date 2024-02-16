@@ -1,6 +1,5 @@
-import 'package:journal/core/errors/exceptions.dart';
 import 'package:journal/food/data/datasource/in_memory_food_data_source.dart';
-import 'package:journal/food/domain/models/food.dart';
+import 'package:journal/food/data/local/food_entity.dart';
 import 'package:journal/food/domain/models/food_unit.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -11,162 +10,153 @@ void main() {
     dataSource = InMemoryFoodDataSource();
   });
 
-  final testFood = Food(
+  final potatoEntity = FoodEntity(
     name: 'Potato',
     carbs: 23.2,
     proteins: 3.1,
     fats: 0.1,
     amount: 1,
-    unit: FoodUnit.portion,
+    foodUnit: FoodUnit.portion,
   );
 
   group('getAll()', () {
-    test('should return list of food successful', () {
+    test('should return list of food successful', () async {
       // arrange
-      final expected = dataSource.saveFood(testFood);
+      await dataSource.saveFood(potatoEntity);
 
       // act
-      final result = dataSource.getAll();
+      final result = await dataSource.getAll();
 
       // assert
-      expect(result, isA<List<Food>>());
-      expect(result, equals([expected]));
+      expect(result.length, equals(1));
     });
 
-    test('should return empty list of no food', () {
-      final result = dataSource.getAll();
+    test('should return empty list of no food', () async {
+      final result = await dataSource.getAll();
 
-      expect(result, equals(List<Food>.empty()));
-      expect(result, isA<List<Food>>());
+      expect(result, equals(List<FoodEntity>.empty()));
     });
   });
 
   group('getFoodById()', () {
-    test('should return Food when list contains food with id', () {
+    test('should return FoodEntity when list contains id', () async {
       // arrange
-      final expected = dataSource.saveFood(testFood);
+      await dataSource.saveFood(potatoEntity);
 
       // act
-      final result = dataSource.getFoodById(expected.id!);
+      final result = await dataSource.getFoodById(1);
 
       // assert
-      expect(result, equals(expected));
-      expect(result, isA<Food>());
+      expect(result, isNotNull);
+      expect(result, isA<FoodEntity>());
     });
 
-    test('should return null if list not contains food id', () {
-      final result = dataSource.getFoodById("non existing id");
+    test('should return null if list not contains food id', () async {
+      final result = await dataSource.getFoodById(-1);
       expect(result, isNull);
     });
   });
 
   group('searchFoodByName()', () {
-    test('should return list of food if list contains query', () {
+    test('should return list of food if list contains query', () async {
       // arrange
-      final savedFood = dataSource.saveFood(testFood);
+      final savedFood = await dataSource.saveFood(potatoEntity);
 
       // act
-      final result = dataSource.searchFoodByName(savedFood.name);
+      final result = await dataSource.searchFoodByName("Potato");
 
       // assert
       expect(result, equals([savedFood]));
     });
 
-    test('should query successful ignoring capitalized characters query', () {
+    test('should query successful ignoring capitalized characters query',
+        () async {
       // arrange
-      final savedFood = dataSource.saveFood(testFood);
-      final capitalizedSavedFood = savedFood.name.toUpperCase();
+      final savedFood = await dataSource.saveFood(potatoEntity);
+      const capitalizedSavedFood = "POTATO";
 
       // act
-      final result = dataSource.searchFoodByName(capitalizedSavedFood);
+      final result = await dataSource.searchFoodByName(capitalizedSavedFood);
 
       // assert
       expect(result, equals([savedFood]));
     });
 
-    test('should return empty list if list does not contain query', () {
+    test('should return empty list if list does not contain query', () async {
       // arrange
-      dataSource.saveFood(testFood);
+      await dataSource.saveFood(potatoEntity);
 
       // act
-      final result = dataSource.searchFoodByName('non existent name');
+      final result = await dataSource.searchFoodByName('non existent name');
 
       // assert
-      expect(result, equals([]));
+      expect(result.length, equals(0));
     });
 
-    test('should return empty list if query is empty string', () {
+    test('should return empty list if query is empty string', () async {
       // arrange
-      dataSource.saveFood(testFood);
+      await dataSource.saveFood(potatoEntity);
 
       // act
-      final result = dataSource.searchFoodByName('');
+      final result = await dataSource.searchFoodByName("");
 
       // assert
-      expect(result, equals([]));
-    });
-  });
-
-  group('updateFood()', () {
-    test('should update food successful with id unchanged', () {
-      // arrange
-      final savedFood = dataSource.saveFood(testFood);
-      const updatedFoodName = "update name";
-
-      final foodToUpdate = Food(
-        id: "this id should not be updated",
-        name: updatedFoodName,
-        carbs: savedFood.carbs,
-        proteins: savedFood.proteins,
-        fats: savedFood.fats,
-        amount: savedFood.amount,
-        unit: savedFood.unit,
-      );
-
-      // act
-      final result = dataSource.updateFood(savedFood.id!, foodToUpdate);
-
-      // assert
-      expect(result.id, equals(savedFood.id));
-      expect(result.name, equals(updatedFoodName));
-    });
-
-    test('should throw InMemoryNotFoundException if id not in list', () {
-      expect(
-        () => dataSource.updateFood("non existent id", testFood),
-        throwsA(isA<InMemoryNotFoundException>()),
-      );
+      expect(result.length, equals(0));
     });
   });
 
   group('saveFood()', () {
-    test('save food should generate uuid for id field', () {
+    test('saving FoodEntity should generate ID', () async {
       // arrange + act
-      final result = dataSource.saveFood(testFood);
+      final result = await dataSource.saveFood(potatoEntity);
 
       // assert
-      expect(result.id, isNotNull);
+      expect(result?.id, isNotNull);
+    });
+
+    test('saving same ID updates FoodEntity', () async {
+      // arrange
+      final savedFood = await dataSource.saveFood(potatoEntity);
+
+      final foodToUpdate = FoodEntity(
+        id: savedFood!.id,
+        name: "UPDATED NAME",
+        carbs: savedFood.carbs,
+        proteins: savedFood.proteins,
+        fats: savedFood.fats,
+        amount: savedFood.amount,
+        foodUnit: savedFood.foodUnit,
+      );
+
+      // act
+      final result = await dataSource.saveFood(foodToUpdate);
+
+      // assert
+      expect(result!.id, equals(savedFood.id));
+      expect(result.name, equals("UPDATED NAME"));
     });
   });
 
   group('deleteFood()', () {
-    test('should delete food successful', () {
+    test('should delete food successful returns true', () async {
       // arrange
-      final newFood = dataSource.saveFood(testFood);
+      await dataSource.saveFood(potatoEntity);
 
       // act
-      dataSource.deleteFood(newFood.id!);
-      final result = dataSource.getFoodById(newFood.id!);
+      final result = await dataSource.deleteFood(1);
+      final getFood = await dataSource.getFoodById(1);
 
       // assert
-      expect(result, isNull);
+      expect(result, true);
+      expect(getFood, isNull);
     });
 
-    test('should throw InMemoryNotFoundException if id not in list', () {
-      expect(
-        () => dataSource.deleteFood("non existent id"),
-        throwsA(isA<InMemoryNotFoundException>()),
-      );
+    test('should return false if id not in list', () async {
+      //act
+      final result = await dataSource.deleteFood(1);
+
+      // assert
+      expect(result, false);
     });
   });
 }

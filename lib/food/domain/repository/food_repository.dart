@@ -1,15 +1,13 @@
 import 'package:journal/food/domain/models/food.dart';
 
 abstract class FoodRepository {
-  List<Food> getAll();
+  Future<List<Food>> getAll();
 
-  Food? getFoodById(String id);
+  Future<Food?> getFoodById({required int id});
 
-  List<Food> searchFoodByName(String name);
+  Future<List<Food>> searchFoodByName({required String name});
 
-  Food updateFood(String id, Food food);
+  Future<Food?> saveFood(Food food);
 
-  Food saveFood(Food food);
-
-  deleteFood(String id);
+  Future<bool> deleteFood({required int id});
 }

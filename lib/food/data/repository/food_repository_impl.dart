@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:journal/food/data/datasource/food_data_source.dart';
+import 'package:journal/food/data/local/food_entity.dart';
 import 'package:journal/food/domain/models/food.dart';
 import 'package:journal/food/domain/repository/food_repository.dart';
 
@@ -10,22 +11,29 @@ class FoodRepositoryImpl implements FoodRepository {
   final FoodDataSource dataSource;
 
   @override
-  List<Food> getAll() => dataSource.getAll();
+  Future<List<Food>> getAll() => dataSource //
+      .getAll()
+      .then((entityList) => entityList.map((entity) {
+            return entity.toFood();
+          }).toList());
 
   @override
-  Food? getFoodById(String id) => dataSource.getFoodById(id);
+  Future<Food?> getFoodById({required int id}) => dataSource //
+      .getFoodById(id)
+      .then((value) => value?.toFood());
 
   @override
-  List<Food> searchFoodByName(String name) => dataSource.searchFoodByName(name);
+  Future<List<Food>> searchFoodByName({required String name}) => dataSource //
+      .searchFoodByName(name)
+      .then((entityList) => entityList.map((entity) {
+            return entity.toFood();
+          }).toList());
 
   @override
-  Food updateFood(String id, Food food) => dataSource.updateFood(id, food);
+  Future<Food?> saveFood(Food food) => dataSource
+      .saveFood(FoodEntity.fromFood(food: food))
+      .then((value) => value?.toFood());
 
   @override
-  Food saveFood(Food food) => dataSource.saveFood(food);
-
-  @override
-  deleteFood(String id) {
-    dataSource.deleteFood(id);
-  }
+  Future<bool> deleteFood({required int id}) => dataSource.deleteFood(id);
 }
