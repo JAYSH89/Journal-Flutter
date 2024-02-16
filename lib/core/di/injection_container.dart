@@ -1,4 +1,7 @@
 import 'package:get_it/get_it.dart';
+import 'package:journal/food/data/local/food_entity.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:isar/isar.dart';
 import 'package:journal/food/data/datasource/food_data_source.dart';
 import 'package:journal/food/data/datasource/in_memory_food_data_source.dart';
 import 'package:journal/food/data/repository/food_repository_impl.dart';
@@ -56,5 +59,13 @@ void setupLocator() {
   // other
   getIt.registerLazySingleton(() async {
     return await SharedPreferences.getInstance();
+  });
+
+  getIt.registerLazySingleton(() async {
+    final dir = await getApplicationDocumentsDirectory();
+    final isar = await Isar.open(
+      [FoodEntitySchema],
+      directory: dir.path,
+    );
   });
 }
