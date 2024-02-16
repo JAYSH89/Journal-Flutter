@@ -1,7 +1,9 @@
+import 'package:injectable/injectable.dart';
 import 'package:journal/food/data/datasource/food_data_source.dart';
 import 'package:journal/food/domain/models/food.dart';
 import 'package:journal/food/domain/repository/food_repository.dart';
 
+@Injectable(as: FoodRepository)
 class FoodRepositoryImpl implements FoodRepository {
   FoodRepositoryImpl({required this.dataSource});
 

@@ -1,9 +1,11 @@
+import 'package:injectable/injectable.dart';
 import 'package:journal/core/errors/exceptions.dart';
 import 'package:journal/food/data/datasource/food_data_source.dart';
 import 'package:journal/food/domain/models/food.dart';
 import 'package:uuid/uuid.dart';
 import 'package:fpdart/fpdart.dart';
 
+@Injectable(as: FoodDataSource)
 class InMemoryFoodDataSource implements FoodDataSource {
   List<Food> foods = List<Food>.empty(growable: true);
 

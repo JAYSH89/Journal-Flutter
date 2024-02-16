@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 import 'package:journal/food/domain/models/food.dart';
 import 'package:journal/food/domain/models/food_unit.dart';
 import 'package:journal/food/domain/repository/food_repository.dart';
@@ -15,6 +16,7 @@ enum CreateFoodTextFieldKey {
   unit,
 }
 
+@Injectable()
 class CreateFoodCubit extends Cubit<CreateFoodState> {
   CreateFoodCubit(this._repository) : super(const CreateFoodState());
 

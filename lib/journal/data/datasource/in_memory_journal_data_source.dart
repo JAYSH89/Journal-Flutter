@@ -1,9 +1,11 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:injectable/injectable.dart';
 import 'package:journal/core/errors/exceptions.dart';
 import 'package:journal/journal/data/datasource/journal_data_source.dart';
 import 'package:journal/journal/domain/models/journal_entry.dart';
 import 'package:uuid/uuid.dart';
 
+@Injectable(as: JournalDataSource)
 class InMemoryJournalDataSource implements JournalDataSource {
   List<JournalEntry> entries = List.empty(growable: true);
 

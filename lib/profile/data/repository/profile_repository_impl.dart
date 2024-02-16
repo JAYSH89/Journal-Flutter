@@ -1,9 +1,11 @@
+import 'package:injectable/injectable.dart';
 import 'package:journal/profile/data/datasource/user_details_data_source.dart';
 import 'package:journal/profile/data/datasource/weight_measurement_data_source.dart';
 import 'package:journal/profile/domain/models/user_detail.dart';
 import 'package:journal/profile/domain/models/weight_measurement.dart';
 import 'package:journal/profile/domain/repository/profile_repository.dart';
 
+@Injectable(as: ProfileRepository)
 class ProfileRepositoryImpl extends ProfileRepository {
   final WeightMeasurementDataSource weightMeasurementDataSource;
   final UserDetailsDataSource userDetailsDataSource;
