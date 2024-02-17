@@ -14,7 +14,7 @@ void main() {
   );
 
   final journalEntry = JournalEntry(
-    id: "id",
+    id: 1,
     food: potato,
     date: DateTime.parse("2024-01-31T17:23:02Z"),
     amount: 2,

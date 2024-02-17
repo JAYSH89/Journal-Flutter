@@ -1,15 +1,13 @@
 import 'package:journal/journal/domain/models/journal_entry.dart';
 
 abstract class JournalRepository {
-  List<JournalEntry> getAll();
+  Future<List<JournalEntry>> getAll();
 
-  JournalEntry? getById(String id);
+  Future<JournalEntry?> getById(int id);
 
-  List<JournalEntry> getBetween(DateTime start, DateTime end);
+  Future<List<JournalEntry>> getBetween(DateTime lower, DateTime upper);
 
-  JournalEntry update(String id, JournalEntry entry);
+  Future<JournalEntry?> save(JournalEntry entry);
 
-  JournalEntry save(JournalEntry entry);
-
-  delete(String id);
+  Future<bool> delete(int id);
 }

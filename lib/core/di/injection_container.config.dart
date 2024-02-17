@@ -17,10 +17,10 @@ import 'package:journal/food/data/repository/food_repository_impl.dart' as _i7;
 import 'package:journal/food/domain/repository/food_repository.dart' as _i6;
 import 'package:journal/food/presentation/cubit/create_food_cubit.dart' as _i16;
 import 'package:journal/food/presentation/cubit/food_cubit.dart' as _i17;
-import 'package:journal/journal/data/datasource/in_memory_journal_data_source.dart'
-    as _i9;
 import 'package:journal/journal/data/datasource/journal_data_source.dart'
     as _i8;
+import 'package:journal/journal/data/datasource/journal_data_source_impl.dart'
+    as _i9;
 import 'package:journal/journal/data/repository/journal_repository_impl.dart'
     as _i11;
 import 'package:journal/journal/domain/repository/journal_repository.dart'
@@ -53,7 +53,8 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i4.FoodDataSourceImpl(database: gh<_i5.Isar>()));
     gh.factory<_i6.FoodRepository>(
         () => _i7.FoodRepositoryImpl(dataSource: gh<_i3.FoodDataSource>()));
-    gh.factory<_i8.JournalDataSource>(() => _i9.InMemoryJournalDataSource());
+    gh.factory<_i8.JournalDataSource>(
+        () => _i9.JournalDataSourceImpl(database: gh<_i5.Isar>()));
     gh.factory<_i10.JournalRepository>(() =>
         _i11.JournalRepositoryImpl(dataSource: gh<_i8.JournalDataSource>()));
     gh.factory<_i12.UserDetailsDataSource>(

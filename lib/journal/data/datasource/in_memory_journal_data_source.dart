@@ -1,81 +1,95 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:injectable/injectable.dart';
-import 'package:journal/core/errors/exceptions.dart';
 import 'package:journal/journal/data/datasource/journal_data_source.dart';
+import 'package:journal/journal/data/local/journal_entry_entity.dart';
 import 'package:journal/journal/domain/models/journal_entry.dart';
-import 'package:uuid/uuid.dart';
 
-@Injectable(as: JournalDataSource)
 class InMemoryJournalDataSource implements JournalDataSource {
   List<JournalEntry> entries = List.empty(growable: true);
+  List<JournalEntryEntity> entities = List.empty(growable: true);
 
   @override
-  List<JournalEntry> getAll() => entries;
+  Future<List<JournalEntryEntity>> getAll() async => entities;
 
   @override
-  JournalEntry? getById(String id) {
-    final result = entries.filter((entry) => entry.id == id);
+  Future<JournalEntryEntity?> getById(int id) async {
+    final result = entities.filter((entity) => entity.id == id);
     if (result.isEmpty) return null;
 
     return result.first;
   }
 
   @override
-  List<JournalEntry> getBetween(DateTime start, DateTime end) {
-    if (start.isAfter(end)) {
-      final errorMessage =
-          "start DateTime ($start) cannot be greater than end DateTime ($end)";
-      throw ArgumentError(errorMessage);
+  Future<List<JournalEntryEntity>> getBetween(
+    DateTime lower,
+    DateTime upper,
+  ) async {
+    if (lower.isAfter(upper)) {
+      final message = "($lower) cannot be greater than: ($upper)";
+      throw ArgumentError(message);
     }
 
-    return entries.filter((journalEntry) {
-      final isBefore = journalEntry.date.isAfter(start);
-      final isAfter = journalEntry.date.isBefore(end);
+    return entities.filter((entry) {
+      final isBefore = entry.date.isAfter(lower);
+      final isAfter = entry.date.isBefore(upper);
 
       return isBefore && isAfter;
     }).toList();
   }
 
   @override
-  JournalEntry update(String id, JournalEntry entry) {
-    final toUpdate = entries.where((e) => e.id == id).toList().firstOrNull;
+  Future<JournalEntryEntity?> save(JournalEntryEntity journalEntry) async {
+    final exists = entities //
+        .where((savedEntry) => savedEntry.id == journalEntry.id)
+        .toList()
+        .firstOrNull;
 
-    if (toUpdate == null) {
-      throw InMemoryNotFoundException("update JournalEntry: $id not found");
+    if (exists != null) {
+      return _updateEntry(currentEntry: exists, newEntry: journalEntry);
     }
 
-    entries.remove(toUpdate);
-    final updatedJournalEntry = JournalEntry(
-      id: toUpdate.id,
-      food: entry.food,
-      date: entry.date,
-      amount: entry.amount,
-    );
-    entries.add(updatedJournalEntry);
-    return updatedJournalEntry;
-  }
+    final newJournalEntry = JournalEntryEntity()
+      ..id = _generateId()
+      ..food.value = journalEntry.food.value
+      ..date = journalEntry.date
+      ..amount = journalEntry.amount;
 
-  @override
-  JournalEntry save(JournalEntry entry) {
-    final id = const Uuid().v8();
-    final newJournalEntry = JournalEntry(
-      id: id,
-      food: entry.food,
-      date: entry.date,
-      amount: entry.amount,
-    );
-    entries.add(newJournalEntry);
+    entities.add(newJournalEntry);
     return newJournalEntry;
   }
 
   @override
-  delete(String id) {
-    final toDelete = entries.where((entry) => entry.id == id).toList();
-    if (toDelete.isNotEmpty) {
-      entries.remove(toDelete.first);
-      return;
-    }
+  Future<bool> delete(int id) async {
+    final toDelete = entities //
+        .where((entry) => entry.id == id)
+        .toList();
 
-    throw InMemoryNotFoundException("delete JournalEntry: $id not found");
+    if (toDelete.isNotEmpty) {
+      entities.remove(toDelete.first);
+      return true;
+    }
+    return false;
+  }
+
+  JournalEntryEntity _updateEntry({
+    required JournalEntryEntity currentEntry,
+    required JournalEntryEntity newEntry,
+  }) {
+    entities = List.from(entities)..remove(currentEntry);
+
+    final updatedJournalEntry = JournalEntryEntity()
+      ..id = currentEntry.id
+      ..food.value = newEntry.food.value
+      ..date = newEntry.date
+      ..amount = newEntry.amount;
+
+    entities.add(updatedJournalEntry);
+    return updatedJournalEntry;
+  }
+
+  int _generateId() {
+    if (entities.isEmpty) return 1;
+    final ids = entities.map((e) => e.id).toList();
+    final maxId = ids.reduce((left, right) => left! > right! ? left : right);
+    return maxId! + 1;
   }
 }

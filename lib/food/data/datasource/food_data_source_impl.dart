@@ -10,18 +10,21 @@ class FoodDataSourceImpl extends FoodDataSource {
   final Isar database;
 
   @override
-  Stream<List<FoodEntity>> watchAll() =>
-      database.foodEntitys.where().watch(fireImmediately: true);
+  Stream<List<FoodEntity>> watchAll() => database //
+      .foodEntitys
+      .where()
+      .watch(fireImmediately: true);
 
   @override
-  Future<List<FoodEntity>> getAll() async {
-    return database.collection<FoodEntity>().where().findAll();
-  }
+  Future<List<FoodEntity>> getAll() async => database //
+      .collection<FoodEntity>()
+      .where()
+      .findAll();
 
   @override
-  Future<FoodEntity?> getFoodById(int id) {
-    return database.foodEntitys.get(id);
-  }
+  Future<FoodEntity?> getFoodById(int id) => database //
+      .foodEntitys
+      .get(id);
 
   @override
   Future<List<FoodEntity>> searchFoodByName(String name) {
