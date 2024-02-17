@@ -1,9 +1,9 @@
+import 'package:journal/food/data/local/food_entity.dart';
 import 'package:journal/food/data/repository/food_repository_impl.dart';
 import 'package:journal/food/domain/models/food.dart';
 import 'package:journal/food/domain/models/food_unit.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../helpers/test_helper.mocks.dart';
 
@@ -16,22 +16,32 @@ void main() {
     repository = FoodRepositoryImpl(dataSource: dataSource);
   });
 
-  final potato = Food(
-    id: const Uuid().v8(),
+  final foodEntity = FoodEntity(
+    id: 1,
     name: 'Potato',
     carbs: 23.2,
     proteins: 3.1,
     fats: 0.1,
     amount: 1,
-    unit: FoodUnit.gram,
+    foodUnit: FoodUnit.gram,
   );
 
-  test('get all successful', () {
+  final potato = Food(
+    id: 1,
+    name: 'Potato',
+    carbs: 23.2,
+    proteins: 3.1,
+    fats: 0.1,
+    amount: 1,
+    foodUnit: FoodUnit.gram,
+  );
+
+  test('get all successful', () async {
     // arrange
-    when(dataSource.getAll()).thenAnswer((_) => [potato]);
+    when(dataSource.getAll()).thenAnswer((_) async => [foodEntity]);
 
     // act
-    final result = repository.getAll();
+    final result = await repository.getAll();
 
     // assert
     expect(result, equals([potato]));
@@ -39,12 +49,12 @@ void main() {
     verifyNoMoreInteractions(dataSource);
   });
 
-  test('get food by id', () {
+  test('get food by id', () async {
     // arrange
-    when(dataSource.getFoodById(any)).thenAnswer((_) => potato);
+    when(dataSource.getFoodById(any)).thenAnswer((_) async => foodEntity);
 
     // act
-    final result = repository.getFoodById(potato.id!);
+    final result = await repository.getFoodById(id: 1);
 
     // assert
     expect(result, equals(potato));
@@ -52,12 +62,14 @@ void main() {
     verifyNoMoreInteractions(dataSource);
   });
 
-  test('search food by name', () {
+  test('search food by name', () async {
     // arrange
-    when(dataSource.searchFoodByName(any)).thenAnswer((_) => [potato]);
+    when(dataSource.searchFoodByName(any)).thenAnswer((_) async {
+      return [foodEntity];
+    });
 
     // act
-    final result = repository.searchFoodByName("potato");
+    final result = await repository.searchFoodByName(name: "Potato");
 
     // assert
     expect(result, equals([potato]));
@@ -65,41 +77,28 @@ void main() {
     verifyNoMoreInteractions(dataSource);
   });
 
-  test('update food', () {
+  test('save food', () async {
     // arrange
-    when(dataSource.updateFood(any, any)).thenAnswer((_) => potato);
+    when(dataSource.saveFood(any)).thenAnswer((_) async => foodEntity);
 
     // act
-    final result = repository.updateFood(potato.id!, potato);
+    final result = await repository.saveFood(potato);
 
     // assert
     expect(result, equals(potato));
-    verify(dataSource.updateFood(potato.id!, potato));
+    verify(dataSource.saveFood(any));
     verifyNoMoreInteractions(dataSource);
   });
 
-  test('save food', () {
+  test('delete food', () async {
     // arrange
-    when(dataSource.saveFood(potato)).thenAnswer((_) => potato);
+    when(dataSource.deleteFood(any)).thenAnswer((_) async => true);
 
     // act
-    final result = repository.saveFood(potato);
+    await repository.deleteFood(id: 1);
 
     // assert
-    expect(result, equals(potato));
-    verify(dataSource.saveFood(potato));
-    verifyNoMoreInteractions(dataSource);
-  });
-
-  test('delete food', () {
-    // arrange
-    when(dataSource.deleteFood(any)).thenAnswer((_) {});
-
-    // act
-    repository.deleteFood(potato.id!);
-
-    // assert
-    verify(dataSource.deleteFood(potato.id!));
+    verify(dataSource.deleteFood(any));
     verifyNoMoreInteractions(dataSource);
   });
 }

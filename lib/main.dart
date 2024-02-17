@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:journal/core/navigation/go_router.dart';
 
 void main() {
-  setupLocator();
+  WidgetsFlutterBinding.ensureInitialized();
+  setupInjection();
   runApp(const JournalApp());
 }
 
@@ -15,10 +16,13 @@ class JournalApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final TargetPlatform platform = Theme.of(context).platform;
 
+    return _startApp(platform);
+  }
+
+  Widget _startApp(platform) {
     if (platform == TargetPlatform.iOS) {
       return CupertinoApp.router(routerConfig: router);
     }
-
     return MaterialApp.router(routerConfig: router);
   }
 }

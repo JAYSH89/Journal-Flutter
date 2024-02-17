@@ -9,7 +9,7 @@ void main() {
     proteins: 3.1,
     fats: 0.1,
     amount: 1,
-    unit: FoodUnit.gram,
+    foodUnit: FoodUnit.gram,
   );
 
   test('get calories from Food() class', () {

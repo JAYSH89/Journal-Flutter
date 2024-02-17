@@ -25,13 +25,13 @@ void main() {
   );
 
   final testFood = Food(
-    id: "example id",
+    id: 1,
     name: "Apple",
     carbs: 1,
     proteins: 2,
     fats: 3,
     amount: 1,
-    unit: FoodUnit.portion,
+    foodUnit: FoodUnit.portion,
   );
 
   setUp(() {
@@ -54,7 +54,10 @@ void main() {
     blocTest<CreateFoodCubit, CreateFoodState>(
       description,
       build: () {
-        when(foodRepository.saveFood(any)).thenReturn(testFood);
+        when(foodRepository.saveFood(any)).thenAnswer((_) async {
+          return testFood;
+        });
+
         return createFoodCubit;
       },
       act: (cubit) {
@@ -131,7 +134,7 @@ void main() {
           formSubmitted: false,
         ),
         verify: (_) {
-          verifyNever(foodRepository.saveFood(any));
+          verifyNoMoreInteractions(foodRepository);
         });
 
     submitHelper(
@@ -145,7 +148,7 @@ void main() {
         formSubmitted: false,
       ),
       verify: (_) {
-        verifyNever(foodRepository.saveFood(any));
+        verifyNoMoreInteractions(foodRepository);
       },
     );
 
@@ -159,7 +162,7 @@ void main() {
         formSubmitted: false,
       ),
       verify: (_) {
-        verifyNever(foodRepository.saveFood(any));
+        verifyNoMoreInteractions(foodRepository);
       },
     );
 

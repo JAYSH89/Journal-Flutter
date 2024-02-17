@@ -1,8 +1,10 @@
+import 'package:injectable/injectable.dart';
 import 'package:journal/core/errors/exceptions.dart';
 import 'package:journal/profile/data/datasource/weight_measurement_data_source.dart';
 import 'package:journal/profile/domain/models/weight_measurement.dart';
 import 'package:uuid/uuid.dart';
 
+@Injectable(as: WeightMeasurementDataSource)
 class InMemoryWeightMeasurementDataSource
     implements WeightMeasurementDataSource {
   List<WeightMeasurement> weightMeasurements =

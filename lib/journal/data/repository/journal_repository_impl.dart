@@ -1,7 +1,9 @@
+import 'package:injectable/injectable.dart';
 import 'package:journal/journal/data/datasource/journal_data_source.dart';
 import 'package:journal/journal/domain/models/journal_entry.dart';
 import 'package:journal/journal/domain/repository/journal_repository.dart';
 
+@Injectable(as: JournalRepository)
 class JournalRepositoryImpl implements JournalRepository {
   final JournalDataSource dataSource;
 

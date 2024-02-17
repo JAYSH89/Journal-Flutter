@@ -1,60 +1,35 @@
+import 'dart:io';
+
 import 'package:get_it/get_it.dart';
-import 'package:journal/food/data/datasource/food_data_source.dart';
-import 'package:journal/food/data/datasource/in_memory_food_data_source.dart';
-import 'package:journal/food/data/repository/food_repository_impl.dart';
-import 'package:journal/food/domain/repository/food_repository.dart';
-import 'package:journal/food/presentation/cubit/create_food_cubit.dart';
-import 'package:journal/food/presentation/cubit/food_cubit.dart';
-import 'package:journal/journal/data/datasource/in_memory_journal_data_source.dart';
-import 'package:journal/journal/data/datasource/journal_data_source.dart';
-import 'package:journal/journal/data/repository/journal_repository_impl.dart';
-import 'package:journal/journal/domain/repository/journal_repository.dart';
-import 'package:journal/profile/data/datasource/in_memory_weight_measurement_data_source.dart';
-import 'package:journal/profile/data/datasource/user_detail_data_source_impl.dart';
-import 'package:journal/profile/data/datasource/user_details_data_source.dart';
-import 'package:journal/profile/data/datasource/weight_measurement_data_source.dart';
-import 'package:journal/profile/data/repository/profile_repository_impl.dart';
-import 'package:journal/profile/domain/repository/profile_repository.dart';
+import 'package:injectable/injectable.dart';
+import 'package:journal/food/data/local/food_entity.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:isar/isar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'injection_container.config.dart';
 
 final getIt = GetIt.instance;
 
-void setupLocator() {
-  // bloc
-  getIt.registerFactory(() => FoodCubit(getIt()));
-  getIt.registerFactory(() => CreateFoodCubit(getIt()));
+@InjectableInit()
+void _configureDependencies() => getIt.init();
 
-  // repository
-  getIt.registerLazySingleton<FoodRepository>(() => FoodRepositoryImpl(
-        dataSource: getIt(),
-      ));
+Future<Isar> _openIsar() async {
+  Directory dir = await getApplicationDocumentsDirectory();
+  return Isar.open(
+    [FoodEntitySchema],
+    directory: dir.path,
+  );
+}
 
-  getIt.registerLazySingleton<ProfileRepository>(() => ProfileRepositoryImpl(
-        weightMeasurementDataSource: getIt(),
-        userDetailsDataSource: getIt(),
-      ));
+void setupInjection() async {
+  _configureDependencies();
 
-  getIt.registerLazySingleton<JournalRepository>(() {
-    return JournalRepositoryImpl(dataSource: getIt());
-  });
+  getIt.registerSingletonAsync<Isar>(
+    () async => await _openIsar(),
+    dispose: (isar) => isar.close(),
+  );
 
-  // data source
-  getIt.registerLazySingleton<FoodDataSource>(() => InMemoryFoodDataSource());
-
-  getIt.registerLazySingleton<JournalDataSource>(() {
-    return InMemoryJournalDataSource();
-  });
-
-  getIt.registerLazySingleton<UserDetailsDataSource>(() {
-    return UserDetailDataSourceImpl(sharedPreferences: getIt());
-  });
-
-  getIt.registerLazySingleton<WeightMeasurementDataSource>(() {
-    return InMemoryWeightMeasurementDataSource();
-  });
-
-  // other
-  getIt.registerLazySingleton(() async {
+  getIt.registerSingletonAsync<SharedPreferences>(() async {
     return await SharedPreferences.getInstance();
   });
 }
