@@ -143,6 +143,15 @@ class MockJournalDataSource extends _i1.Mock implements _i7.JournalDataSource {
       ) as _i5.Future<List<_i8.JournalEntryEntity>>);
 
   @override
+  _i5.Stream<List<_i8.JournalEntryEntity>> watchAll() => (super.noSuchMethod(
+        Invocation.method(
+          #watchAll,
+          [],
+        ),
+        returnValue: _i5.Stream<List<_i8.JournalEntryEntity>>.empty(),
+      ) as _i5.Stream<List<_i8.JournalEntryEntity>>);
+
+  @override
   _i5.Future<_i8.JournalEntryEntity?> getById(int? id) => (super.noSuchMethod(
         Invocation.method(
           #getById,
@@ -167,6 +176,22 @@ class MockJournalDataSource extends _i1.Mock implements _i7.JournalDataSource {
         returnValue: _i5.Future<List<_i8.JournalEntryEntity>>.value(
             <_i8.JournalEntryEntity>[]),
       ) as _i5.Future<List<_i8.JournalEntryEntity>>);
+
+  @override
+  _i5.Stream<List<_i8.JournalEntryEntity>> watchBetween(
+    DateTime? lower,
+    DateTime? upper,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #watchBetween,
+          [
+            lower,
+            upper,
+          ],
+        ),
+        returnValue: _i5.Stream<List<_i8.JournalEntryEntity>>.empty(),
+      ) as _i5.Stream<List<_i8.JournalEntryEntity>>);
 
   @override
   _i5.Future<_i8.JournalEntryEntity?> save(
