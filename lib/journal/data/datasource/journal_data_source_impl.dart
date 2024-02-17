@@ -16,21 +16,35 @@ class JournalDataSourceImpl implements JournalDataSource {
       .findAll();
 
   @override
+  Stream<List<JournalEntryEntity>> watchAll() => database //
+      .journalEntryEntitys
+      .where()
+      .watch(fireImmediately: true);
+
+  @override
   Future<JournalEntryEntity?> getById(int id) => database //
       .journalEntryEntitys
       .get(id);
 
   @override
   Future<List<JournalEntryEntity>> getBetween(DateTime lower, DateTime upper) {
-    if (lower.isAfter(upper)) {
-      final message = "($lower) cannot be greater than: ($upper)";
-      throw ArgumentError(message);
-    }
-
+    _validateDates(lower: lower, upper: upper);
     return database.journalEntryEntitys
         .filter()
         .dateBetween(lower, upper)
         .findAll();
+  }
+
+  @override
+  Stream<List<JournalEntryEntity>> watchBetween(
+    DateTime lower,
+    DateTime upper,
+  ) {
+    return database //
+        .journalEntryEntitys
+        .filter()
+        .dateBetween(lower, upper)
+        .watch(fireImmediately: true);
   }
 
   @override
@@ -46,5 +60,12 @@ class JournalDataSourceImpl implements JournalDataSource {
     return await database.writeTxn(() async {
       return database.journalEntryEntitys.delete(id);
     });
+  }
+
+  _validateDates({required DateTime lower, required DateTime upper}) {
+    if (lower.isAfter(upper)) {
+      final message = "($lower) cannot be greater than: ($upper)";
+      throw ArgumentError(message);
+    }
   }
 }
