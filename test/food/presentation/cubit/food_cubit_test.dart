@@ -1,66 +1,58 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:journal/food/data/datasource/food_data_source.dart';
+import 'package:journal/food/data/datasource/in_memory_food_data_source.dart';
+import 'package:journal/food/data/local/food_entity.dart';
+import 'package:journal/food/data/repository/food_repository_impl.dart';
 import 'package:journal/food/domain/models/food.dart';
 import 'package:journal/food/domain/models/food_unit.dart';
+import 'package:journal/food/domain/repository/food_repository.dart';
 import 'package:journal/food/presentation/cubit/food_cubit.dart';
-import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../helpers/test_helper.mocks.dart';
-
 void main() {
-  late MockFoodRepository foodRepository;
+  late FoodDataSource dataSource;
+  late FoodRepository repository;
+  late List<Food> mockFoods;
+  late FoodEntity entity;
   late FoodCubit foodCubit;
 
-  setUp(() {
-    foodRepository = MockFoodRepository();
-    foodCubit = FoodCubit(foodRepository);
-  });
+  setUp(() async {
+    dataSource = InMemoryFoodDataSource();
+    entity = FoodEntity(
+      id: 1,
+      name: "Apple",
+      carbs: 1,
+      proteins: 2,
+      fats: 3,
+      amount: 1,
+      foodUnit: FoodUnit.portion,
+    );
+    await dataSource.saveFood(entity);
 
-  tearDown(() {
-    foodCubit.close();
-  });
+    repository = FoodRepositoryImpl(dataSource: dataSource);
+    foodCubit = FoodCubit(repository);
 
-  final testFood = Food(
-    id: 1,
-    name: "Apple",
-    carbs: 1,
-    proteins: 2,
-    fats: 3,
-    amount: 1,
-    foodUnit: FoodUnit.portion,
-  );
+    mockFoods = [entity.toFood()];
+  });
 
   group("Food cubit test", () {
-    // blocTest<FoodCubit, FoodState>(
-    //   "getAllFood should update state with food",
-    //   build: () {
-    //     when(foodRepository.getAll()).thenAnswer((_) async => [testFood]);
-    //     return foodCubit;
-    //   },
-    //   act: (_) {
-    //     foodCubit.getAllFood();
-    //   },
-    //   expect: () => [
-    //     FoodState(foods: [testFood]),
-    //   ],
-    // );
+    blocTest<FoodCubit, FoodState>(
+      "emits FoodState on start",
+      build: () => FoodCubit(repository),
+      expect: () => [
+        FoodState(foods: mockFoods, errorMessage: null),
+      ],
+    );
 
     blocTest<FoodCubit, FoodState>(
-      "deleteFood should delete and retrieve all food again",
-      build: () {
-        when(foodRepository.deleteFood(id: testFood.id!))
-            .thenAnswer((_) async => true);
-        when(foodRepository.getAll()).thenAnswer((_) async => [testFood]);
-        return foodCubit;
+      "deleteFood should delete and update list",
+      build: () => foodCubit,
+      act: (_) async {
+        foodCubit.deleteFood(id: 1);
       },
-      act: (_) {
-        foodCubit.deleteFood(id: testFood.id!);
-      },
-      verify: (_) {
-        verify(foodRepository.deleteFood(id: testFood.id!)).called(1);
-        verify(foodRepository.getAll()).called(1);
-        verifyNoMoreInteractions(foodRepository);
-      },
+      expect: () => [
+        const FoodState(foods: [], errorMessage: null),
+      ],
     );
   });
 }

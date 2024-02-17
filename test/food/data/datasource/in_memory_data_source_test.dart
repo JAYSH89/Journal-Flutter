@@ -11,13 +11,54 @@ void main() {
   });
 
   final potatoEntity = FoodEntity(
-    name: 'Potato',
+    name: "Potato",
     carbs: 23.2,
     proteins: 3.1,
     fats: 0.1,
     amount: 1,
     foodUnit: FoodUnit.portion,
   );
+
+  // TODO [watchAll()] TESTS:
+  // group("watchAll()", () {
+  // test("should emit when save FoodEntity", () async {
+  //   final List<FoodEntity> expectedList = [potatoEntity];
+  //   expectLater(dataSource.watchAll(), emits(expectedList));
+  //
+  //   await dataSource.saveFood(potatoEntity);
+  // });
+  //
+  // test("should emit when update FoodEntity", () async {
+  //   // arrange
+  //   await dataSource.saveFood(potatoEntity);
+  //
+  //   final updatedEntity = FoodEntity(
+  //     id: 1,
+  //     name: "Updated",
+  //     carbs: 23.2,
+  //     proteins: 3.1,
+  //     fats: 0.1,
+  //     amount: 1,
+  //     foodUnit: FoodUnit.portion,
+  //   );
+  //   final List<FoodEntity> expectedList = [updatedEntity];
+  //
+  //   // act + assert
+  //   expectLater(dataSource.watchAll(), emits(expectedList));
+  //   await dataSource.saveFood(updatedEntity);
+  // });
+  //
+  // test("should emit when delete FoodEntity", () async {
+  //   // arrange
+  //   await dataSource.saveFood(potatoEntity);
+  //
+  //   final List<FoodEntity> expectedList = [];
+  //
+  //   // act + assert
+  //   expectLater(dataSource.watchAll(), emits(expectedList));
+  //   await dataSource.deleteFood(1);
+  // });
+  // });
 
   group('getAll()', () {
     test('should return list of food successful', () async {

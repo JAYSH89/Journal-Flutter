@@ -23,21 +23,10 @@ class FoodPage extends StatelessWidget {
       );
 }
 
-class FoodView extends StatefulWidget {
+class FoodView extends StatelessWidget {
   const FoodView({super.key});
 
-  @override
-  State<FoodView> createState() => _FoodViewState();
-}
-
-class _FoodViewState extends State<FoodView> {
   final String _title = "Food";
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   BlocProvider.of<FoodCubit>(context).getAllFood();
-  // }
 
   @override
   Widget build(BuildContext context) {

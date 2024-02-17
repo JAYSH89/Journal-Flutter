@@ -17,7 +17,10 @@ class FoodCubit extends Cubit<FoodState> {
   final FoodRepository _repository;
   StreamSubscription<List<Food>>? _foodSubscription;
 
-  void _getAllFood() {
+  void _getAllFood() async {
+    final initialFoods = await _repository.getAll();
+    emit(state.copyWith(foods: initialFoods));
+
     _foodSubscription = _repository.watchAll().listen(
           (foods) => emit(state.copyWith(foods: foods)),
           onError: (error) => emit(state.copyWith(errorMessage: "$error")),
