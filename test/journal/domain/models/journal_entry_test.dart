@@ -5,7 +5,7 @@ import 'package:journal/journal/domain/models/journal_entry.dart';
 
 void main() {
   final potato = Food(
-    name: 'Potato',
+    name: "Potato",
     carbs: 23.2,
     proteins: 3.1,
     fats: 0.1,
