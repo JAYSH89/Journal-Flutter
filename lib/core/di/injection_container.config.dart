@@ -25,6 +25,7 @@ import 'package:journal/journal/data/repository/journal_repository_impl.dart'
     as _i11;
 import 'package:journal/journal/domain/repository/journal_repository.dart'
     as _i10;
+import 'package:journal/journal/presentation/cubit/journal_cubit.dart' as _i18;
 import 'package:journal/profile/data/datasource/in_memory_user_detail_data_source.dart'
     as _i13;
 import 'package:journal/profile/data/datasource/in_memory_weight_measurement_data_source.dart'
@@ -34,9 +35,9 @@ import 'package:journal/profile/data/datasource/user_details_data_source.dart'
 import 'package:journal/profile/data/datasource/weight_measurement_data_source.dart'
     as _i14;
 import 'package:journal/profile/data/repository/profile_repository_impl.dart'
-    as _i19;
+    as _i20;
 import 'package:journal/profile/domain/repository/profile_repository.dart'
-    as _i18;
+    as _i19;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -64,7 +65,9 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i16.CreateFoodCubit>(
         () => _i16.CreateFoodCubit(gh<_i6.FoodRepository>()));
     gh.factory<_i17.FoodCubit>(() => _i17.FoodCubit(gh<_i6.FoodRepository>()));
-    gh.factory<_i18.ProfileRepository>(() => _i19.ProfileRepositoryImpl(
+    gh.factory<_i18.JournalCubit>(
+        () => _i18.JournalCubit(gh<_i10.JournalRepository>()));
+    gh.factory<_i19.ProfileRepository>(() => _i20.ProfileRepositoryImpl(
           weightMeasurementDataSource: gh<_i14.WeightMeasurementDataSource>(),
           userDetailsDataSource: gh<_i12.UserDetailsDataSource>(),
         ));

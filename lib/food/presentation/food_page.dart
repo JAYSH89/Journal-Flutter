@@ -33,14 +33,17 @@ class FoodView extends StatelessWidget {
     final TargetPlatform platform = Theme.of(context).platform;
 
     if (platform == TargetPlatform.iOS) {
-      return CupertinoPageScaffold(
-        child: JournalCupertinoSliverAppBar(
-          titleLabel: _title,
-          trailing: JournalIconButton(
-            buttonType: IconButtonType.add,
-            onPressed: () => _onPressAdd(context, platform),
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 80),
+        child: CupertinoPageScaffold(
+          child: JournalCupertinoSliverAppBar(
+            titleLabel: _title,
+            trailing: JournalIconButton(
+              buttonType: IconButtonType.add,
+              onPressed: () => _onPressAdd(context, platform),
+            ),
+            child: _FoodViewContent(),
           ),
-          child: _FoodViewContent(),
         ),
       );
     }

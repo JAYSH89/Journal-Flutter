@@ -36,9 +36,12 @@ class _CreateFoodView extends StatelessWidget {
     final TargetPlatform platform = Theme.of(context).platform;
 
     if (platform == TargetPlatform.iOS) {
-      return CupertinoPageScaffold(
-        navigationBar: JournalCupertinoAppBar(titleLabel: _title),
-        child: SafeArea(child: _CreateFoodViewContent()),
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 80),
+        child: CupertinoPageScaffold(
+          navigationBar: JournalCupertinoAppBar(titleLabel: _title),
+          child: SafeArea(child: _CreateFoodViewContent()),
+        ),
       );
     }
 
