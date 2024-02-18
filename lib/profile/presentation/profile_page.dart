@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -19,9 +20,7 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TargetPlatform platform = Theme.of(context).platform;
-
-    if (platform == TargetPlatform.iOS) {
+    if (Platform.isIOS) {
       return CupertinoPageScaffold(
         child: JournalCupertinoSliverAppBar(
           titleLabel: _title,

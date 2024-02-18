@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:journal/core/di/injection_container.dart';
 import 'package:flutter/material.dart';
@@ -14,15 +15,11 @@ class JournalApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TargetPlatform platform = Theme.of(context).platform;
-
-    return _startApp(platform);
+    return _startApp();
   }
 
-  Widget _startApp(platform) {
-    if (platform == TargetPlatform.iOS) {
-      return CupertinoApp.router(routerConfig: router);
-    }
+  Widget _startApp() {
+    if (Platform.isIOS) return CupertinoApp.router(routerConfig: router);
     return MaterialApp.router(routerConfig: router);
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,12 +16,7 @@ class JournalIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TargetPlatform platform = Theme.of(context).platform;
-
-    if (platform == TargetPlatform.iOS) {
-      return _cupertinoIconButton();
-    }
-
+    if (Platform.isIOS) return _cupertinoIconButton();
     return _materialIconButton();
   }
 
@@ -75,4 +71,36 @@ class _JournalMaterialAddButton extends IconButton {
   const _JournalMaterialAddButton({
     required super.onPressed,
   }) : super(icon: const Icon(Icons.add));
+}
+
+// Next button [->]
+
+class _JournalCupertinoNextButton extends CupertinoButton {
+  const _JournalCupertinoNextButton({required super.onPressed})
+      : super(
+          padding: EdgeInsets.zero,
+          child: const Icon(CupertinoIcons.chevron_forward),
+        );
+}
+
+class _JournalMaterialNextButton extends IconButton {
+  const _JournalMaterialNextButton({
+    required super.onPressed,
+  }) : super(icon: const Icon(Icons.navigate_next_rounded));
+}
+
+// Previous button [<-]
+
+class _JournalCupertinoPreviousButton extends CupertinoButton {
+  const _JournalCupertinoPreviousButton({required super.onPressed})
+      : super(
+          padding: EdgeInsets.zero,
+          child: const Icon(CupertinoIcons.chevron_back),
+        );
+}
+
+class _JournalMaterialPreviousButton extends IconButton {
+  const _JournalMaterialPreviousButton({
+    required super.onPressed,
+  }) : super(icon: const Icon(Icons.navigate_before_rounded));
 }

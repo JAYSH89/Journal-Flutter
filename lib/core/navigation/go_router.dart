@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -55,9 +56,7 @@ final GoRouter router = GoRouter(
                 GoRoute(
                   path: CreateFoodRoute().path,
                   pageBuilder: (context, state) {
-                    final TargetPlatform platform = Theme.of(context).platform;
-
-                    if (platform == TargetPlatform.iOS) {
+                    if (Platform.isIOS) {
                       return const CupertinoPage(
                         fullscreenDialog: true,
                         child: CreateFoodPage(),
