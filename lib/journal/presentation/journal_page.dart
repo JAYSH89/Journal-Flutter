@@ -7,6 +7,7 @@ import 'package:journal/app/widgets/buttons/journal_icon_button.dart';
 import 'package:journal/app/widgets/journal_app_bar.dart';
 import 'package:journal/core/di/injection_container.dart';
 import 'package:journal/core/theme/typography.dart';
+import 'package:journal/core/util/date_time_extension.dart';
 import 'package:journal/journal/presentation/cubit/journal_cubit.dart';
 
 class JournalPage extends StatelessWidget {
@@ -88,14 +89,7 @@ class _JournalViewContent extends StatelessWidget {
             selector: (state) => state.selectedDateTime,
             builder: (context, selectedDate) {
               final date = selectedDate ?? DateTime.now();
-              final day = "${date.day}";
-              final month = "${date.month}";
-              final year = "${date.year}";
-
-              return Text(
-                "$day-$month-$year",
-                style: satoshiBlack.copyWith(fontSize: 20),
-              );
+              return Text(date.dmy, style: satoshiBlack.copyWith(fontSize: 20));
             },
           ),
           const Spacer(),

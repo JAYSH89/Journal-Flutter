@@ -31,6 +31,11 @@ class CreateJournalEntryCubit extends Cubit<CreateJournalEntryState> {
         );
   }
 
+  void selectDate(DateTime date) {
+    print("$date");
+    emit(state.copyWith(selectedDateTime: date));
+  }
+
   @override
   Future<void> close() {
     _foodSubscription?.cancel();
@@ -42,6 +47,7 @@ class CreateJournalEntryCubit extends Cubit<CreateJournalEntryState> {
 class CreateJournalEntryState with _$CreateJournalEntryState {
   const factory CreateJournalEntryState({
     @Default([]) List<Food> foods,
+    DateTime? selectedDateTime,
     @Default(null) String? errorMessage,
   }) = _CreateJournalEntryState;
 }
