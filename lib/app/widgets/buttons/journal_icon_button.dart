@@ -2,17 +2,17 @@ import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-enum IconButtonType { close, add }
+enum IconButtonType { close, add, previous, forward }
 
 class JournalIconButton extends StatelessWidget {
   const JournalIconButton({
     super.key,
     required this.buttonType,
-    required this.onPressed,
+    this.onPressed,
   });
 
   final IconButtonType buttonType;
-  final Function() onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +24,10 @@ class JournalIconButton extends StatelessWidget {
     switch (buttonType) {
       case IconButtonType.add:
         return _JournalCupertinoAddButton(onPressed: onPressed);
+      case IconButtonType.forward:
+        return _JournalCupertinoForwardButton(onPressed: onPressed);
+      case IconButtonType.previous:
+        return _JournalCupertinoPreviousButton(onPressed: onPressed);
       default:
         return _JournalCupertinoCloseButton(onPressed: onPressed);
     }
@@ -33,6 +37,10 @@ class JournalIconButton extends StatelessWidget {
     switch (buttonType) {
       case IconButtonType.add:
         return _JournalMaterialAddButton(onPressed: onPressed);
+      case IconButtonType.forward:
+        return _JournalMaterialForwardButton(onPressed: onPressed);
+      case IconButtonType.previous:
+        return _JournalMaterialPreviousButton(onPressed: onPressed);
       default:
         return _JournalMaterialCloseButton(onPressed: onPressed);
     }
@@ -75,16 +83,17 @@ class _JournalMaterialAddButton extends IconButton {
 
 // Next button [->]
 
-class _JournalCupertinoNextButton extends CupertinoButton {
-  const _JournalCupertinoNextButton({required super.onPressed})
-      : super(
+class _JournalCupertinoForwardButton extends CupertinoButton {
+  const _JournalCupertinoForwardButton({
+    required super.onPressed,
+  }) : super(
           padding: EdgeInsets.zero,
           child: const Icon(CupertinoIcons.chevron_forward),
         );
 }
 
-class _JournalMaterialNextButton extends IconButton {
-  const _JournalMaterialNextButton({
+class _JournalMaterialForwardButton extends IconButton {
+  const _JournalMaterialForwardButton({
     required super.onPressed,
   }) : super(icon: const Icon(Icons.navigate_next_rounded));
 }
@@ -92,8 +101,9 @@ class _JournalMaterialNextButton extends IconButton {
 // Previous button [<-]
 
 class _JournalCupertinoPreviousButton extends CupertinoButton {
-  const _JournalCupertinoPreviousButton({required super.onPressed})
-      : super(
+  const _JournalCupertinoPreviousButton({
+    required super.onPressed,
+  }) : super(
           padding: EdgeInsets.zero,
           child: const Icon(CupertinoIcons.chevron_back),
         );

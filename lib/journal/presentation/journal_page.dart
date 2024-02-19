@@ -2,6 +2,8 @@ import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:journal/app/widgets/buttons/journal_icon_button.dart';
 import 'package:journal/app/widgets/journal_app_bar.dart';
 import 'package:journal/core/di/injection_container.dart';
 import 'package:journal/core/theme/typography.dart';
@@ -13,12 +15,12 @@ class JournalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocProvider(
         create: (context) => getIt<JournalCubit>(),
-        child: const JournalView(),
+        child: const _JournalView(),
       );
 }
 
-class JournalView extends StatelessWidget {
-  const JournalView({super.key});
+class _JournalView extends StatelessWidget {
+  const _JournalView({super.key});
 
   final String _title = "Journal";
 
@@ -30,6 +32,10 @@ class JournalView extends StatelessWidget {
         child: CupertinoPageScaffold(
           child: JournalCupertinoSliverAppBar(
             titleLabel: _title,
+            trailing: JournalIconButton(
+              buttonType: IconButtonType.add,
+              onPressed: () => _onPressAdd(context),
+            ),
             child: _JournalViewContent(),
           ),
         ),
@@ -37,9 +43,21 @@ class JournalView extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: JournalMaterialAppBar(titleLabel: _title),
+      appBar: JournalMaterialAppBar(
+        titleLabel: _title,
+        actions: [
+          JournalIconButton(
+            buttonType: IconButtonType.add,
+            onPressed: () => _onPressAdd(context),
+          ),
+        ],
+      ),
       body: Center(child: _JournalViewContent()),
     );
+  }
+
+  _onPressAdd(BuildContext context) {
+    context.go("/journal/create_journal");
   }
 }
 
@@ -49,7 +67,7 @@ class _JournalViewContent extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            _dateSelector(),
+            _dateSelector(context),
             const SizedBox(height: 12),
             _overview(),
             const SizedBox(height: 12),
@@ -58,13 +76,34 @@ class _JournalViewContent extends StatelessWidget {
         ),
       );
 
-  Widget _dateSelector() => const Row(
+  Widget _dateSelector(BuildContext context) => Row(
         children: [
-          Text("Back"),
-          Spacer(),
-          Text("10-06-2024"),
-          Spacer(),
-          Text("Forward"),
+          JournalIconButton(
+            buttonType: IconButtonType.previous,
+            onPressed: () => BlocProvider.of<JournalCubit>(context)
+                .changeDate(JournalSelectorDirection.previous),
+          ),
+          const Spacer(),
+          BlocSelector<JournalCubit, JournalState, DateTime?>(
+            selector: (state) => state.selectedDateTime,
+            builder: (context, selectedDate) {
+              final date = selectedDate ?? DateTime.now();
+              final day = "${date.day}";
+              final month = "${date.month}";
+              final year = "${date.year}";
+
+              return Text(
+                "$day-$month-$year",
+                style: satoshiBlack.copyWith(fontSize: 20),
+              );
+            },
+          ),
+          const Spacer(),
+          JournalIconButton(
+            buttonType: IconButtonType.forward,
+            onPressed: () => BlocProvider.of<JournalCubit>(context)
+                .changeDate(JournalSelectorDirection.forward),
+          ),
         ],
       );
 

@@ -73,7 +73,7 @@ void main() {
   });
 
   group("JournalRepository getBetween()", () {
-    test("getBetween successful", () async {
+    test("successful", () async {
       // arrange
       when(dataSource.getBetween(any, any))
           .thenAnswer((_) async => [journalEntryEntity]);
