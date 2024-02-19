@@ -1,12 +1,15 @@
 import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:journal/app/widgets/buttons/journal_text_button.dart';
 import 'package:journal/app/widgets/journal_app_bar.dart';
 import 'package:journal/app/widgets/journal_text_field.dart';
 import 'package:journal/core/di/injection_container.dart';
 import 'package:journal/core/theme/typography.dart';
 import 'package:journal/core/util/date_time_extension.dart';
+import 'package:journal/food/domain/models/food.dart';
 import 'package:journal/journal/presentation/cubit/create_journal_entry_cubit.dart';
 
 class CreateJournalEntryPage extends StatelessWidget {
@@ -45,26 +48,76 @@ class _CreateJournalEntryView extends StatelessWidget {
 
 class _CreateJournalEntryViewContent extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Padding(
+  Widget build(BuildContext context) => SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _searchInputField(context: context, label: "Search:"),
+            const SizedBox(height: 8),
+            _searchResults(context),
+            const SizedBox(height: 8),
             _datePicker(context),
             const SizedBox(height: 8),
             _amountInputField(label: "Amount:"),
+            const SizedBox(height: 16),
+            _submitButton(onPressed: () {}),
           ],
         ),
+      );
+
+  Widget _searchInputField({
+    required BuildContext context,
+    required String label,
+  }) {
+    return _field(
+      label: label,
+      child: JournalTextField(
+        textInputAction: TextInputAction.next,
+        onChanged: (text) {
+          BlocProvider.of<CreateJournalEntryCubit>(context).setSearchText(text);
+        },
+        onSubmitted: (_) {
+          BlocProvider.of<CreateJournalEntryCubit>(context).submit();
+        },
+      ),
+    );
+  }
+
+  Widget _searchResults(BuildContext context) => BlocSelector<
+          CreateJournalEntryCubit, CreateJournalEntryState, List<Food>>(
+        selector: (state) => state.searchFoods,
+        builder: (context, foods) {
+          if (foods.isEmpty) return Container();
+          return Container(
+            padding: const EdgeInsets.all(8),
+            color: Colors.grey,
+            height: 120,
+            child: ListView.builder(
+                itemCount: foods.length,
+                itemBuilder: (_, index) {
+                  return Text(foods[index].name, style: satoshiBlack);
+                }),
+          );
+        },
       );
 
   Widget _amountInputField({required String label}) => _field(
         label: label,
         child: JournalTextField(
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          textInputAction: TextInputAction.next,
+          textInputAction: TextInputAction.go,
           onChanged: (_) {},
           onSubmitted: (_) {},
         ),
+      );
+
+  Widget _submitButton({required Function() onPressed}) => Row(
+        children: [
+          Expanded(
+            child: JournalTextButton(text: "Save", onPressed: onPressed),
+          ),
+        ],
       );
 
   Widget _datePicker(BuildContext context) {

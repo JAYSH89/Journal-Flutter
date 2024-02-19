@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:journal/food/domain/models/food.dart';
@@ -14,7 +15,9 @@ class CreateJournalEntryCubit extends Cubit<CreateJournalEntryState> {
   CreateJournalEntryCubit(
     this._journalRepository,
     this._foodRepository,
-  ) : super(const CreateJournalEntryState());
+  ) : super(const CreateJournalEntryState()) {
+    _getAllFood();
+  }
 
   final JournalRepository _journalRepository;
   final FoodRepository _foodRepository;
@@ -32,9 +35,23 @@ class CreateJournalEntryCubit extends Cubit<CreateJournalEntryState> {
   }
 
   void selectDate(DateTime date) {
-    print("$date");
     emit(state.copyWith(selectedDateTime: date));
   }
+
+  void setSearchText(String query) {
+    if (query.isEmpty) {
+      emit(state.copyWith(searchQuery: query, searchFoods: []));
+      return;
+    }
+
+    final filteredFood = state.foods //
+        .filter((e) => e.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    emit(state.copyWith(searchQuery: query, searchFoods: filteredFood));
+  }
+
+  void submit() {}
 
   @override
   Future<void> close() {
@@ -46,6 +63,8 @@ class CreateJournalEntryCubit extends Cubit<CreateJournalEntryState> {
 @freezed
 class CreateJournalEntryState with _$CreateJournalEntryState {
   const factory CreateJournalEntryState({
+    @Default("") String searchQuery,
+    @Default([]) List<Food> searchFoods,
     @Default([]) List<Food> foods,
     DateTime? selectedDateTime,
     @Default(null) String? errorMessage,
