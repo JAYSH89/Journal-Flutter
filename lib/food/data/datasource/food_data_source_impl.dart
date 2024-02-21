@@ -3,7 +3,7 @@ import 'package:isar/isar.dart';
 import 'package:journal/food/data/datasource/food_data_source.dart';
 import 'package:journal/food/data/local/food_entity.dart';
 
-@Injectable(as: FoodDataSource)
+@Singleton(as: FoodDataSource)
 class FoodDataSourceImpl extends FoodDataSource {
   FoodDataSourceImpl({required this.database});
 

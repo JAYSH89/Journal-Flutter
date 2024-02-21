@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:journal/app/widgets/buttons/journal_text_button.dart';
 import 'package:journal/app/widgets/journal_app_bar.dart';
+import 'package:journal/app/widgets/journal_ink_well.dart';
 import 'package:journal/app/widgets/journal_text_field.dart';
 import 'package:journal/core/di/injection_container.dart';
 import 'package:journal/core/theme/typography.dart';
@@ -57,7 +58,7 @@ class _CreateJournalEntryViewContent extends StatelessWidget {
             const SizedBox(height: 8),
             _searchResults(context),
             const SizedBox(height: 8),
-            _datePicker(context),
+            _dateInputField(context),
             const SizedBox(height: 8),
             _amountInputField(label: "Amount:"),
             const SizedBox(height: 16),
@@ -89,18 +90,37 @@ class _CreateJournalEntryViewContent extends StatelessWidget {
         selector: (state) => state.searchFoods,
         builder: (context, foods) {
           if (foods.isEmpty) return Container();
-          return Container(
-            padding: const EdgeInsets.all(8),
-            color: Colors.grey,
+          return SizedBox(
             height: 120,
             child: ListView.builder(
                 itemCount: foods.length,
                 itemBuilder: (_, index) {
-                  return Text(foods[index].name, style: satoshiBlack);
+                  return _searchResultElement(context, foods[index]);
                 }),
           );
         },
       );
+
+  Widget _searchResultElement(BuildContext context, Food food) {
+    return JournalInkWell(
+      onTap: () {
+        BlocProvider.of<CreateJournalEntryCubit>(context).selectFood(food);
+      },
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        alignment: Alignment.centerLeft,
+        height: 40,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          color: Colors.lightBlue,
+        ),
+        child: Text(
+            food.name,
+            style: satoshiRegular.copyWith(color: Colors.white),
+        ),
+      ),
+    );
+  }
 
   Widget _amountInputField({required String label}) => _field(
         label: label,
@@ -120,7 +140,7 @@ class _CreateJournalEntryViewContent extends StatelessWidget {
         ],
       );
 
-  Widget _datePicker(BuildContext context) {
+  Widget _dateInputField(BuildContext context) {
     return _field(
         label: "Date:",
         child: BlocSelector<CreateJournalEntryCubit, CreateJournalEntryState,

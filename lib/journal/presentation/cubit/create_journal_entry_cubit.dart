@@ -38,6 +38,14 @@ class CreateJournalEntryCubit extends Cubit<CreateJournalEntryState> {
     emit(state.copyWith(selectedDateTime: date));
   }
 
+  void selectFood(Food food) {
+    emit(state.copyWith(selectedFood: food));
+  }
+
+  void clearSelectedFood() {
+    emit(state.copyWith(selectedFood: null));
+  }
+
   void setSearchText(String query) {
     if (query.isEmpty) {
       emit(state.copyWith(searchQuery: query, searchFoods: []));
@@ -65,6 +73,7 @@ class CreateJournalEntryState with _$CreateJournalEntryState {
   const factory CreateJournalEntryState({
     @Default("") String searchQuery,
     @Default([]) List<Food> searchFoods,
+    @Default(null) Food? selectedFood,
     @Default([]) List<Food> foods,
     DateTime? selectedDateTime,
     @Default(null) String? errorMessage,

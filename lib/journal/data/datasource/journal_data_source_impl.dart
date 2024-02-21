@@ -3,7 +3,7 @@ import 'package:isar/isar.dart';
 import 'package:journal/journal/data/datasource/journal_data_source.dart';
 import 'package:journal/journal/data/local/journal_entry_entity.dart';
 
-@Injectable(as: JournalDataSource)
+@Singleton(as: JournalDataSource)
 class JournalDataSourceImpl implements JournalDataSource {
   JournalDataSourceImpl({required this.database});
 

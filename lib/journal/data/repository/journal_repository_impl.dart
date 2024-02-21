@@ -4,7 +4,7 @@ import 'package:journal/journal/data/local/journal_entry_entity.dart';
 import 'package:journal/journal/domain/models/journal_entry.dart';
 import 'package:journal/journal/domain/repository/journal_repository.dart';
 
-@Injectable(as: JournalRepository)
+@Singleton(as: JournalRepository)
 class JournalRepositoryImpl implements JournalRepository {
   final JournalDataSource dataSource;
 
