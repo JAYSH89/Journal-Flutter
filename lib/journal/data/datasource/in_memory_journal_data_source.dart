@@ -1,81 +1,122 @@
+import 'dart:async';
+
 import 'package:fpdart/fpdart.dart';
-import 'package:injectable/injectable.dart';
-import 'package:journal/core/errors/exceptions.dart';
 import 'package:journal/journal/data/datasource/journal_data_source.dart';
-import 'package:journal/journal/domain/models/journal_entry.dart';
-import 'package:uuid/uuid.dart';
+import 'package:journal/journal/data/local/journal_entry_entity.dart';
 
-@Injectable(as: JournalDataSource)
 class InMemoryJournalDataSource implements JournalDataSource {
-  List<JournalEntry> entries = List.empty(growable: true);
+  List<JournalEntryEntity> entries = List.empty(growable: true);
+  final _entryStream = StreamController<List<JournalEntryEntity>>.broadcast();
+
+  InMemoryJournalDataSource() {
+    _entryStream.add(entries);
+  }
 
   @override
-  List<JournalEntry> getAll() => entries;
+  Future<List<JournalEntryEntity>> getAll() async => entries;
 
   @override
-  JournalEntry? getById(String id) {
-    final result = entries.filter((entry) => entry.id == id);
+  Stream<List<JournalEntryEntity>> watchAll() => _entryStream.stream;
+
+  @override
+  Future<JournalEntryEntity?> getById(int id) async {
+    final result = entries.filter((entity) => entity.id == id);
     if (result.isEmpty) return null;
 
     return result.first;
   }
 
   @override
-  List<JournalEntry> getBetween(DateTime start, DateTime end) {
-    if (start.isAfter(end)) {
-      final errorMessage =
-          "start DateTime ($start) cannot be greater than end DateTime ($end)";
-      throw ArgumentError(errorMessage);
-    }
+  Future<List<JournalEntryEntity>> getBetween(
+    DateTime lower,
+    DateTime upper,
+  ) async {
+    _validateDates(lower: lower, upper: upper);
 
-    return entries.filter((journalEntry) {
-      final isBefore = journalEntry.date.isAfter(start);
-      final isAfter = journalEntry.date.isBefore(end);
+    return entries.filter((entry) {
+      final isAfter = entry.date.isAfter(lower);
+      final isBefore = entry.date.isBefore(upper);
 
-      return isBefore && isAfter;
+      return isAfter && isBefore;
     }).toList();
   }
 
   @override
-  JournalEntry update(String id, JournalEntry entry) {
-    final toUpdate = entries.where((e) => e.id == id).toList().firstOrNull;
+  Stream<List<JournalEntryEntity>> watchBetween(
+    DateTime lower,
+    DateTime upper,
+  ) {
+    _validateDates(lower: lower, upper: upper);
+    return _entryStream.stream.map((event) => event.where((element) {
+          final isAfter = element.date.isAfter(lower);
+          final isBefore = element.date.isBefore(upper);
 
-    if (toUpdate == null) {
-      throw InMemoryNotFoundException("update JournalEntry: $id not found");
-    }
-
-    entries.remove(toUpdate);
-    final updatedJournalEntry = JournalEntry(
-      id: toUpdate.id,
-      food: entry.food,
-      date: entry.date,
-      amount: entry.amount,
-    );
-    entries.add(updatedJournalEntry);
-    return updatedJournalEntry;
+          return isAfter && isBefore;
+        }).toList());
   }
 
   @override
-  JournalEntry save(JournalEntry entry) {
-    final id = const Uuid().v8();
-    final newJournalEntry = JournalEntry(
-      id: id,
-      food: entry.food,
-      date: entry.date,
-      amount: entry.amount,
-    );
+  Future<JournalEntryEntity?> save(JournalEntryEntity journalEntry) async {
+    final exists = entries //
+        .where((savedEntry) => savedEntry.id == journalEntry.id)
+        .toList()
+        .firstOrNull;
+
+    if (exists != null) {
+      return _updateEntry(currentEntry: exists, newEntry: journalEntry);
+    }
+
+    final newJournalEntry = JournalEntryEntity()
+      ..id = _generateId()
+      ..food.value = journalEntry.food.value
+      ..date = journalEntry.date
+      ..amount = journalEntry.amount;
+
     entries.add(newJournalEntry);
+    _entryStream.add(List<JournalEntryEntity>.from(entries));
     return newJournalEntry;
   }
 
   @override
-  delete(String id) {
+  Future<bool> delete(int id) async {
     final toDelete = entries.where((entry) => entry.id == id).toList();
     if (toDelete.isNotEmpty) {
-      entries.remove(toDelete.first);
-      return;
+      entries = List.from(entries)..remove(toDelete.first);
+      _entryStream.add(List<JournalEntryEntity>.from(entries));
+      return true;
     }
 
-    throw InMemoryNotFoundException("delete JournalEntry: $id not found");
+    return false;
+  }
+
+  JournalEntryEntity _updateEntry({
+    required JournalEntryEntity currentEntry,
+    required JournalEntryEntity newEntry,
+  }) {
+    entries = List.from(entries)..remove(currentEntry);
+
+    final updatedJournalEntry = JournalEntryEntity()
+      ..id = currentEntry.id
+      ..food.value = newEntry.food.value
+      ..date = newEntry.date
+      ..amount = newEntry.amount;
+
+    entries.add(updatedJournalEntry);
+    _entryStream.add(List<JournalEntryEntity>.from(entries));
+    return updatedJournalEntry;
+  }
+
+  int _generateId() {
+    if (entries.isEmpty) return 1;
+    final ids = entries.map((e) => e.id).toList();
+    final maxId = ids.reduce((left, right) => left! > right! ? left : right);
+    return maxId! + 1;
+  }
+
+  _validateDates({required DateTime lower, required DateTime upper}) {
+    if (lower.isAfter(upper)) {
+      final message = "($lower) cannot be greater than: ($upper)";
+      throw ArgumentError(message);
+    }
   }
 }

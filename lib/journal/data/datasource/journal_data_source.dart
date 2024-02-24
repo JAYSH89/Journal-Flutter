@@ -1,15 +1,17 @@
-import 'package:journal/journal/domain/models/journal_entry.dart';
+import 'package:journal/journal/data/local/journal_entry_entity.dart';
 
 abstract class JournalDataSource {
-  List<JournalEntry> getAll();
+  Future<List<JournalEntryEntity>> getAll();
 
-  JournalEntry? getById(String id);
+  Stream<List<JournalEntryEntity>> watchAll();
 
-  List<JournalEntry> getBetween(DateTime start, DateTime end);
+  Future<JournalEntryEntity?> getById(int id);
 
-  JournalEntry update(String id, JournalEntry entry);
+  Future<List<JournalEntryEntity>> getBetween(DateTime start, DateTime end);
 
-  JournalEntry save(JournalEntry entry);
+  Stream<List<JournalEntryEntity>> watchBetween(DateTime lower, DateTime upper);
 
-  delete(String id);
+  Future<JournalEntryEntity?> save(JournalEntryEntity journalEntry);
+
+  Future<bool> delete(int id);
 }

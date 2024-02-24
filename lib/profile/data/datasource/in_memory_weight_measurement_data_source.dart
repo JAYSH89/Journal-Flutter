@@ -4,7 +4,7 @@ import 'package:journal/profile/data/datasource/weight_measurement_data_source.d
 import 'package:journal/profile/domain/models/weight_measurement.dart';
 import 'package:uuid/uuid.dart';
 
-@Injectable(as: WeightMeasurementDataSource)
+@Singleton(as: WeightMeasurementDataSource)
 class InMemoryWeightMeasurementDataSource
     implements WeightMeasurementDataSource {
   List<WeightMeasurement> weightMeasurements =

@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:journal/app/widgets/journal_scaffold.dart';
@@ -11,9 +12,7 @@ class JournalScaffoldWithNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final platform = Theme.of(context).platform;
-
-    if (platform == TargetPlatform.iOS) {
+    if (Platform.isIOS) {
       return JournalCupertinoScaffold(
         routes: routes,
         navigationShell: navigationShell,

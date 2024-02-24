@@ -4,7 +4,7 @@ import 'package:journal/food/data/local/food_entity.dart';
 import 'package:journal/food/domain/models/food.dart';
 import 'package:journal/food/domain/repository/food_repository.dart';
 
-@Injectable(as: FoodRepository)
+@Singleton(as: FoodRepository)
 class FoodRepositoryImpl implements FoodRepository {
   FoodRepositoryImpl({required this.dataSource});
 

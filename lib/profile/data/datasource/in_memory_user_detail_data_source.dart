@@ -2,7 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:journal/profile/data/datasource/user_details_data_source.dart';
 import 'package:journal/profile/domain/models/user_detail.dart';
 
-@Injectable(as: UserDetailsDataSource)
+@Singleton(as: UserDetailsDataSource)
 class InMemoryUserDetailDataSource extends UserDetailsDataSource {
   var user = UserDetail();
 

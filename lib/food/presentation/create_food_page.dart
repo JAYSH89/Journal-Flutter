@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,12 +34,13 @@ class _CreateFoodView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TargetPlatform platform = Theme.of(context).platform;
-
-    if (platform == TargetPlatform.iOS) {
-      return CupertinoPageScaffold(
-        navigationBar: JournalCupertinoAppBar(titleLabel: _title),
-        child: SafeArea(child: _CreateFoodViewContent()),
+    if (Platform.isIOS) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 80),
+        child: CupertinoPageScaffold(
+          navigationBar: JournalCupertinoAppBar(titleLabel: _title),
+          child: SafeArea(child: _CreateFoodViewContent()),
+        ),
       );
     }
 

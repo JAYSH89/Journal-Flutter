@@ -5,7 +5,7 @@ import 'package:journal/journal/domain/models/journal_entry.dart';
 
 void main() {
   final potato = Food(
-    name: 'Potato',
+    name: "Potato",
     carbs: 23.2,
     proteins: 3.1,
     fats: 0.1,
@@ -14,7 +14,7 @@ void main() {
   );
 
   final journalEntry = JournalEntry(
-    id: "id",
+    id: 1,
     food: potato,
     date: DateTime.parse("2024-01-31T17:23:02Z"),
     amount: 2,

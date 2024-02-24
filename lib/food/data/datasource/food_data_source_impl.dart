@@ -3,25 +3,28 @@ import 'package:isar/isar.dart';
 import 'package:journal/food/data/datasource/food_data_source.dart';
 import 'package:journal/food/data/local/food_entity.dart';
 
-@Injectable(as: FoodDataSource)
+@Singleton(as: FoodDataSource)
 class FoodDataSourceImpl extends FoodDataSource {
   FoodDataSourceImpl({required this.database});
 
   final Isar database;
 
   @override
-  Stream<List<FoodEntity>> watchAll() =>
-      database.foodEntitys.where().watch(fireImmediately: true);
+  Stream<List<FoodEntity>> watchAll() => database //
+      .foodEntitys
+      .where()
+      .watch(fireImmediately: true);
 
   @override
-  Future<List<FoodEntity>> getAll() async {
-    return database.collection<FoodEntity>().where().findAll();
-  }
+  Future<List<FoodEntity>> getAll() async => database //
+      .collection<FoodEntity>()
+      .where()
+      .findAll();
 
   @override
-  Future<FoodEntity?> getFoodById(int id) {
-    return database.foodEntitys.get(id);
-  }
+  Future<FoodEntity?> getFoodById(int id) => database //
+      .foodEntitys
+      .get(id);
 
   @override
   Future<List<FoodEntity>> searchFoodByName(String name) {

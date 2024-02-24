@@ -6,7 +6,7 @@ part 'journal_entry.freezed.dart';
 @freezed
 class JournalEntry with _$JournalEntry {
   factory JournalEntry({
-    String? id,
+    int? id,
     required Food food,
     required DateTime date,
     required double amount,

@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,17 +31,18 @@ class FoodView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TargetPlatform platform = Theme.of(context).platform;
-
-    if (platform == TargetPlatform.iOS) {
-      return CupertinoPageScaffold(
-        child: JournalCupertinoSliverAppBar(
-          titleLabel: _title,
-          trailing: JournalIconButton(
-            buttonType: IconButtonType.add,
-            onPressed: () => _onPressAdd(context, platform),
+    if (Platform.isIOS) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 80),
+        child: CupertinoPageScaffold(
+          child: JournalCupertinoSliverAppBar(
+            titleLabel: _title,
+            trailing: JournalIconButton(
+              buttonType: IconButtonType.add,
+              onPressed: () => _onPressAdd(context),
+            ),
+            child: _FoodViewContent(),
           ),
-          child: _FoodViewContent(),
         ),
       );
     }
@@ -51,7 +53,7 @@ class FoodView extends StatelessWidget {
         actions: [
           JournalIconButton(
             buttonType: IconButtonType.add,
-            onPressed: () => _onPressAdd(context, platform),
+            onPressed: () => _onPressAdd(context),
           ),
         ],
       ),
@@ -59,7 +61,7 @@ class FoodView extends StatelessWidget {
     );
   }
 
-  _onPressAdd(BuildContext context, TargetPlatform platform) {
+  _onPressAdd(BuildContext context) {
     context.go("/food/create_food");
   }
 }
@@ -134,9 +136,7 @@ class _FoodViewContent extends StatelessWidget {
       );
 
   void _showModal({required BuildContext context, required Food food}) {
-    final TargetPlatform platform = Theme.of(context).platform;
-
-    if (platform == TargetPlatform.iOS) {
+    if (Platform.isIOS) {
       _cupertinoModal(context: context, food: food);
       return;
     }

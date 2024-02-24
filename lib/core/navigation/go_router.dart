@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -5,6 +6,7 @@ import 'package:journal/core/navigation/journal_scaffold_with_nav_bar.dart';
 import 'package:journal/developer/developer_page.dart';
 import 'package:journal/food/presentation/create_food_page.dart';
 import 'package:journal/food/presentation/food_page.dart';
+import 'package:journal/journal/presentation/create_journal_entry_page.dart';
 import 'package:journal/journal/presentation/journal_page.dart';
 import 'package:journal/profile/presentation/profile_page.dart';
 
@@ -42,6 +44,14 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: JournalRoute().path,
               builder: (_, state) => JournalPage(key: state.pageKey),
+              routes: [
+                GoRoute(
+                  path: CreateJournalRoute().path,
+                  pageBuilder: (_, __) => _fullScreenDialog(
+                    child: const CreateJournalEntryPage(),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -54,21 +64,9 @@ final GoRouter router = GoRouter(
               routes: [
                 GoRoute(
                   path: CreateFoodRoute().path,
-                  pageBuilder: (context, state) {
-                    final TargetPlatform platform = Theme.of(context).platform;
-
-                    if (platform == TargetPlatform.iOS) {
-                      return const CupertinoPage(
-                        fullscreenDialog: true,
-                        child: CreateFoodPage(),
-                      );
-                    }
-
-                    return const MaterialPage(
-                      fullscreenDialog: true,
-                      child: CreateFoodPage(),
-                    );
-                  },
+                  pageBuilder: (_, __) => _fullScreenDialog(
+                    child: const CreateFoodPage(),
+                  ),
                 ),
               ],
             ),
@@ -93,6 +91,14 @@ final GoRouter router = GoRouter(
     ),
   ],
 );
+
+Page _fullScreenDialog({required Widget child}) {
+  if (Platform.isIOS) {
+    return CupertinoPage(fullscreenDialog: true, child: child);
+  }
+
+  return MaterialPage(fullscreenDialog: true, child: child);
+}
 
 sealed class Routes {
   late String path;
@@ -120,6 +126,15 @@ class HomeRoute extends Routes {
 class JournalRoute extends Routes {
   JournalRoute({
     super.path = '/journal',
+    super.title = 'Journal',
+    super.materialIcon = Icons.calendar_today,
+    super.cupertinoIcon = CupertinoIcons.calendar,
+  });
+}
+
+class CreateJournalRoute extends Routes {
+  CreateJournalRoute({
+    super.path = 'create_journal',
     super.title = 'Journal',
     super.materialIcon = Icons.calendar_today,
     super.cupertinoIcon = CupertinoIcons.calendar,

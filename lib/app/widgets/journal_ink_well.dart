@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 
 class JournalInkWell extends StatelessWidget {
@@ -8,9 +9,7 @@ class JournalInkWell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TargetPlatform platform = Theme.of(context).platform;
-
-    if (platform == TargetPlatform.iOS) {
+    if (Platform.isIOS) {
       return GestureDetector(
         onTap: onTap,
         child: Container(

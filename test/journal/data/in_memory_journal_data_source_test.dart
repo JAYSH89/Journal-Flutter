@@ -1,16 +1,12 @@
-import 'package:journal/core/errors/exceptions.dart';
+import 'package:journal/food/data/local/food_entity.dart';
 import 'package:journal/food/domain/models/food.dart';
 import 'package:journal/food/domain/models/food_unit.dart';
 import 'package:journal/journal/data/datasource/in_memory_journal_data_source.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:journal/journal/domain/models/journal_entry.dart';
+import 'package:journal/journal/data/local/journal_entry_entity.dart';
 
 void main() {
   late InMemoryJournalDataSource dataSource;
-
-  setUp(() {
-    dataSource = InMemoryJournalDataSource();
-  });
 
   final potato = Food(
     name: 'Potato',
@@ -21,75 +17,75 @@ void main() {
     foodUnit: FoodUnit.gram,
   );
 
-  final testJournalEntry = JournalEntry(
-    food: potato,
-    date: DateTime.parse("2023-06-01T00:00:00Z"),
-    amount: 1.0,
-  );
+  final testJournalEntry = JournalEntryEntity()
+    ..food.value = FoodEntity.fromFood(food: potato)
+    ..date = DateTime.parse("2023-06-01T00:00:00Z")
+    ..amount = 1.0;
+
+  setUp(() {
+    dataSource = InMemoryJournalDataSource();
+  });
 
   group('getAll()', () {
-    test('get all entries should return list of JournalEntry', () {
+    test('should return list of JournalEntryEntity', () async {
       // arrange
-      final expected = dataSource.save(testJournalEntry);
+      final expected = await dataSource.save(testJournalEntry);
 
       // act
-      final result = dataSource.getAll();
+      final result = await dataSource.getAll();
 
       // assert
-      expect(result, isA<List<JournalEntry>>());
       expect(result, equals([expected]));
     });
 
-    test('get all entries no elements should return empty list', () {
+    test('get all entries no elements should return empty list', () async {
       // arrange + act
-      final result = dataSource.getAll();
+      final result = await dataSource.getAll();
 
       // assert
-      expect(result, equals(List<JournalEntry>.empty()));
-      expect(result, isA<List<JournalEntry>>());
+      expect(result.length, equals(0));
     });
   });
 
   group('getById()', () {
-    test('should return JournalEntry if list contains JournalEntry.id', () {
+    test('should return entry successful if list contains id', () async {
       // arrange
-      final expected = dataSource.save(testJournalEntry);
+      await dataSource.save(testJournalEntry);
 
       // act
-      final result = dataSource.getById(expected.id!);
+      final result = await dataSource.getById(1);
 
       // assert
-      expect(result, equals(expected));
-      expect(result, isA<JournalEntry>());
+      expect(result, isNotNull);
     });
 
-    test('should return null if list not contains id', () {
-      final result = dataSource.getById("non existing id");
+    test('should return null if list not contains id', () async {
+      final result = await dataSource.getById(-1);
       expect(result, isNull);
     });
   });
 
   group('getBetween()', () {
-    test('should successfully return journal entries in range start end', () {
+    test('should successfully JournalEntryEntity in range start end', () async {
       // arrange
       final start = DateTime.parse("2023-05-01T00:00:00Z");
       final end = DateTime.parse("2023-07-01T00:00:00Z");
-      dataSource.save(testJournalEntry);
+      await dataSource.save(testJournalEntry);
 
       // act
-      final result = dataSource.getBetween(start, end);
+      final result = await dataSource.getBetween(start, end);
 
       // assert
       expect(result.length, equals(1));
     });
 
-    test('should return empty list if no elements in range start end', () {
+    test('should return empty list if not in range start end', () async {
       // arrange
       final start = DateTime.parse("2023-06-01T00:00:00Z");
       final end = DateTime.parse("2023-06-08T00:00:00Z");
 
       // act
-      final result = dataSource.getBetween(start, end);
+      final result = await dataSource.getBetween(start, end);
 
       // assert
       expect(result, equals(List.empty()));
@@ -102,71 +98,60 @@ void main() {
 
       // act + assert
       expect(
-        () => dataSource.getBetween(start, end),
+        () async => await dataSource.getBetween(start, end),
         throwsA(isA<ArgumentError>()),
       );
     });
   });
 
-  group('update()', () {
-    test('should update JournalEntry successful with id unchanged', () {
+  group('save()', () {
+    test('save JournalEntryEntity successful', () async {
+      // arrange + act
+      final result = await dataSource.save(testJournalEntry);
+
+      // assert
+      expect(result!.id, equals(1));
+    });
+
+    test('saving same ID updates JournalEntryEntity', () async {
       // arrange
-      final savedJournalEntry = dataSource.save(testJournalEntry);
+      final savedEntry = await dataSource.save(testJournalEntry);
       const double updatedAmount = 10.0;
 
-      final journalEntryToUpdate = JournalEntry(
-        food: potato,
-        date: testJournalEntry.date,
-        amount: updatedAmount,
-      );
+      final entryToUpdate = JournalEntryEntity()
+        ..id = savedEntry!.id
+        ..date = savedEntry.date
+        ..food.value = savedEntry.food.value
+        ..amount = updatedAmount;
 
       // act
-      final result = dataSource.update(
-        savedJournalEntry.id!,
-        journalEntryToUpdate,
-      );
+      final result = await dataSource.save(entryToUpdate);
+      final total = await dataSource.getAll();
 
       // assert
-      expect(result.id, equals(savedJournalEntry.id));
+      expect(result!.id, equals(savedEntry.id));
       expect(result.amount, equals(updatedAmount));
-    });
-
-    test('should throw InMemoryNotFoundException if id not in list', () {
-      expect(
-        () => dataSource.update("non existent id", testJournalEntry),
-        throwsA(isA<InMemoryNotFoundException>()),
-      );
-    });
-  });
-
-  group('save()', () {
-    test('save JournalEntry should generate UUID for id field', () {
-      // arrange + act
-      final result = dataSource.save(testJournalEntry);
-
-      // assert
-      expect(result.id, isNotNull);
+      expect(total.length, equals(1));
     });
   });
 
   group('delete()', () {
-    test('should delete journal entry successful', () {
+    test('should delete JournalEntryEntity successful', () async {
       // arrange
-      final newJournalEntry = dataSource.save(testJournalEntry);
+      await dataSource.save(testJournalEntry);
 
       // act
-      dataSource.delete(newJournalEntry.id!);
-      final result = dataSource.getById(newJournalEntry.id!);
+      final result = await dataSource.delete(1);
+      final exists = await dataSource.getById(1);
 
       // assert
-      expect(result, isNull);
+      expect(exists, isNull);
+      expect(result, equals(true));
     });
 
-    test('should throw InMemoryNotFoundException if id not in list', () {
-      expect(
-        () => dataSource.delete("non existent id"),
-        throwsA(isA<InMemoryNotFoundException>()),
-      );
+    test('should return false if id not in list', () async {
+      final result = await dataSource.delete(1);
+      expect(result, false);
     });
   });
 }
