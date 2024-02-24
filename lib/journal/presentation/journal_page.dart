@@ -16,13 +16,11 @@ class JournalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocProvider(
         create: (context) => getIt<JournalCubit>(),
-        child: const _JournalView(),
+        child: _JournalView(),
       );
 }
 
 class _JournalView extends StatelessWidget {
-  const _JournalView({super.key});
-
   final String _title = "Journal";
 
   @override

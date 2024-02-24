@@ -1,7 +1,6 @@
 import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:journal/app/widgets/buttons/journal_text_button.dart';
 import 'package:journal/app/widgets/journal_app_bar.dart';
@@ -146,31 +145,28 @@ class _CreateJournalEntryViewContent extends StatelessWidget {
         child: BlocSelector<CreateJournalEntryCubit, CreateJournalEntryState,
             DateTime>(
           selector: (state) => state.selectedDateTime ?? DateTime.now(),
-          builder: (context, selectedDate) {
-            final date = selectedDate ?? DateTime.now();
-            return JournalTextField(
-              controller: TextEditingController(text: date.dmy),
-              readOnly: true,
-              onTap: () async {
-                if (Platform.isIOS) {
-                  _showCupertinoDatePicker(
-                      context: context,
-                      onDateTimeChanged: (newDate) {
-                        BlocProvider.of<CreateJournalEntryCubit>(context)
-                            .selectDate(newDate);
-                      });
-                  return;
-                }
-
-                _showMaterialDatePicker(
+          builder: (context, selectedDate) => JournalTextField(
+            controller: TextEditingController(text: selectedDate.dmy),
+            readOnly: true,
+            onTap: () async {
+              if (Platform.isIOS) {
+                _showCupertinoDatePicker(
                     context: context,
-                    onFinish: (newDate) {
+                    onDateTimeChanged: (newDate) {
                       BlocProvider.of<CreateJournalEntryCubit>(context)
                           .selectDate(newDate);
                     });
-              },
-            );
-          },
+                return;
+              }
+
+              _showMaterialDatePicker(
+                  context: context,
+                  onFinish: (newDate) {
+                    BlocProvider.of<CreateJournalEntryCubit>(context)
+                        .selectDate(newDate);
+                  });
+            },
+          ),
         ));
   }
 
