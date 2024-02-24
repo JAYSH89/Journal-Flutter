@@ -115,8 +115,8 @@ class _CreateJournalEntryViewContent extends StatelessWidget {
           color: Colors.lightBlue,
         ),
         child: Text(
-            food.name,
-            style: satoshiRegular.copyWith(color: Colors.white),
+          food.name,
+          style: satoshiRegular.copyWith(color: Colors.white),
         ),
       ),
     );
